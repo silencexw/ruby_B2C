@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <h1 class="category-title">
+        <% if @category %>
+          分类: <%= @category.title %> (<%= @categories.total_entries %>)
+        <% else %>
+          分类 (<%= @categories.total_entries %>)
+        <% end %>
+      </h1>
+    </div>
+    <div class="col-md-6 text-right">
+      <%= link_to "新建分类", new_admin_category_path, class: "btn btn-primary" %>
+    </div>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>创建时间</th>
+      <th>名称</th>
+      <th>Weight</th>
+      <th class="text-right">
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @categories.each do |category| %>
+      <tr>
+        <td><%= category.created_at.strftime("%Y-%m-%d") %></td>
+        <td><%= category.title %></td>
+        <td><%= category.weight %></td>
+        <td class="text-right">
+        <td>
+          <%= link_to "编辑", edit_admin_category_path(category), class: "btn btn-sm btn-primary" %>
+          <%= link_to "删除", admin_category_path(category), method: :delete, 'data-confirm': "确认删除吗?", class: "btn btn-sm btn-danger" %>
+          <% if category.root? %>
+            <%= link_to "查看子分类", admin_categories_path(id: category), class: "btn btn-sm btn-info" %>
+          <% end -%>
+        </td>
+      </tr>
+    <% end -%>
+    </tbody>
+  </table>
+
+  <div class="text-center">
+    <%= will_paginate @categories, outer_window: 1, inner_window: 2, previous_label: '上一页', next_label: '下一页' %>
+  </div>
+</div>
+
+<style>
+
+
+</style>

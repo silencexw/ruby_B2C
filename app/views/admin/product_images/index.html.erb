@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <h1>商品 #<%= @product.id %> <%= @product.title %></h1>
+    </div>
+
+    <div class="col-md-6">
+      <%= form_tag admin_product_product_images_path(product_id: @product), method: :post, enctype: "multipart/form-data", class: "form-horizontal" do %>
+        <div class="form-group">
+          <label for="images" class="control-label">选择图片:</label>
+          <input type="file" name="images[]" multiple class="form-control image-input" />
+        </div>
+        <%= submit_tag "上传", class: "btn btn-primary" %>
+      <% end -%>
+    </div>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>图片</th>
+      <th>权重</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @product_images.each do |product_image| %>
+      <tr>
+        <td><%= product_image.id %></td>
+        <td>
+          <div class="image-container">
+            <%= image_tag product_image.image, class: "resized-image", alt: "" %>
+          </div>
+        </td>
+        <td>
+          <%= form_tag admin_product_product_image_path(@product, product_image), method: :put do %>
+            <div class="form-group">
+              <input type="text" value="<%= product_image.weight %>" name="weight" class="form-control" />
+            </div>
+            <%= submit_tag "更新", class: "btn btn-default btn-xs" %>
+          <% end -%>
+        </td>
+        <td align="right">
+          <%= link_to "删除", admin_product_product_image_path(@product, product_image), method: :delete, 'data-confirm': "确认删除吗?", class: "btn btn-danger btn-xs" %>
+        </td>
+      </tr>
+    <% end -%>
+    </tbody>
+  </table>
+</div>
