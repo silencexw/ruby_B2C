@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   resources :products
   resources :categories
+  resources :cart_items
 
   namespace :admin do
     root 'sessions#new'

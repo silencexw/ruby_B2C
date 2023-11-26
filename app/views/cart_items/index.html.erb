@@ -1,0 +1,43 @@
+<h1>购物车</h1>
+<div class="row">
+  <div class="container">
+    <div class="alert alert-info">
+      <% if @cart_items.blank? %>
+      <h3>购物车为空</h3>
+      <%  else  %>
+      <%  @cart_items.each do |cart_item|  %>
+      <div class="media shopping-cart-row">
+        <div class="media-left">
+          <a href="<%=  product_path(cart_item.product)  %>">
+            <%=  image_tag cart_item.product.main_product_image.image,style: "width: 200px; height: 200px; display: block", class: 'media-object', alt: cart_item.product.title  %>
+          </a>
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading"><%=  link_to cart_item.product.title, product_path(cart_item.product)  %></h4>
+          数量:
+              <%=  cart_item.amount  %> 价格: ¥<%= cart_item.amount * cart_item.product.price %>
+        </div>
+            <div class="media-right">
+              <%=  form_tag cart_item_path(cart_item), method: :put do  %>
+              <p><label>
+                <input type="text" name="amount" value="<%=  cart_item.amount  %>"/>
+              </label></p>
+              <p>
+                <%=  submit_tag "更新", class: "btn btn-default btn-xs"  %>
+                <%=  link_to "删除", cart_item_path(cart_item), method: :delete, 'data-confirm': "不考虑一下了?", class: "btn btn-default btn-xs"  %>
+              </p>
+              <%  end -%>
+            </div>
+              </div>
+      <%  end  -%>
+      <%  end -%>
+    </div>
+
+    <div class="pull-right">
+      <strong>总价: ¥<%= @cart_items.sum { |cart| cart.amount * cart.product.price } %></strong>
+      &nbsp;
+      <%= link_to "去结算", "#", class: "btn btn-danger btn-lg" %>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>
