@@ -9,7 +9,7 @@ class UsersController < ApplicationController
     if @user.save
       redirect_to new_session_path, notice: "注册成功"
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 

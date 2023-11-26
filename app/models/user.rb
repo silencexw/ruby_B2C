@@ -3,7 +3,9 @@ class User < ApplicationRecord
 
   has_many :addresses, -> { where(address_type: "user").order(id: :desc) }
 
-  belongs_to :default_address, class_name: :Address
+  has_many :transaction_orders
+
+  belongs_to :default_address, class_name: :Address, optional: true
 
   attr_accessor :password, :password_confirmation
 

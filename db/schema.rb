@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_26_080425) do
+ActiveRecord::Schema.define(version: 2023_11_26_093654) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -99,6 +99,29 @@ ActiveRecord::Schema.define(version: 2023_11_26_080425) do
     t.index ["uuid"], name: "index_products_on_uuid", unique: true
   end
 
+  create_table "transaction_items", force: :cascade do |t|
+    t.integer "transaction_order_id", null: false
+    t.integer "product_id", null: false
+    t.integer "amount"
+    t.decimal "money", precision: 10, scale: 2
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["product_id"], name: "index_transaction_items_on_product_id"
+    t.index ["transaction_order_id"], name: "index_transaction_items_on_transaction_order_id"
+  end
+
+  create_table "transaction_orders", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "address_id", null: false
+    t.decimal "total_money", precision: 10, scale: 2
+    t.string "order_no"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["address_id"], name: "index_transaction_orders_on_address_id"
+    t.index ["order_no"], name: "index_transaction_orders_on_order_no", unique: true
+    t.index ["user_id"], name: "index_transaction_orders_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "crypted_password"
@@ -127,4 +150,8 @@ ActiveRecord::Schema.define(version: 2023_11_26_080425) do
   add_foreign_key "cart_items", "products"
   add_foreign_key "cart_items", "users"
   add_foreign_key "products", "categories"
+  add_foreign_key "transaction_items", "products"
+  add_foreign_key "transaction_items", "transaction_orders"
+  add_foreign_key "transaction_orders", "addresses"
+  add_foreign_key "transaction_orders", "users"
 end
