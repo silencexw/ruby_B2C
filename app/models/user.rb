@@ -1,6 +1,10 @@
 class User < ApplicationRecord
   authenticates_with_sorcery!
 
+  has_many :addresses, -> { where(address_type: "user").order(id: :desc) }
+
+  belongs_to :default_address, class_name: :Address
+
   attr_accessor :password, :password_confirmation
 
   # 邮箱验证
@@ -17,9 +21,11 @@ class User < ApplicationRecord
   validates_length_of :password, :message => "最小密码长度为6", :minimum => 6, if: :password_validate
   validates_length_of :password, :message => "最大密码长度为15", :maximum => 15, if: :password_validate
 
+
   def username
     self.email.split("@").first
   end
+
 
   private
   def password_validate

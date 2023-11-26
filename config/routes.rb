@@ -8,6 +8,12 @@ Rails.application.routes.draw do
   resources :products
   resources :categories
   resources :cart_items
+  resources :addresses do
+    member do
+      put :set_default_address
+    end
+  end
+  resources :transaction_orders
 
   namespace :admin do
     root 'sessions#new'
