@@ -69,12 +69,12 @@
                 $prog.show();
             },
             success: function(data) {
-                if ($('#shopping_cart_modal').length > 0) {
-                    $('#shopping_cart_modal').remove();
+                if ($('#cart_item_modal').length > 0) {
+                    $('#cart_item_modal').remove();
                 }
 
                 $('body').append(data);
-                $('#shopping_cart_modal').modal();
+                $('#cart_item_modal').modal();
             },
             complete: function() {
                 $prog.hide();
