@@ -1,15 +1,24 @@
-<ul class="list-group">
+<div class="panel-group" id="accordionPanels" aria-multiselectable="true">
   <% @categories.each do |group| %>
-    <li class="list-group-item dropdown">
-      <a class="dropdown-toggle" href="#" id="categoryDropdown<%= group.first.id %>" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span style="color: black;"><%= group.first.title %></span>
-      </a>
-
-      <div class="dropdown-menu mt-0" aria-labelledby="categoryDropdown<%= group.first.id %>">
-        <% group.last.each do |sub_category| %>
-          <a class="dropdown-item" href="<%= category_path(sub_category) %>" role="button" ><span style="color: black;"><%= sub_category.title %></span></a>
-        <% end -%>
+    <div class="panel panel-default">
+      <div class="panel-heading" id="heading<%= group.first.id %>">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordionPanels" href="#collapse<%= group.first.id %>">
+            <%= group.first.title %>
+          </a>
+        </h4>
       </div>
-    </li>
-  <% end -%>
-</ul>
+      <div id="collapse<%= group.first.id %>" class="panel-collapse collapse">
+        <div class="panel-body">
+          <ul class="list-group">
+            <% group.last.each do |sub_category| %>
+              <li class="list-group-item">
+                <a href="<%= category_path(sub_category) %>"><%= sub_category.title %></a>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

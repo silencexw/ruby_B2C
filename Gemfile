@@ -23,6 +23,7 @@ gem 'bootstrap-sass'
 gem 'font-awesome-rails'
 gem 'image_processing', '~> 1.2'
 
+
 gem 'therubyracer', platform: :ruby
 
 gem 'mini_magick'
