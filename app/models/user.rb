@@ -14,7 +14,12 @@ class User < ApplicationRecord
   validates_format_of :email, message: "邮箱格式不合法",
                       with: /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/,
                       if: proc { |user| !user.email.blank? }
-  validates :email, uniqueness: true
+  validates :email, uniqueness: { message: "该邮箱已被注册" }
+
+
+  # 用户名验证
+  validates_presence_of :username, :message => "用户名不能为空"
+  validates :username, uniqueness: { message: "该用户名已被占用" }
 
   # 密码验证
   validates_presence_of :password, :message => "密码不能为空", if: :password_validate
@@ -22,11 +27,6 @@ class User < ApplicationRecord
   validates_confirmation_of :password, :message => "两次密码不一致", if: :password_validate
   validates_length_of :password, :message => "最小密码长度为6", :minimum => 6, if: :password_validate
   validates_length_of :password, :message => "最大密码长度为15", :maximum => 15, if: :password_validate
-
-
-  def username
-    self.email.split("@").first
-  end
 
 
   private

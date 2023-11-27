@@ -27,7 +27,7 @@
         <button type="submit" class="btn btn-default">搜索</button>
       <% end %>
       <ul class="nav navbar-nav navbar-right">
-        <% if current_user.is_admin? %>
+        <% if logged_in? and current_user.is_admin? %>
           <li><%= link_to "管理界面", admin_root_path %></li>
         <% end %>
         <% if logged_in? %>
