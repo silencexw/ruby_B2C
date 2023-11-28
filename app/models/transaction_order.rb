@@ -1,7 +1,7 @@
 class TransactionOrder < ApplicationRecord
-  has_many :transaction_items
+  has_many :transaction_items,  dependent: :destroy
   belongs_to :user
-  belongs_to :address
+  belongs_to :address, optional: true
 
   validates :user_id, presence: true
   validates :total_money, presence: true
@@ -36,7 +36,9 @@ class TransactionOrder < ApplicationRecord
 
       order.update!(total_money: total_money)
 
-      cart_items.map(&:destroy!)
+      cart_items.each(&:destroy!)
+
+      order
     end
   end
 

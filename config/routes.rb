@@ -15,7 +15,11 @@ Rails.application.routes.draw do
       put :set_default_address
     end
   end
-  resources :transaction_orders
+  resources :transaction_orders do
+    member do
+      post 'pay'
+    end
+  end
 
   namespace :dashboard do
     scope 'profile' do
@@ -25,16 +29,27 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :transaction_orders, only: [:index]
+    resources :transaction_orders do
+      member do
+        post 'pay'
+        delete :destroy, action: :destroy
+      end
+    end
     resources :addresses, only: [:index]
   end
 
   namespace :admin do
-    root 'sessions#new'
+    root 'transaction_orders#index'
     resources :sessions
     resources :categories
     resources :products do
       resources :product_images
+    end
+    resources :transaction_orders do
+      member do
+        post 'delivery'
+        delete :destroy, action: :destroy
+      end
     end
   end
 end

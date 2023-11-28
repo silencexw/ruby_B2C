@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_27_150126) do
+ActiveRecord::Schema.define(version: 2023_11_28_134213) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -117,7 +117,13 @@ ActiveRecord::Schema.define(version: 2023_11_27_150126) do
     t.string "order_no"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "is_payed", default: false
+    t.boolean "is_delivered", default: false
+    t.boolean "is_over", default: false
     t.index ["address_id"], name: "index_transaction_orders_on_address_id"
+    t.index ["is_delivered"], name: "index_transaction_orders_on_is_delivered"
+    t.index ["is_over"], name: "index_transaction_orders_on_is_over"
+    t.index ["is_payed"], name: "index_transaction_orders_on_is_payed"
     t.index ["order_no"], name: "index_transaction_orders_on_order_no", unique: true
     t.index ["user_id"], name: "index_transaction_orders_on_user_id"
   end

@@ -14,8 +14,15 @@ class TransactionOrdersController < ApplicationController
     end
 
     address = current_user.addresses.find(params[:address_id])
-    TransactionOrder.create_order_from_cart_items!(current_user, address, cart_items)
+    @transaction_order = TransactionOrder.create_order_from_cart_items!(current_user, address, cart_items)
 
+    render template:  "transaction_orders/pay"
+  end
+
+  def pay
+    @transaction_order = TransactionOrder.find(params[:id])
+    @transaction_order.update(is_payed: true)
     redirect_to cart_items_path
   end
+
 end

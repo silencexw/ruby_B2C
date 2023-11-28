@@ -16,43 +16,22 @@
           </span>
           <% end %>
         <div class="pull-right">
-          <% if order.is_payed? %>
-            <form action="<%= dashboard_transaction_order_path(order) %>" method="post" id="delete-form">
-              <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-              <input type="hidden" name="_method" value="delete">
-              <input type="submit" value="申请退款" class="btn btn-danger btn-lg" onclick="event.preventDefault(); deleteOrder();">
-            </form>
-          <% else %>
-            <form action="<%= dashboard_transaction_order_path(order) %>" method="post" id="delete-form">
+            <form action="<%= admin_transaction_order_path(order) %>" method="post" id="delete-form">
               <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
               <input type="hidden" name="_method" value="delete">
               <input type="submit" value="取消订单" class="btn btn-danger btn-lg" onclick="event.preventDefault(); deleteOrder();">
             </form>
-          <% end %>
         </div>
-        </p>
-        <p>
         <div class="pull-right">
-          <% unless order.is_payed? %>
-            <form action="<%= pay_dashboard_transaction_order_path(order) %>" method="post">
+          <% if order.is_payed? and not order.is_delivered? %>
+            <form action="<%= delivery_admin_transaction_order_path(order) %>" method="post">
               <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-              <input type="submit" value="前去支付" class="btn btn-success btn-lg" />
+              <input type="submit" value="发货" class="btn btn-success btn-lg" >
             </form>
           <% end %>
         </div>
-
         </p>
-          <p>
-          <div class="pull-right">
-            <% if order.is_payed? and order.is_delivered? %>
-              <form action="<%= pay_dashboard_transaction_order_path(order) %>" method="post">
-                <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-                <input type="submit" value="确认收货" class="btn btn-success btn-lg" />
-              </form>
-            <% end %>
-          </div>
 
-          </p>
         <% order.transaction_items.each do |item| %>
           <div class="media-left">
             <%= image_tag item.product.main_product_image.image, style: "width: 200px; height: 200px; display: block" , class: 'media-object', alt: item.product.title %>

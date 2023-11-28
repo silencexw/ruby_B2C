@@ -3,7 +3,7 @@ class User < ApplicationRecord
 
   has_many :addresses, -> { where(address_type: "user").order(id: :desc) }
 
-  has_many :transaction_orders
+  has_many :transaction_orders,  dependent: :destroy
 
   belongs_to :default_address, class_name: :Address, optional: true
 
