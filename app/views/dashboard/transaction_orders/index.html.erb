@@ -1,6 +1,45 @@
 <h1>我的订单</h1>
 <div class="row">
+  <div class="col-lg-3">
+  <div class="panel-group" id="accordionPanels" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" >
+          <h4 class="panel-title">
+            <%= link_to "待付款订单", dashboard_transaction_orders_path(order_status: '待付款') %>
+          </h4>
+        </div>
+      </div>
+  </div>
+    <div class="panel-group" id="accordionPanels" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" >
+          <h4 class="panel-title">
+            <%= link_to "待发货订单", dashboard_transaction_orders_path(order_status: '待发货') %>
+          </h4>
+        </div>
+      </div>
+    </div>
+    <div class="panel-group" id="accordionPanels" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" >
+          <h4 class="panel-title">
+            <%= link_to "待收货订单", dashboard_transaction_orders_path(order_status: '待收货') %>
+          </h4>
+        </div>
+      </div>
+    </div>
+    <div class="panel-group" id="accordionPanels" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" >
+          <h4 class="panel-title">
+            <%= link_to "已完成订单", dashboard_transaction_orders_path(order_status: '已完成') %>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="container">
+    <div class="col-sm-6 col-md-8">
     <% @transaction_orders.each do |order| %>
       <div class="media shopping-cart-row">
         <h4 class="media-heading">订单号: <%= order.order_no %></h4>
@@ -12,62 +51,60 @@
           </span>
           <% if order.is_payed? %>
             <span class="label <%= order.is_delivered? ? 'label-success' : 'label-warning' %>">
-            <%= order.is_delivered? ? '已发货' : '未发货' %>
-          </span>
+              <%= order.is_delivered? ? '已发货' : '未发货' %>
+            </span>
           <% end %>
-        <div class="pull-right">
-          <% if order.is_payed? %>
-            <form action="<%= dashboard_transaction_order_path(order) %>" method="post" id="delete-form">
-              <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-              <input type="hidden" name="_method" value="delete">
-              <input type="submit" value="申请退款" class="btn btn-danger btn-lg" onclick="event.preventDefault(); deleteOrder();">
-            </form>
-          <% else %>
-            <form action="<%= dashboard_transaction_order_path(order) %>" method="post" id="delete-form">
-              <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-              <input type="hidden" name="_method" value="delete">
-              <input type="submit" value="取消订单" class="btn btn-danger btn-lg" onclick="event.preventDefault(); deleteOrder();">
-            </form>
-          <% end %>
-        </div>
-        </p>
-        <p>
-        <div class="pull-right">
-          <% unless order.is_payed? %>
-            <form action="<%= pay_dashboard_transaction_order_path(order) %>" method="post">
-              <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-              <input type="submit" value="前去支付" class="btn btn-success btn-lg" />
-            </form>
-          <% end %>
-        </div>
-
-        </p>
+          <div class="pull-right">
+            <% if order.is_payed? %>
+              <form action="<%= dashboard_transaction_order_path(order) %>" method="post" id="delete-form">
+                <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                <input type="hidden" name="_method" value="delete">
+                <input type="submit" value="申请退款" class="btn btn-danger btn-lg" onclick="event.preventDefault(); deleteOrder();">
+              </form>
+            <% else %>
+              <form action="<%= dashboard_transaction_order_path(order) %>" method="post" id="delete-form">
+                <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                <input type="hidden" name="_method" value="delete">
+                <input type="submit" value="取消订单" class="btn btn-danger btn-lg" onclick="event.preventDefault(); deleteOrder();">
+              </form>
+            <% end %>
+          </div>
+          </p>
           <p>
           <div class="pull-right">
-            <% if order.is_payed? and order.is_delivered? %>
+            <% unless order.is_payed? %>
               <form action="<%= pay_dashboard_transaction_order_path(order) %>" method="post">
+                <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                <input type="submit" value="前去支付" class="btn btn-success btn-lg" />
+              </form>
+            <% end %>
+          </div>
+          </p>
+          <p>
+          <div class="pull-right">
+            <% if order.is_payed? and order.is_delivered? and not order.is_over? %>
+              <form action="<%= over_dashboard_transaction_order_path(order) %>" method="post">
                 <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
                 <input type="submit" value="确认收货" class="btn btn-success btn-lg" />
               </form>
             <% end %>
           </div>
-
           </p>
-        <% order.transaction_items.each do |item| %>
-          <div class="media-left">
-            <%= image_tag item.product.main_product_image.image, style: "width: 200px; height: 200px; display: block" , class: 'media-object', alt: item.product.title %>
+          <% order.transaction_items.each do |item| %>
+            <div class="media-left">
+              <%= image_tag item.product.main_product_image.image, style: "width: 200px; height: 200px; display: block" , class: 'media-object', alt: item.product.title %>
+            </div>
+            <div class="media-body">
+              <p><%= item.product.title %></p>
+              <p>数量: <%= item.amount %> 价格: ¥<%= item.money %></p>
+            </div>
+          <% end -%>
+          <p>总价: ¥<%= order.total_money %></p>
+          <p><%= order.address.contact_name %> <%= order.address.cellphone %> <%= order.address.address %></p>
           </div>
-          <div class="media-body">
-            <p><%= item.product.title %></p>
-            <p>数量: <%= item.amount %> 价格: ¥<%= item.money %></p>
-          </div>
-        <% end -%>
-        <p>总价: ¥<%= order.total_money %></p>
-        <p><%= order.address.contact_name %> <%= order.address.cellphone %> <%= order.address.address %></p>
-      </div>
     <% end -%>
-
     <%= will_paginate @orders %>
+  </div>
   </div>
 </div>
 

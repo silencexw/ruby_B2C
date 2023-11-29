@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     resources :transaction_orders do
       member do
         post 'pay'
+        post 'over'
         delete :destroy, action: :destroy
       end
     end
@@ -39,7 +40,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    root 'transaction_orders#index'
+    root 'sessions#new'
     resources :sessions
     resources :categories
     resources :products do

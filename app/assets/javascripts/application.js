@@ -16,3 +16,4 @@
 //= require bootstrap-sprockets
 //= require home
 
+//= require product
