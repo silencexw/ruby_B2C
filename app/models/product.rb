@@ -3,12 +3,17 @@ class Product < ApplicationRecord
 
   has_many :product_images, -> { order(weight: 'desc') }, dependent: :destroy
 
+  has_many :colors, -> { order(color_id: 'asc') }, dependent: :destroy
+
+  has_many :sizes, -> { order(size_id: 'asc') }, dependent: :destroy
+
   before_create :set_default_attr
 
   has_one :main_product_image, -> { order(weight: 'desc') },
           class_name: :ProductImage
 
   scope :onShelf, -> { where(status: 'on') }
+
 
 
   # 不为空的验证

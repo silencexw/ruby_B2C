@@ -1,5 +1,5 @@
 <div>
-  <h1><%= @product.new_record? ? "新建商品" : "修改商品 ##{params[:id]}" %></h1>
+  <h1><%= @product.new_record? ? "新建商品" : "修改商品" %></h1>
 </div>
 
 <div class="form-body">
@@ -76,8 +76,75 @@
     </div>
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-8">
-        <%= f.submit (@product.new_record? ? "新建商品" : "编辑商品"), class: "btn btn-default" %>
-      </div>
-    </div>
-  <% end -%>
+        <%= f.submit (@product.new_record? ? "新建商品" : "编辑商品"), class: "btn btn-success" %>
+        <% unless @product.new_record? %>
+          <%=  link_to "图片管理", admin_product_product_images_path(product_id: @product), class: "btn btn btn-info"  %>
+          <%= link_to "尺寸管理", admin_product_sizes_path(product_id: @product), class: "btn btn btn-info" %>
+          <%= link_to "颜色管理", admin_product_colors_path(product_id: @product), class: "btn btn btn-info" %>
+        <% end %>
+        </div>
+        </div>
+        <%  end -%>
 </div>
+
+<style>
+    .form-body {
+        margin: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    select,
+    input[type="text"],
+    textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+    }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+
+    .fa-exclamation-circle {
+        color: #721c24;
+        margin-right: 5px;
+    }
+</style>

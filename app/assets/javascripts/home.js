@@ -47,41 +47,93 @@
             $('#address_list').html(data.data);
         })
 
-    // 购物车
-    $('.add-to-cart-btn').on('click', function() {
-        var $this = $(this),
-            $amount = $('input[name="amount"]'),
-            $prog = $this.find('i');
+    const editAvatarBtn = document.getElementById('edit-avatar-btn');
+    const editNameBtn = document.getElementById('edit-name-btn');
+    const editSignatureBtn = document.getElementById('edit-signature-btn');
+    const editPasswordBtn = document.getElementById('edit-user_message-btn');
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalForm = document.getElementById('modal-form');
+    const modalSaveBtn = document.getElementById('modal-save-btn');
+    const modalCancelBtn = document.getElementById('modal-cancel-btn');
 
-        if ($amount.length > 0 && parseInt($amount.val()) <= 0) {
-            alert("购买数量至少为 1");
-            return false;
+// 点击修改头像按钮
+    editAvatarBtn.addEventListener('click', () => {
+        showModal('修改头像', 'avatar');
+    });
+
+// 点击修改姓名按钮
+    editNameBtn.addEventListener('click', () => {
+        showModal('修改姓名', 'name');
+    });
+
+// 点击修改个性签名按钮
+    editSignatureBtn.addEventListener('click', () => {
+        showModal('修改个性签名', 'signature');
+    });
+
+// 点击修改密码按钮
+    editPasswordBtn.addEventListener('click', () => {
+        showModal('修改密码', 'password');
+    });
+
+// 显示弹窗
+    function showModal(title, type) {
+        modalTitle.textContent = title;
+        modal.style.display = 'block';
+
+        // 清空表单字段
+        modalForm.innerHTML = '';
+
+        // 根据类型添加相应的表单字段
+        if (type === 'avatar') {
+            // 添加头像修改表单字段
+            const avatarInput = document.createElement('input');
+            avatarInput.type = 'file';
+            avatarInput.name = 'avatar';
+            modalForm.appendChild(avatarInput);
+        } else if (type === 'name') {
+            // 添加姓名修改表单字段
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.name = 'name';
+            modalForm.appendChild(nameInput);
+        } else if (type === 'signature') {
+            // 添加个性签名修改表单字段
+            const signatureInput = document.createElement('textarea');
+            signatureInput.name = 'signature';
+            modalForm.appendChild(signatureInput);
+        } else if (type === 'password') {
+            // 添加密码修改表单字段
+            const passwordInput = document.createElement('input');
+            passwordInput.type = 'password';
+            passwordInput.name = 'password';
+            modalForm.appendChild(passwordInput);
         }
+    }
 
-        $.ajax({
-            url: $this.attr('href'),
-            method: 'post',
-            data: { product_id: $this.data('product-id'), amount: $amount.val() },
-            beforeSend: function() {
-                if (!$prog.hasClass('fa-spin')) {
-                    $prog.addClass('fa-spin');
-                }
-                $prog.show();
-            },
-            success: function(data) {
-                if ($('#cart_item_modal').length > 0) {
-                    $('#cart_item_modal').remove();
-                }
+// 点击保存按钮
+    modalSaveBtn.addEventListener('click', () => {
+        // 处理保存逻辑
+        closeModal();
+    });
 
-                $('body').append(data);
-                $('#cart_item_modal').modal();
-            },
-            complete: function() {
-                $prog.hide();
-            }
-        })
+// 点击取消按钮或弹窗外部区域
+    modalCancelBtn.addEventListener('click', () => {
+        closeModal();
+    });
 
-        return false;
-    })
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+
+// 关闭弹窗
+    function closeModal() {
+        modal.style.display = 'none';
+        modalForm.reset();
+    }
+
 
 })()

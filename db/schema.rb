@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_28_134213) do
+ActiveRecord::Schema.define(version: 2023_11_29_125501) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -57,6 +57,8 @@ ActiveRecord::Schema.define(version: 2023_11_28_134213) do
     t.integer "amount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "size_id"
+    t.integer "color_id"
     t.index ["product_id"], name: "index_cart_items_on_product_id"
     t.index ["user_id"], name: "index_cart_items_on_user_id"
   end
@@ -70,6 +72,14 @@ ActiveRecord::Schema.define(version: 2023_11_28_134213) do
     t.string "ancestry"
     t.index ["ancestry"], name: "index_categories_on_ancestry"
     t.index ["title"], name: "index_categories_on_title"
+  end
+
+  create_table "colors", force: :cascade do |t|
+    t.integer "product_id", null: false
+    t.integer "color_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["product_id"], name: "index_colors_on_product_id"
   end
 
   create_table "product_images", force: :cascade do |t|
@@ -99,6 +109,14 @@ ActiveRecord::Schema.define(version: 2023_11_28_134213) do
     t.index ["uuid"], name: "index_products_on_uuid", unique: true
   end
 
+  create_table "sizes", force: :cascade do |t|
+    t.integer "product_id", null: false
+    t.integer "size_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["product_id"], name: "index_sizes_on_product_id"
+  end
+
   create_table "transaction_items", force: :cascade do |t|
     t.integer "transaction_order_id", null: false
     t.integer "product_id", null: false
@@ -106,6 +124,8 @@ ActiveRecord::Schema.define(version: 2023_11_28_134213) do
     t.decimal "money", precision: 10, scale: 2
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "size_id"
+    t.integer "color_id"
     t.index ["product_id"], name: "index_transaction_items_on_product_id"
     t.index ["transaction_order_id"], name: "index_transaction_items_on_transaction_order_id"
   end
@@ -157,7 +177,9 @@ ActiveRecord::Schema.define(version: 2023_11_28_134213) do
   add_foreign_key "addresses", "users"
   add_foreign_key "cart_items", "products"
   add_foreign_key "cart_items", "users"
+  add_foreign_key "colors", "products"
   add_foreign_key "products", "categories"
+  add_foreign_key "sizes", "products"
   add_foreign_key "transaction_items", "products"
   add_foreign_key "transaction_items", "transaction_orders"
   add_foreign_key "transaction_orders", "addresses"

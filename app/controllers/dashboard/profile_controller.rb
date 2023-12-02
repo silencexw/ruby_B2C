@@ -1,20 +1,30 @@
-class Dashboard::ProfileController < ApplicationController
-  def password
+class Dashboard::ProfileController < Dashboard::DashboardController
+  def user_message
   end
 
-  def update_password
+  def update_message
+    unless current_user.update(username: params[:username])
+      @errors = current_user.errors.full_messages
+      render action: :user_message
+      return
+    end
+
     if current_user.valid_password?(params[:old_password])
       current_user.password_confirmation = params[:password_confirmation]
 
-      if current_user.change_password!(params[:password])
-        flash[:notice] = "密码修改成功"
-        redirect_to dashboard_password_path
+      puts current_user.password_confirmation
+
+      if current_user.change_password(params[:user_password])
+        flash[:notice] = "个人信息修改成功"
+        redirect_to dashboard_user_message_path
       else
-        render action: :password
+        # 将验证失败的错误信息传递给视图
+        @errors = current_user.errors.full_messages
+        render action: :user_message
       end
     else
       current_user.errors.add :old_password, "旧密码不正确"
-      render action: :password
+      render action: :user_message
     end
   end
 end

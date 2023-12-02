@@ -28,7 +28,12 @@ class Dashboard::TransactionOrdersController < Dashboard::DashboardController
   def pay
     @transaction_order = TransactionOrder.find(params[:id])
     @transaction_order.update(is_payed: true)
-    redirect_to dashboard_transaction_orders_path
+    redirect_to dashboard_transaction_orders_path(order_status: "待付款")
+  end
+
+  def to_pay
+    @transaction_order = TransactionOrder.find(params[:id])
+    render template: "dashboard/transaction_orders/pay"
   end
 
   def over

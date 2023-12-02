@@ -1,11 +1,120 @@
-.list-group-item a {
-  display: block;
+// 导航栏背景颜色和阴影
+.navbar {
+  background-color: #fff;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  border: none;
 }
+
+// 导航链接颜色、字体和下划线效果
+.navbar-nav > li > a {
+  color: #222;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  &:hover, &:focus {
+    background-color: #f8f8f8;
+    border-bottom-color: #333;
+  }
+  &.active {
+    border-bottom-color: #333;
+  }
+}
+
+// 搜索框样式
+.navbar-form {
+  margin-left: 20px;
+  .form-group {
+    margin: 0;
+  }
+  .search-input {
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    padding: 5px 15px;
+    &::placeholder {
+      color: #999;
+      opacity: 1;
+    }
+  }
+  button {
+    background-color: #333;
+    color: #fff;
+    border-radius: 20px;
+    font-size: 14px;
+    padding: 5px 15px;
+    &:hover, &:focus {
+      background-color: #222;
+      color: #fff;
+    }
+  }
+}
+
+// 下拉菜单样式
+.dropdown-menu {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  box-shadow: none;
+  li {
+    a {
+      color: #333;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 20px;
+      &:hover, &:focus {
+        background-color: #f8f8f8;
+      }
+    }
+    &.divider {
+      background-color: #eee;
+      height: 1px;
+      margin: 5px 0;
+    }
+  }
+}
+
+
+.new-address-btn {
+  margin-bottom: 10px;
+}
+
+.list-group {
+  .list-group-item {
+    border: none;
+    label {
+      display: flex;
+      align-items: center;
+      input[type="radio"] {
+        margin-right: 5px;
+      }
+      .default_address {
+        margin-left: 10px;
+        padding: 2px 5px;
+        background-color: #337ab7;
+        color: #fff;
+        border-radius: 3px;
+      }
+      .set-default-address-btn,
+      .edit-address-btn,
+      .remove-address-btn {
+        margin-left: 10px;
+        color: #337ab7;
+        text-decoration: underline;
+        cursor: pointer;
+        &:hover {
+          color: #23527c;
+        }
+      }
+    }
+  }
+}
+
 .msrp {
   text-decoration: line-through;
 }
 .thumbnail {
-  height: 350px;
+  height: 300px;
   &.detail {
     height: 210px;
     width: 210px;
@@ -31,13 +140,105 @@
   &.shopping-cart-row {
     border-bottom: 1px solid #ccc;
 
+
     &:last-child {
       border-bottom: 0;
     }
+
   }
 }
+
+.media {
+  &.shopping-cart-row-wrap {
+      border-bottom: 1px solid #ccc !important;
+      width: 800px !important;
+      overflow-x: scroll !important;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+  }
+}
+
+
 a.add-to-cart-btn {
   i {
     display: none;
+  }
+}
+
+.merge {
+  margin-bottom: 5px;
+}
+
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+$background-color: #f8f8f8;
+
+user-html, user-body {
+  height: 100%;
+}
+
+user-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $background-color;
+}
+
+.user-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+
+  .avatar {
+    margin-right: 20px;
+
+    img {
+      border-radius: 50%;
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .edit-btn {
+      display: block;
+      margin-top: 10px;
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+
+  .info {
+    .field {
+      margin-bottom: 10px;
+
+      span {
+        margin-right: 10px;
+        font-weight: bold;
+      }
+
+      .edit-btn {
+        background-color: $secondary-color;
+        color: white;
+        border: none;
+        padding: 3px 8px;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+    }
   }
 }

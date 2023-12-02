@@ -1,5 +1,5 @@
 # The first thing you need to configure is which modules you need in your app.
-# The default is nothing which will include only core features (password encryption, login/logout).
+# The default is nothing which will include only core features (user_message encryption, login/logout).
 #
 # Available submodules are: :user_activation, :http_basic_auth, :remember_me,
 # :reset_password, :session_timeout, :brute_force_protection, :activity_logging,
@@ -164,7 +164,7 @@ Rails.application.config.sorcery.configure do |config|
   # config.google.user_info_mapping = {:email => "email", :username => "name"}
   # config.google.scope = "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
   #
-  # For Microsoft Graph, the key will be your App ID, and the secret will be your app password/public key.
+  # For Microsoft Graph, the key will be your App ID, and the secret will be your app user_message/public key.
   # The callback URL "can't contain a query string or invalid special characters"
   # See: https://docs.microsoft.com/en-us/azure/active-directory/active-directory-v2-limitations#restrictions-on-redirect-uris
   # More information at https://graph.microsoft.io/en-us/docs
@@ -249,8 +249,8 @@ Rails.application.config.sorcery.configure do |config|
     #
     # users.username_attribute_names =
 
-    # Change *virtual* password attribute, the one which is used until an encrypted one is generated.
-    # Default: `:password`
+    # Change *virtual* user_message attribute, the one which is used until an encrypted one is generated.
+    # Default: `:user_message`
     #
     # users.password_attribute_name =
 
@@ -269,7 +269,7 @@ Rails.application.config.sorcery.configure do |config|
     #
     # users.crypted_password_attribute_name =
 
-    # What pattern to use to join the password with the salt
+    # What pattern to use to join the user_message with the salt
     # Default: `""`
     #
     # users.salt_join_token =
@@ -279,7 +279,7 @@ Rails.application.config.sorcery.configure do |config|
     #
     # users.salt_attribute_name =
 
-    # How many times to apply encryption to the password.
+    # How many times to apply encryption to the user_message.
     # Default: 1 in test env, `nil` otherwise
     #
     user.stretches = 1 if Rails.env.test?
@@ -393,7 +393,7 @@ Rails.application.config.sorcery.configure do |config|
     #
     # users.reset_password_token_expires_at_attribute_name =
 
-    # When was password reset email sent. Used for hammering protection.
+    # When was user_message reset email sent. Used for hammering protection.
     # Default: `:reset_password_email_sent_at`
     #
     # users.reset_password_email_sent_at_attribute_name =
@@ -404,13 +404,13 @@ Rails.application.config.sorcery.configure do |config|
     #
     user.reset_password_mailer = UserMailer
 
-    # Reset password email method on your mailer class.
+    # Reset user_message email method on your mailer class.
     # Default: `:reset_password_email`
     #
     # users.reset_password_email_method_name =
 
     # When true, sorcery will not automatically
-    # send the password reset details email, and allow you to
+    # send the user_message reset details email, and allow you to
     # manually handle how and when the email is sent
     # Default: `false`
     #
@@ -426,7 +426,7 @@ Rails.application.config.sorcery.configure do |config|
     #
     # users.reset_password_time_between_emails =
 
-    # Access counter to a reset password page attribute name
+    # Access counter to a reset user_message page attribute name
     # Default: `:access_count_to_reset_password_page`
     #
     # users.reset_password_page_access_count_attribute_name =

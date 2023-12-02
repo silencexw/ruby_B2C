@@ -1,0 +1,45 @@
+<div>
+  <h1>产品尺寸管理</h1>
+
+  <% if @sizes.any? %>
+    <table class="table table-striped">
+      <tr>
+        <th>名称</th>
+        <th>操作</th>
+        <th></th>
+      </tr>
+
+      <% @sizes.each do |size| %>
+        <tr>
+          <td><%= size_name(size.size_id) %></td>
+          <td>
+            <%= link_to "删除", admin_product_size_path(product_id: @product, id: size), method: :delete, 'data-confirm': "确认删除吗?", class: "btn btn-sm btn-danger-small" %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+    <p>暂无尺寸可供管理。</p>
+  <% end %>
+
+  <h2>添加尺寸</h2>
+  <% if @product.sizes.any? %>
+    <p>已经选择了尺寸：<%= @product.sizes.map { |s| size_name(s.size_id) }.join(", ") %></p>
+  <% end %>
+  <%= form_with(model: @size, url: admin_product_sizes_path(product_id: @product)) do |form| %>
+    <% sizes = [1, 2, 3, 4] %>
+    <div class="size-selection">
+      <% sizes.each do |size| %>
+        <% unless @product.sizes.exists?(size_id: size) %>
+          <div>
+            <%= form.check_box :sizes, { multiple: true, checked: false }, size %>
+            <%= form.label size, size_name(size) %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <%= form.submit "添加尺寸", class: "btn btn-primary" %>
+  <% end %>
+
+</div>

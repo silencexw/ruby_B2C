@@ -7,7 +7,7 @@
       <div class="page-header">
         <h4><i class="fa fa-credit-card"></i> 选择支付方式</h4>
       </div>
-      <form id="payment-form" action="<%= pay_transaction_order_path(@transaction_order) %>" method="post">
+      <form id="payment-form" action="<%= pay_dashboard_transaction_order_path(@transaction_order) %>" method="post">
         <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
 
         <label for="alipay">支付宝支付</label>

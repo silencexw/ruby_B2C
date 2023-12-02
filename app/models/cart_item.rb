@@ -10,7 +10,9 @@ class CartItem < ApplicationRecord
   def self.create_or_update!(options = {})
     cond = {
       user_id: options[:user_id],
-      product_id: options[:product_id]
+      product_id: options[:product_id],
+      size_id: options[:size_id],
+      color_id: options[:color_id]
     }
 
     record = find_by(cond)

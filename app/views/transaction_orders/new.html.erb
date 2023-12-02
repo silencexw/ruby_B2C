@@ -9,26 +9,28 @@
     </div>
 
     <div class="page-header">
-      <h4><i class="fa fa-credit-card"></i> 支付方式</h4>
-    </div>
-    <ul class="list-group">
-      <li class="list-group-item">
-        <input type="radio" name="payment_method" value="alipay" checked />
-        <%= image_tag "alipay.png", width: 100 %>
-      </li>
-    </ul>
-
-    <div class="page-header">
       <h4><i class="fa fa-list-alt"></i> 商品列表</h4>
     </div>
     <% @cart_items.each do |cart_item| %>
       <div class="media shopping-cart-row">
-        <div class="media-left">
-          <%= image_tag cart_item.product.main_product_image.image, style: "width: 200px; height: 200px; display: block", class: 'media-object', alt: cart_item.product.title %>
-        </div>
+        <% if cart_item.product.main_product_image.nil? %>
+          <div class="media-left">
+            <%= image_tag "no_product.jpg", style: "width: 200px; height: 200px; display: block", class: 'media-object', alt: cart_item.product.title %>
+          </div>
+        <% else %>
+          <div class="media-left">
+            <%= image_tag cart_item.product.main_product_image.image, style: "width: 200px; height: 200px; display: block", class: 'media-object', alt: cart_item.product.title %>
+          </div>
+        <% end %>
         <div class="media-body">
           <h4 class="media-heading"><%= cart_item.product.title %></h4>
           数量: <%= cart_item.amount %> 价格: ¥<%= cart_item.amount * cart_item.product.price %>
+          <% unless cart_item.size_id.nil? %>
+            <div> 尺寸: <%= size_name(cart_item.size_id) %></div>
+          <% end %>
+          <% unless cart_item.color_id.nil? %>
+            <div > 颜色: <%= raw get_color(cart_item.color_id) %></div>
+          <% end %>
         </div>
       </div>
     <% end -%>

@@ -8,6 +8,7 @@ class CartItemsController < ApplicationController
 
   def create
     if logged_in?
+      puts params
       amount = params[:amount].to_i
       amount = amount <= 0 ? 1 : amount
 
@@ -15,13 +16,16 @@ class CartItemsController < ApplicationController
       @cart_item = CartItem.create_or_update!({
                                                 user_id: session[:user_id],
                                                 product_id: params[:product_id],
-                                                amount: amount
+                                                amount: amount,
+                                                size_id: params[:size_id],
+                                                color_id: params[:color_id]
                                               })
 
-      render layout: false
+      redirect_to product_path(@product), notice: "加入购物车成功"
     else
+      @product = Product.find(params[:product_id])
       flash[:error] = "请先登录"
-      render layout: false
+      redirect_to new_session_path
     end
   end
 
@@ -29,7 +33,7 @@ class CartItemsController < ApplicationController
   def update
     if @cart_item
       amount = params[:amount].to_i || 1
-      @cart_item.update(amount: amount)
+      @cart_item.update!(amount: amount)
     end
 
     redirect_to cart_items_path
@@ -47,9 +51,5 @@ class CartItemsController < ApplicationController
                                  .where(id: params[:id]).first
   end
 
-  def redirect_to_back_with_error_message
-    request.env["HTTP_REFERER"] ||= root_path
-    redirect_to request.env["HTTP_REFERER"]
-  end
 
 end

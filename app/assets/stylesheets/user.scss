@@ -1,0 +1,54 @@
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+
+  .avatar {
+    margin-right: 20px;
+
+    img {
+      border-radius: 50%;
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .edit-btn {
+      display: block;
+      margin-top: 10px;
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+
+  .info {
+    .field {
+      margin-bottom: 10px;
+
+      span {
+        margin-right: 10px;
+        font-weight: bold;
+      }
+
+      .edit-btn {
+        background-color: $secondary-color;
+        color: white;
+        border: none;
+        padding: 3px 8px;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+    }
+  }
+}

@@ -4,7 +4,7 @@
   </div>
 
   <h1>
-    商品(<%= @products.total_entries %>)
+    商品
   </h1>
 </div>
 
@@ -31,9 +31,8 @@
         <td><%= product.amount %></td>
         <td><%= product.status %></td>
         <td align="right">
-          <%= link_to "编辑", edit_admin_product_path(product), class: "btn btn-sm btn-primary" %>
-          <%= link_to "删除", admin_product_path(product), method: :delete, 'data-confirm': "确认删除吗?", class: "btn btn-sm btn-danger" %>
-          <%= link_to "图片管理", admin_product_product_images_path(product_id: product), class: "btn btn-sm btn-info" %>
+          <%= link_to "编辑", edit_admin_product_path(product), class: "btn btn btn-primary" %>
+          <%= link_to "删除", admin_product_path(product), method: :delete, 'data-confirm': "确认删除吗?", class: "btn btn btn-danger" %>
         </td>
       </tr>
     <% end -%>
@@ -41,3 +40,65 @@
 
   <%= will_paginate @products %>
 </div>
+
+<style>
+    .pull-right {
+        float: right;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        padding: 8px;
+        border: 1px solid #ccc;
+    }
+
+    th {
+        background-color: #f0f0f0;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .btn {
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .btn-primary {
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+    }
+
+    .btn-danger {
+        color: #fff;
+        background-color: #dc3545;
+        border: none;
+    }
+
+    .btn-primary:hover,
+    .btn-danger:hover {
+        opacity: 0.8;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+</style>

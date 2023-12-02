@@ -20,6 +20,11 @@ class User < ApplicationRecord
   # 用户名验证
   validates_presence_of :username, :message => "用户名不能为空"
   validates :username, uniqueness: { message: "该用户名已被占用" }
+  validates_format_of :username, message: "用户名含非法符号",
+                      with: /\A\w+\z/,
+                      if: proc { |user| !user.username.blank? }
+  validates_length_of :username, message: "用户名长度不合法", minimum: 3, maximum:  10,
+                      unless: proc { |user| user.username.blank? }
 
   # 密码验证
   validates_presence_of :password, :message => "密码不能为空", if: :password_validate
@@ -28,6 +33,11 @@ class User < ApplicationRecord
   validates_length_of :password, :message => "最小密码长度为6", :minimum => 6, if: :password_validate
   validates_length_of :password, :message => "最大密码长度为15", :maximum => 15, if: :password_validate
 
+
+  def self.username_confirm(username, password)
+    user = find_by(username: username) # 根据用户名查找用户
+    user && user.valid_password?(password) # 使用 authenticate 方法进行验证
+  end
 
   private
   def password_validate

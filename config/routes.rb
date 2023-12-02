@@ -24,13 +24,14 @@ Rails.application.routes.draw do
   namespace :dashboard do
     scope 'profile' do
       controller :profile do
-        get :password
-        put :update_password
+        get :user_message
+        put :update_message
       end
     end
 
     resources :transaction_orders do
       member do
+        post 'to_pay'
         post 'pay'
         post 'over'
         delete :destroy, action: :destroy
@@ -40,11 +41,13 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    root 'sessions#new'
+    root 'transaction_orders#index'
     resources :sessions
     resources :categories
     resources :products do
       resources :product_images
+      resources :sizes
+      resources :colors
     end
     resources :transaction_orders do
       member do
