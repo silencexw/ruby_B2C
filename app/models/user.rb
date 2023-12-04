@@ -7,6 +7,10 @@ class User < ApplicationRecord
 
   belongs_to :default_address, class_name: :Address, optional: true
 
+  has_many :records, dependent: :destroy
+
+  has_many :favorites, dependent: :destroy
+
   attr_accessor :password, :password_confirmation
 
   # 邮箱验证

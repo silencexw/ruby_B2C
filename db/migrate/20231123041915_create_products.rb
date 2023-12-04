@@ -4,10 +4,12 @@ class CreateProducts < ActiveRecord::Migration[6.1]
       t.references :category, null: false, foreign_key: true
       t.string :title
       t.string :status, default: 'off'
-      t.integer :amount, default: 0
       t.string :uuid
       t.decimal :msrp, precision: 10, scale: 2, default: 0
       t.decimal :price, precision: 10, scale: 2, default: 0
+      t.boolean :has_color, default: false
+      t.boolean :has_size, default: false
+      t.boolean :has_design, default: false
       t.text :description
 
       t.timestamps

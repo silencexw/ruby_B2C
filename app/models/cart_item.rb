@@ -2,7 +2,7 @@ class CartItem < ApplicationRecord
   validates :product_id, presence: true
   validates :amount, presence: true
 
-  belongs_to :product
+  belongs_to :product_item
   belongs_to :user
 
   scope :find_by_user_id, ->(user_id) { where(user_id: user_id) }

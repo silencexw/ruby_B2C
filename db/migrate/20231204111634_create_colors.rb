@@ -1,8 +1,9 @@
 class CreateColors < ActiveRecord::Migration[6.1]
   def change
     create_table :colors do |t|
-      t.references :product, null: false, foreign_key: true
-      t.integer :color_id
+      t.string :name
+      t.string :hex_code
+      t.integer :weight, default: 0
       t.timestamps
     end
   end
