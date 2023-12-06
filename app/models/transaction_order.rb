@@ -27,15 +27,13 @@ class TransactionOrder < ApplicationRecord
 
       cart_items.each do |cart_item|
           order.transaction_items.create!(
-          product: cart_item.product,
+          product_item: cart_item.product_item,
           amount: cart_item.amount,
-          money: cart_item.amount * cart_item.product.price,
-          size_id: cart_item.size_id,
-          color_id: cart_item.color_id
+          money: cart_item.amount * cart_item.product_item.msrp,
         )
 
-        cart_item.product.update(amount: cart_item.product.amount - cart_item.amount)
-        total_money = total_money + cart_item.amount * cart_item.product.price
+        cart_item.product_item.update(amount: cart_item.product_item.amount - cart_item.amount)
+        total_money = total_money + cart_item.amount * cart_item.product_item.msrp
       end
 
       order.update!(total_money: total_money)

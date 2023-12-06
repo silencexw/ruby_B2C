@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   end
   resources :categories
   resources :cart_items
+  resources :favorites
   resources :addresses do
     member do
       put :set_default_address
@@ -28,7 +29,7 @@ Rails.application.routes.draw do
         put :update_message
       end
     end
-
+    resources :favorites
     resources :transaction_orders do
       member do
         post 'to_pay'
@@ -44,10 +45,11 @@ Rails.application.routes.draw do
     root 'transaction_orders#index'
     resources :sessions
     resources :categories
+    resources :sizes
+    resources :colors
     resources :products do
+      resources :product_items
       resources :product_images
-      resources :sizes
-      resources :colors
     end
     resources :transaction_orders do
       member do

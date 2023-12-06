@@ -3,23 +3,21 @@ class TransactionOrdersController < ApplicationController
 
   def new
     @cart_items = CartItem.find_by_user_id(current_user.id)
-                                  .order(id: "desc").includes([:product => [:main_product_image]])
+                                  .order(id: "desc").includes(:product_item)
     if @cart_items.blank?
       redirect_to cart_items_path, notice: "没有商品，请先添加商品到购物车"
       return
     end
     @cart_items.each do |cart_item|
-      puts cart_item.amount
-      puts cart_item.product.amount
-      if cart_item.amount > cart_item.product.amount
-        redirect_to cart_items_path, notice:  "商品（#{cart_item.product.title}）数量不足，仅有 #{cart_item.product.amount}"
+      if cart_item.amount > cart_item.product_item.amount
+        redirect_to cart_items_path, notice:  "商品（#{cart_item.product_item.product.title}）数量不足，仅有 #{cart_item.product_item.amount}"
         return
       end
     end
   end
 
   def create
-    cart_items = CartItem.find_by_user_id(current_user.id).includes(:product)
+    cart_items = CartItem.find_by_user_id(current_user.id).includes(:product_item)
     if cart_items.blank?
       redirect_to cart_items_path
       return

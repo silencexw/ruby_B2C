@@ -1,34 +1,49 @@
 class Admin::SizesController < Admin::AdminController
-  before_action :get_product
+  before_action :get_size, only: [:edit, :update, :destroy]
 
   def index
-    @sizes = @product.sizes
+    @sizes = size.all.page(params[:page] || 1).per_page(params[:per_page] || 10)
+                   .order(id: "desc")
+  end
+
+  def new
+    @size = size.new
   end
 
   def create
-    unless params[:sizes].nil?
-      params[:sizes].each do |size|
-        unless size.to_i == 0
-          @product.sizes << Size.new(size_id: size)
-        end
-      end
-    end
+    @size = size.new(params.require(:size).permit!)
 
-    redirect_to admin_product_sizes_path(product_id: @product)
+    if @category.save
+      redirect_to admin_sizes_path, notice: "颜色新建成功"
+    else
+      render action: :new
+    end
+  end
+
+  def edit
+    render action: :new
+  end
+
+  def update
+    @size.attributes = params.require(:size).permit!
+
+    if @size.save
+      redirect_to admin_sizes_path, notice: "颜色修改成功"
+    else
+      render action: :new
+    end
   end
 
   def destroy
-    @size = @product.sizes.find(params[:id])
     if @size.destroy
-      redirect_to admin_product_sizes_path(product_id: @product), notice: "尺寸删除成功"
+      redirect_to admin_sizes_path, notice: "删除成功"
     else
-      redirect_to admin_product_sizes_path(product_id: @product), notice: "尺寸删除失败"
+      redirect_to :back, notice: "删除失败"
     end
   end
 
-
   private
-  def get_product
-    @product = Product.find params[:product_id]
+  def get_size
+    @size = size.find(params[:id])
   end
 end
