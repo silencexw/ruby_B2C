@@ -7,6 +7,10 @@ class Product < ApplicationRecord
 
   has_many :favorites, dependent: :destroy
 
+  has_many :colors, dependent: :destroy
+
+  has_many :sizes, dependent: :destroy
+
   before_create :set_default_attr
 
   has_one :main_product_image, -> { order(weight: 'desc') },

@@ -20,6 +20,16 @@ class Admin::ColorsController < Admin::AdminController
     end
   end
 
+  def select
+    unless params[:colors].nil?
+      params[:colors].each do |color|
+        @product.sizes << ProductColor.new(product_id: params[:product_id], color_id: color)
+      end
+    end
+
+    redirect_to admin_colors_path(product_id: @product)
+  end
+
 
   def edit
     render action: :new

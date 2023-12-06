@@ -1,5 +1,5 @@
 class Admin::ProductsController < Admin::AdminController
-  before_action :get_product, only: [:edit, :update, :destroy]
+  before_action :get_product, only: [:edit, :update, :destroy, :onShelf]
 
   def new
     @product = Product.new
@@ -37,6 +37,17 @@ class Admin::ProductsController < Admin::AdminController
     else
       render action: :new
     end
+  end
+
+  def onShelf
+    if @product.product_items.blank?
+      flash[:error] = "无具体产品，上架失败"
+      redirect_to admin_products_path
+      return
+    end
+    @product.update!(:status => 'on')
+    @product.save
+    redirect_to admin_products_path, notice: "上架成功"
   end
 
   def destroy

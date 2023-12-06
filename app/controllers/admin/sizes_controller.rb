@@ -10,6 +10,16 @@ class Admin::SizesController < Admin::AdminController
     @size = size.new
   end
 
+  def select
+    unless params[:sizes].nil?
+      params[:sizes].each do |size|
+        @product.sizes << ProductSize.new(product_id: params[:product_id], size_id: size)
+      end
+    end
+
+    redirect_to admin_sizes_path(product_id: @product)
+  end
+
   def create
     @size = size.new(params.require(:size).permit!)
 
