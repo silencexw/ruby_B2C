@@ -20,6 +20,7 @@ class Admin::ColorsController < Admin::AdminController
     end
   end
 
+
   def edit
     render action: :new
   end

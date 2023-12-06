@@ -12,7 +12,9 @@ class Admin::ProductsController < Admin::AdminController
   end
 
   def create
-    @product = Product.new(params.require(:product).permit!)
+    @product = Product.new(product_params)
+    puts @product
+    puts params
     @root_categories = Category.roots
 
     if @product.save
@@ -48,5 +50,9 @@ class Admin::ProductsController < Admin::AdminController
   private
   def get_product
     @product = Product.find(params[:id])
+  end
+
+  def product_params
+    params.require(:product).permit(:title, :category_id, :msrp, :price, :has_size, :has_color, :has_design, :description)
   end
 end
