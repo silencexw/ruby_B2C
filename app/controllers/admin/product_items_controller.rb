@@ -1,8 +1,9 @@
 class Admin::ProductItemsController < Admin::AdminController
-  before_action :get_product, get_colors, get_sizes
+  before_action :get_product
+  before_action :get_colors, :get_sizes
 
   def new
-    @product_item = Product.new
+    @product_item = ProductItem.new
   end
 
   def create
@@ -42,7 +43,7 @@ class Admin::ProductItemsController < Admin::AdminController
 
   private
   def get_product
-    @product = Product.find params[:product_id]
+    @product = Product.find params[:product_id].to_i
   end
 
   def get_colors

@@ -19,13 +19,13 @@
           <div class="media-body">
             <h4 class="media-heading"><%= link_to cart_item.product.title, product_path(cart_item.product) %></h4>
             数量:<%= cart_item.amount %> 价格: ¥<%= cart_item.amount * cart_item.product.price %>
-            <div >
-            <% unless cart_item.size_id.nil? %>
-             尺寸: <%= size_name(cart_item.size_id) %>
-            <% end %>
-            <% unless cart_item.color_id.nil? %>
-               颜色: <%= raw get_color(cart_item.color_id) %>
-            <% end %>
+            <div>
+              <% unless cart_item.size_id.nil? %>
+                尺寸: <%= size_name(cart_item.size_id) %>
+              <% end %>
+              <% unless cart_item.color_id.nil? %>
+                颜色: <%= raw get_color(cart_item.color_id) %>
+              <% end %>
             </div>
           </div>
           <div class="media-right">

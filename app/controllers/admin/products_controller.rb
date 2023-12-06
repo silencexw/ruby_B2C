@@ -13,8 +13,8 @@ class Admin::ProductsController < Admin::AdminController
 
   def create
     @product = Product.new(product_params)
-    puts @product
-    puts params
+    # puts @product
+    # puts params
     @root_categories = Category.roots
 
     if @product.save

@@ -1,0 +1,156 @@
+<div>
+  <h1><%= @product_item.new_record? ? "创建实体" : "编辑实体" %></h1>
+</div>
+
+<div class="form-body">
+  <%= form_for @product_item,
+               url: admin_product_product_items_path(@product),
+               method: 'post',
+               html: { class: 'form-horizontal' } do |f| %>
+
+
+    <%# unless @product_item.errors.blank? %>
+<!--      <div class="alert alert-danger">-->
+<!--        <ul class="list-unstyled">-->
+          <%# @product_item.errors.messages.values.flatten.each do |error| %>
+<!--            <li><i class="fa fa-exclamation-circle"></i> <%#= error %></li>-->
+          <%# end -%>
+<!--        </ul>-->
+<!--      </div>-->
+    <%# end -%>
+
+
+
+<!--    <div class="form-group">-->
+<!--      <label for="color_id" class="col-sm-2 control-label">颜色:*</label>-->
+<!--      <div class="col-sm-5">-->
+        <%#= f.number_field :product_id, class: "form-control" %>
+<!--      </div>-->
+<!--    </div>-->
+
+    <div class="form-group">
+      <label for="color_id" class="col-sm-2 control-label">颜色:*</label>
+      <div class="col-sm-5">
+        <%= f.number_field :color_id, class: "form-control" %>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <label for="size_id" class="col-sm-2 control-label">大小:*</label>
+      <div class="col-sm-5">
+        <%= f.number_field :size_id, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="design" class="col-sm-2 control-label">款式:*</label>
+      <div class="col-sm-5">
+        <%= f.text_field :design, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="msrp" class="col-sm-2 control-label">原价:*</label>
+      <div class="col-sm-5">
+        <%= f.number_field :msrp, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="amount" class="col-sm-2 control-label">库存:*</label>
+      <div class="col-sm-5">
+        <%= f.number_field :amount, class: "form-control" %>
+      </div>
+    </div>
+
+
+
+    <div class="form-group">
+      <label for="image" class="col-sm-2 control-label">图片:*</label>
+      <div class="col-sm-5">
+        <%= f.text_field :image, class: "form-control" %>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-8">
+
+        <%= f.submit (@product_item.new_record? ? "新建实体" : "编辑实体"), class: "btn btn-success" %>
+
+        <% unless @product_item.new_record? %>
+
+        <% end %>
+
+      </div>
+    </div>
+
+  <% end %>
+
+</div>
+
+
+
+
+<style>
+    .form-body {
+        margin: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    select,
+    input[type="text"],
+    textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+    }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+
+    .fa-exclamation-circle {
+        color: #721c24;
+        margin-right: 5px;
+    }
+</style>

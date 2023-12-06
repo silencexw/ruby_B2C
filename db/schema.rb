@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_04_123141) do
+ActiveRecord::Schema.define(version: 2023_12_06_025020) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -89,14 +89,13 @@ ActiveRecord::Schema.define(version: 2023_12_04_123141) do
     t.index ["users_id"], name: "index_favorites_on_users_id"
   end
 
-  create_table "product_images", force: :cascade do |t|
-    t.integer "product_id"
-    t.integer "weight", default: 0
+  create_table "product_colors", force: :cascade do |t|
+    t.integer "product_id", null: false
+    t.integer "color_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "image"
-    t.index ["product_id", "weight"], name: "index_product_images_on_product_id_and_weight"
-    t.index ["product_id"], name: "index_product_images_on_product_id"
+    t.index ["color_id"], name: "index_product_colors_on_color_id"
+    t.index ["product_id"], name: "index_product_colors_on_product_id"
   end
 
   create_table "product_items", force: :cascade do |t|
@@ -110,8 +109,18 @@ ActiveRecord::Schema.define(version: 2023_12_04_123141) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["color_id"], name: "index_product_items_on_color_id"
+    t.index ["product_id", "size_id", "color_id"], name: "index_product_items_on_product_id_and_size_id_and_color_id"
     t.index ["product_id"], name: "index_product_items_on_product_id"
     t.index ["size_id"], name: "index_product_items_on_size_id"
+  end
+
+  create_table "product_sizes", force: :cascade do |t|
+    t.integer "product_id", null: false
+    t.integer "size_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["product_id"], name: "index_product_sizes_on_product_id"
+    t.index ["size_id"], name: "index_product_sizes_on_size_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -213,9 +222,13 @@ ActiveRecord::Schema.define(version: 2023_12_04_123141) do
   add_foreign_key "cart_items", "users"
   add_foreign_key "favorites", "products", column: "products_id"
   add_foreign_key "favorites", "users", column: "users_id"
+  add_foreign_key "product_colors", "colors"
+  add_foreign_key "product_colors", "products"
   add_foreign_key "product_items", "colors"
   add_foreign_key "product_items", "products"
   add_foreign_key "product_items", "sizes"
+  add_foreign_key "product_sizes", "products"
+  add_foreign_key "product_sizes", "sizes"
   add_foreign_key "products", "categories"
   add_foreign_key "records", "products"
   add_foreign_key "records", "users"
