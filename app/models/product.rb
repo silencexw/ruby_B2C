@@ -13,9 +13,6 @@ class Product < ApplicationRecord
 
   before_create :set_default_attr
 
-  has_one :main_product_image, -> { order(weight: 'desc') },
-          class_name: :ProductImage
-
   has_many :product_items, dependent: :destroy
 
   scope :onShelf, -> { where(status: 'on') }
@@ -35,6 +32,10 @@ class Product < ApplicationRecord
                             if: proc { |product| !product.msrp.blank? }
   validates_numericality_of :price, message: "定价必须为数字",
                             if: proc { |product| !product.price.blank? }
+
+  def main_product_image
+    product_items.first.image
+  end
 
   private
 
