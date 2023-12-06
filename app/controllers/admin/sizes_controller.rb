@@ -2,12 +2,12 @@ class Admin::SizesController < Admin::AdminController
   before_action :get_size, only: [:edit, :update, :destroy]
 
   def index
-    @sizes = size.all.page(params[:page] || 1).per_page(params[:per_page] || 10)
+    @sizes = Size.all.page(params[:page] || 1).per_page(params[:per_page] || 10)
                    .order(id: "desc")
   end
 
   def new
-    @size = size.new
+    @size = Size.new
   end
 
   def select
@@ -21,10 +21,10 @@ class Admin::SizesController < Admin::AdminController
   end
 
   def create
-    @size = size.new(params.require(:size).permit!)
+    @size = Size.new(params.require(:size).permit!)
 
-    if @category.save
-      redirect_to admin_sizes_path, notice: "颜色新建成功"
+    if @size.save
+      redirect_to new_admin_product_path, notice: "颜色新建成功"
     else
       render action: :new
     end

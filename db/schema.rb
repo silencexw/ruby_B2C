@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_06_025020) do
+ActiveRecord::Schema.define(version: 2023_12_06_141418) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -132,7 +132,6 @@ ActiveRecord::Schema.define(version: 2023_12_06_025020) do
     t.decimal "price", precision: 10, scale: 2, default: "0.0"
     t.boolean "has_color", default: false
     t.boolean "has_size", default: false
-    t.boolean "has_design", default: false
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

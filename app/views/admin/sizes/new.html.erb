@@ -1,83 +1,66 @@
-<div>
-  <h1><%= @product_item.new_record? ? "创建实体" : "编辑实体" %></h1>
-</div>
+<h1> 大小 </h1>
 
 <div class="form-body">
-  <%= form_for @product_item,
-               url: admin_product_product_items_path(@product),
+  <%= form_for @size,
+               url: admin_sizes_path,
                method: 'post',
                html: { class: 'form-horizontal' } do |f| %>
 
-
-    <% unless @product_item.errors.blank? %>
+    <% unless @size.errors.blank? %>
       <div class="alert alert-danger">
         <ul class="list-unstyled">
-          <% @product_item.errors.messages.values.flatten.each do |error| %>
+          <% @size.errors.messages.values.flatten.each do |error| %>
             <li><i class="fa fa-exclamation-circle"></i> <%= error %></li>
           <% end -%>
         </ul>
       </div>
     <% end -%>
 
-
     <div class="form-group">
-      <label for="color_id" class="col-sm-2 control-label">颜色:*</label>
+      <label for="name" class="col-sm-2 control-label">size名字:*</label>
       <div class="col-sm-5">
-        <%= f.number_field :color_id, class: "form-control" %>
+        <%= f.text_field :name, class: "form-control" %>
       </div>
     </div>
 
 
     <div class="form-group">
-      <label for="size_id" class="col-sm-2 control-label">大小:*</label>
+      <label for="weight" class="col-sm-2 control-label">权重 id:*</label>
       <div class="col-sm-5">
-        <%= f.number_field :size_id, class: "form-control" %>
-      </div>
-    </div>
-
-
-    <div class="form-group">
-      <label for="msrp" class="col-sm-2 control-label">原价:*</label>
-      <div class="col-sm-5">
-        <%= f.number_field :msrp, class: "form-control" %>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="amount" class="col-sm-2 control-label">库存:*</label>
-      <div class="col-sm-5">
-        <%= f.number_field :amount, class: "form-control" %>
+        <%= f.text_field :weight, class: "form-control" %>
       </div>
     </div>
 
 
 
-    <div class="form-group">
-      <label for="image" class="col-sm-2 control-label">图片:*</label>
-      <div class="col-sm-5">
-        <%= f.text_field :image, class: "form-control" %>
-      </div>
-    </div>
+
 
 
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-8">
+        <%= f.submit '确定大小', class: "btn btn-success" %>
+        <%# unless @product.new_record? %>
 
-        <%= f.submit (@product_item.new_record? ? "新建实体" : "编辑实体"), class: "btn btn-success" %>
 
-        <% unless @product_item.new_record? %>
 
-        <% end %>
 
+        <%#= link_to "图片管理", admin_product_product_images_path(product_id: @product), class: "btn btn btn-info"  %>
+        <%#= link_to "尺寸管理", admin_product_sizes_path(product_id: @product), class: "btn btn btn-info" %>
+
+
+        <%# end %>
       </div>
     </div>
 
-  <% end %>
+    <div class="form-group">
 
+
+
+    </div>
+
+
+  <% end -%>
 </div>
-
-
-
 
 <style>
     .form-body {

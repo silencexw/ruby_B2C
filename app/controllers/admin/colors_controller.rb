@@ -13,8 +13,8 @@ class Admin::ColorsController < Admin::AdminController
   def create
     @color = Color.new(params.require(:color).permit!)
 
-    if @category.save
-      redirect_to admin_colors_path, notice: "颜色新建成功"
+    if @color.save
+      redirect_to new_admin_product_path, notice: "颜色新建成功"
     else
       render action: :new
     end
