@@ -20,6 +20,10 @@
     <% end -%>
 
 
+    <%= f.hidden_field :product_id, value: @product.id %>
+
+
+
     <div class="form-group">
       <label for="color_id" class="col-sm-2 control-label">颜色:*</label>
       <div class="col-sm-5">
@@ -55,7 +59,7 @@
     <div class="form-group">
       <label for="image" class="col-sm-2 control-label">图片:*</label>
       <div class="col-sm-5">
-        <%= f.text_field :image, class: "form-control" %>
+        <%= f.file_field :image, class: "form-control" %>
       </div>
     </div>
 

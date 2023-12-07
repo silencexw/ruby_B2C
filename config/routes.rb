@@ -45,12 +45,13 @@ Rails.application.routes.draw do
     root 'transaction_orders#index'
     resources :sessions
     resources :categories
-    resources :sizes
-    resources :colors
-    post '/admin/sizes/select' => 'admin/sizes#select', as: :select_size
-    post '/admin/colors/select' => 'admin/colors#select', as: :select_color
+
+    post 'sizes/:product_id/select' => 'sizes#select', as: :select_size
+    post 'colors/:product_id/select' => 'colors#select', as: :select_color
     resources :products do
       resources :product_items
+      resources :sizes
+      resources :colors
     end
     resources :transaction_orders do
       member do

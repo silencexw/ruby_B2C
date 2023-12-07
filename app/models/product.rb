@@ -1,15 +1,13 @@
 class Product < ApplicationRecord
   belongs_to :category, optional: true
 
-  has_many :product_images, -> { order(weight: 'desc') }, dependent: :destroy
-
   has_many :records, dependent: :destroy
 
   has_many :favorites, dependent: :destroy
 
-  has_many :colors, dependent: :destroy
+  has_many :product_colors, dependent: :destroy
 
-  has_many :sizes, dependent: :destroy
+  has_many :product_sizes, dependent: :destroy
 
   before_create :set_default_attr
 

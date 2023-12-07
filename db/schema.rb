@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_06_141418) do
+ActiveRecord::Schema.define(version: 2023_12_07_073158) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -81,12 +81,12 @@ ActiveRecord::Schema.define(version: 2023_12_06_141418) do
   end
 
   create_table "favorites", force: :cascade do |t|
-    t.integer "products_id", null: false
-    t.integer "users_id", null: false
+    t.integer "product_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["products_id"], name: "index_favorites_on_products_id"
-    t.index ["users_id"], name: "index_favorites_on_users_id"
+    t.index ["product_id"], name: "index_favorites_on_product_id"
+    t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
   create_table "product_colors", force: :cascade do |t|
@@ -102,7 +102,6 @@ ActiveRecord::Schema.define(version: 2023_12_06_141418) do
     t.integer "product_id", null: false
     t.integer "color_id"
     t.integer "size_id"
-    t.string "design"
     t.decimal "msrp", precision: 10, scale: 2, default: "0.0"
     t.integer "amount", default: 0
     t.string "image"
@@ -219,8 +218,8 @@ ActiveRecord::Schema.define(version: 2023_12_06_141418) do
   add_foreign_key "addresses", "users"
   add_foreign_key "cart_items", "product_items"
   add_foreign_key "cart_items", "users"
-  add_foreign_key "favorites", "products", column: "products_id"
-  add_foreign_key "favorites", "users", column: "users_id"
+  add_foreign_key "favorites", "products"
+  add_foreign_key "favorites", "users"
   add_foreign_key "product_colors", "colors"
   add_foreign_key "product_colors", "products"
   add_foreign_key "product_items", "colors"

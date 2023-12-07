@@ -70,7 +70,6 @@
     </div>
 
 
-
     <div class="form-group">
       <label for="price" class="col-sm-2 control-label">标价*:</label>
       <div class="col-sm-5">
@@ -98,22 +97,40 @@
         <%# unless @product.new_record? %>
 
 
+        <% unless @product.new_record? %>
 
+          <%= link_to "尺寸管理", admin_product_sizes_path(product_id: @product), class: "btn btn btn-info" %>
+          <%= link_to "颜色管理", admin_product_colors_path(product_id: @product), class: "btn btn btn-info" %>
 
-          <%#= link_to "图片管理", admin_product_product_images_path(product_id: @product), class: "btn btn btn-info"  %>
-          <%= link_to "尺寸管理", new_admin_size_path(product_id: @product), class: "btn btn btn-info" %>
+          <%= link_to "new color", new_admin_product_color_path(product_id: @product), class: "btn btn-primary" %>
+          <%= link_to "new size", new_admin_product_size_path(product_id: @product), class: "btn btn-primary" %>
 
+        <% end %>
 
-          <%= link_to "颜色管理", new_admin_color_path(product_id: @product), class: "btn btn btn-info" %>
-        <%# end %>
       </div>
     </div>
 
     <div class="form-group">
 
 
-
     </div>
+
+
+
+
+    <%# if @product.product_sizes.blank? %>
+    <!--      <p>此产品没有关联的尺寸。</p>-->
+    <%# else %>
+    <!--      <h3>产品尺寸列表：</h3>-->
+    <!--      <ul>-->
+    <%# @product.product_sizes.each do |product_size| %>
+    <%# size = @sizes.find { |s| s.id == product_size.size_id } %>
+    <%# if size %>
+    <!--            <li><%#= size.name %></li>-->
+    <%# end %>
+    <%# end %>
+    <!--      </ul>-->
+    <%# end %>
 
 
   <% end -%>

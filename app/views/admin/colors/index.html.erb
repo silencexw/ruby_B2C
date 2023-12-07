@@ -1,49 +1,79 @@
-<!--<div>-->
-<!--  <h1>产品颜色管理</h1>-->
+<div class="pull-right">
+  <%= link_to "new color", new_admin_product_color_path, class: "btn btn-primary" %>
 
-  <%# if @colors.any? %>
-<!--    <table class="table table-striped">-->
-<!--      <tr>-->
-<!--        <th>名称</th>-->
-<!--        <th>颜色</th>-->
-<!--        <th>操作</th>-->
-<!--        <th></th>-->
-<!--      </tr>-->
+</div>
+<div>
+  <h1>所有产品color</h1>
 
-      <%# @colors.each do |color| %>
-<!--        <tr>-->
-<!--          <td><%#= color_name(color.color_id) %></td>-->
-<!--          <td><%#= raw get_color(color.color_id) %></td>-->
-<!--          <td>-->
-            <%#= link_to "删除", admin_product_color_path(product_id: @product, id: color), method: :delete, 'data-confirm': "确认删除吗?", class: "btn btn-sm btn-danger-small" %>
-<!--          </td>-->
-<!--        </tr>-->
-      <%# end %>
-<!--    </table>-->
-  <%# else %>
-<!--    <p>暂无颜色可供管理。</p>-->
-  <%# end %>
+  <% if @colors.any? %>
+    <table class="table table-striped">
+      <tr>
+        <th>名称</th>
+        <th></th>
+      </tr>
 
-<!--  <h2>添加颜色</h2>-->
-  <%# if @product.colors.any? %>
-<!--    <p>已经选择了颜色：<%#= @product.colors.map { |s| color_name(s.color_id) }.join(", ") %></p>-->
-  <%# end %>
-  <%#= form_with(model: @color, url: admin_product_colors_path(product_id: @product)) do |form| %>
-    <%# colors = [1, 2, 3] %>
-<!--    <div class="size-selection">-->
-      <%# colors.each do |color| %>
-        <%# unless @product.colors.exists?(color_id: color) %>
-<!--          <div>-->
-            <%#= form.check_box :colors, { multiple: true, checked: false }, color %>
-<!--            <td><%#= raw get_color(color) %></td>-->
-<!--          </div>-->
-        <%# end %>
-      <%# end %>
-<!--    </div>-->
-
-    <%#= form.submit "添加颜色", class: "btn btn-primary" %>
-  <%# end %>
-
-<!--</div>-->
+      <% @colors.each do |color| %>
+        <tr>
+          <td><%= color.id %></td>
+          <td><%= color.name %></td>
+          <td><%= color.hex_code %></td>
+          <td><%= color.weight %></td>
+          <td><%= link_to "kill color", admin_product_color_path(id: color.id), method: :delete, 'data-confirm': "确认删除吗?", class: "btn btn btn-danger" %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+    <p>暂无color可供管理。</p>
+  <% end %>
 
 
+
+
+
+
+
+  <h1>把color给product</h1>
+
+  <% if @product.product_colors.blank? %>
+    <p>此产品没有关联的color。</p>
+  <% else %>
+    <h3>产品color列表：</h3>
+    <ul>
+      <% @product.product_colors.each do |product_color| %>
+
+        <% color = @colors.find { |s| s.id == product_color.color_id } %>
+
+        <% if color %>
+          <li><%= color.name %> and it hex_code is <%= color.hex_code %></li>
+
+        <% end %>
+
+      <% end %>
+    </ul>
+  <% end %>
+
+
+
+
+
+  <%= form_with(model: @color, url: admin_select_color_path, local: true) do |form| %>
+
+    <div class="color-selection">
+      <% @colors.each do |color| %>
+        <% unless @product.product_colors.exists?(color_id: color.id) %>
+          <div>
+            <%= form.check_box :colors, { multiple: true, checked: false }, color.id %>
+            <%= form.label color.name %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+
+
+    <%= form.hidden_field :product_id, value: @product.id %>
+    <%= form.submit "添加color", class: "btn btn-primary" %>
+  <% end %>
+
+
+</div>

@@ -7,7 +7,8 @@ class Admin::ProductItemsController < Admin::AdminController
   end
 
   def create
-    @product_item = @product.product_items.new(params.require(:product_item).permit!)
+    # puts params
+    @product_item = ProductItem.new(params.require(:product_item).permit!)
     if @product_item.save
       @product.product_items << @product_item
       flash[:success] = "商品创建成功"
@@ -43,14 +44,16 @@ class Admin::ProductItemsController < Admin::AdminController
 
   private
   def get_product
-    @product = Product.find params[:product_id].to_i
+    @product = Product.find params[:product_id]
   end
 
   def get_colors
-    @colors = Color.all
+    get_product
+    @colors = @product.product_colors
   end
 
   def get_sizes
-    @sizes = Size.all
+    get_product
+    @sizes = @product.product_sizes
   end
 end

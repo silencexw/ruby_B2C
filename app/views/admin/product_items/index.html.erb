@@ -1,0 +1,40 @@
+<h1>实体们</h1>
+
+<%= button_to "添加商品实体", new_admin_product_product_item_path(@product), method: :get, class: "btn btn-primary" %>
+
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Product</th>
+    <th>Color</th>
+    <th>Size</th>
+    <th>MSRP</th>
+    <th>Amount</th>
+    <th>Image</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @product_items.each do |product_item| %>
+    <tr>
+      <td><%= product_item.id %></td>
+<!--      <td><%#= product_item.product.name %></td>-->
+<!--      <td><%#= product_item.color.name if product_item.color %></td>-->
+<!--      <td><%#= product_item.size.name if product_item.size %></td>-->
+
+      <td><%= product_item.product_id %></td>
+      <td><%= product_item.color_id %></td>
+      <td><%= product_item.size_id %></td>
+
+      <td><%= number_to_currency(product_item.msrp) %></td>
+      <td><%= product_item.amount %></td>
+      <td>
+        <% if product_item.image.attached? %>
+          <%= image_tag product_item.image, class: "product-item-image" %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
