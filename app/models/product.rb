@@ -31,9 +31,9 @@ class Product < ApplicationRecord
   validates_numericality_of :price, message: "定价必须为数字",
                             if: proc { |product| !product.price.blank? }
 
-  def main_product_image
-    product_items.first.image
-  end
+  # def main_product_image
+  #   product_items.first.image
+  # end
 
   private
 

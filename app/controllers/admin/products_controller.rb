@@ -28,7 +28,6 @@ class Admin::ProductsController < Admin::AdminController
 
   def edit
     @root_categories = Category.roots
-    puts @product.product_sizes
     render action: :new
   end
 

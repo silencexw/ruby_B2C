@@ -1,27 +1,36 @@
 <div class="row">
+
   <% @products.each do |product| %>
     <div class="col-sm-6 col-md-4">
+
       <% if flash[:error].present? %>
         <div class="alert alert-danger"><%= flash[:error] %></div>
       <% end %>
-      <div class="thumbnail">
-        <% if product.main_product_image.nil? %>
-          <%= link_to image_tag("no_product.jpg", style: "width: 200px; height: 200px; display: block", alt: product.title), product_path(product) %>
-        <% else %>
-          <%= link_to image_tag(product.main_product_image.image, style: "width: 200px; height: 200px; display: block", alt: product.title), product_path(product) %>
-        <%end %>
-        <div class="caption">
-        <h4><%= link_to product.title, product_path(product), class: 'title' %></h4>
-        <strong>¥<%= product.price %></strong> <span class="msrp">¥<%= product.msrp %></span>
-        <% if product.amount.zero? %>
-          <a href="#" class="btn btn-danger disabled" style="display: inline-block; margin-left: 25px;">商品已售罄</a>
-        <% else %>
 
-        <% end %>
+      <div class="thumbnail">
+
+        <%# if product.main_product_image.nil? %>
+        <%= link_to image_tag("no_product.jpg", style: "width: 200px; height: 200px; display: block", alt: product.title), product_path(product) %>
+        <%# else %>
+        <%#= link_to image_tag(product.main_product_image.image, style: "width: 200px; height: 200px; display: block", alt: product.title), product_path(product) %>
+        <%#end %>
+
+
+        <div class="caption">
+          <h4><%= link_to product.title, product_path(product), class: 'title' %></h4>
+          <strong>¥<%= product.price %></strong> <span class="msrp">¥<%= product.msrp %></span>
+
+
+          <%# if product.amount.zero? %>
+          <!--            <a href="#" class="btn btn-danger disabled" style="display: inline-block; margin-left: 25px;">商品已售罄</a>-->
+          <%# else %>
+
+          <%# end %>
         </div>
       </div>
     </div>
   <% end -%>
+
 </div>
 
 <%= will_paginate @products %>

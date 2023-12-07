@@ -4,6 +4,7 @@ class ProductsController < ApplicationController
     @user_id = session[:user_id]
     @categories = Category.grouped_data
     @product = Product.find(params[:id])
+
   end
 
   def search
@@ -27,7 +28,12 @@ class ProductsController < ApplicationController
     render template: 'welcome/index'
   end
 
+  private
+  def get_amount
 
+    @all_amount = 0
+
+  end
 
 
 

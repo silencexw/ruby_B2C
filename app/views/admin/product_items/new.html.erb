@@ -4,8 +4,9 @@
 
 <div class="form-body">
   <%= form_for @product_item,
-               url: admin_product_product_items_path(@product),
-               method: 'post',
+               url: (@product_item.new_record? ? admin_product_product_items_path(@product)
+                       : admin_product_product_item_path(id:@product_item)),
+               method: (@product_item.new_record? ? 'post' : 'put'),
                html: { class: 'form-horizontal' } do |f| %>
 
 
@@ -53,7 +54,6 @@
         <%= f.number_field :amount, class: "form-control" %>
       </div>
     </div>
-
 
 
     <div class="form-group">

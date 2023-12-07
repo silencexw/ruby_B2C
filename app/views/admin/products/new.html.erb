@@ -44,16 +44,20 @@
       </div>
     </div>
 
-    <!--    <div class="form-group">-->
-    <!--      <label for="title" class="col-sm-2 control-label">上下架状态:*</label>-->
-    <!--      <div class="col-sm-5">-->
-    <!--        <select name="product[status]">-->
-    <%# [['on', '上架'], ['off', '下架']].each do |row| %>
-    <!--            <option value="<%#= row.first %>" <%#= 'selected' if @product.status == row.first %>><%#= row.last %></option>-->
-    <%# end -%>
-    <!--        </select>-->
-    <!--      </div>-->
-    <!--    </div>-->
+
+    <div class="form-group">
+      <label for="title" class="col-sm-2 control-label">上下架状态:*</label>
+      <div class="col-sm-5">
+        <label>
+          <select name="product[status]">
+            <% [%w[on 上架], %w[off 下架]].each do |row| %>
+              <option value="<%= row.first %>" <%= 'selected' if @product.status == row.first %>><%= row.last %></option>
+            <% end -%>
+          </select>
+        </label>
+      </div>
+    </div>
+
 
     <div class="form-group">
       <label for="has_size" class="col-sm-2 control-label">是否存在尺寸:</label>
@@ -90,6 +94,7 @@
         <%= f.text_area :description, class: "form-control" %>
       </div>
     </div>
+
 
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-8">

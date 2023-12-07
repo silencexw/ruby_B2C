@@ -19,13 +19,12 @@
   <% @product_items.each do |product_item| %>
     <tr>
       <td><%= product_item.id %></td>
-<!--      <td><%#= product_item.product.name %></td>-->
-<!--      <td><%#= product_item.color.name if product_item.color %></td>-->
-<!--      <td><%#= product_item.size.name if product_item.size %></td>-->
+
 
       <td><%= product_item.product_id %></td>
       <td><%= product_item.color_id %></td>
       <td><%= product_item.size_id %></td>
+
 
       <td><%= number_to_currency(product_item.msrp) %></td>
       <td><%= product_item.amount %></td>
@@ -34,6 +33,11 @@
           <%= image_tag product_item.image, class: "product-item-image" %>
         <% end %>
       </td>
+
+      <td>
+        <%= link_to "编辑", edit_admin_product_product_item_path(id: product_item.id), class: "btn btn-primary" %>
+      </td>
+
     </tr>
   <% end %>
   </tbody>
