@@ -19,7 +19,7 @@ class AddressesController < ApplicationController
       @addresses = current_user.reload.addresses
       render json: {
         status: 'ok',
-        data: render_to_string(template: 'addresses/index.html.erb')
+        data: render_to_string(template: 'addresses/new.html.erb')
       }
     else
       render json: {
@@ -39,7 +39,7 @@ class AddressesController < ApplicationController
       @addresses = current_user.reload.addresses
       render json: {
         status: 'ok',
-        data: render_to_string(template: 'addresses/index.html.erb')
+        data: render_to_string(template: 'addresses/new.html.erb')
       }
     else
       render json: {
@@ -55,7 +55,7 @@ class AddressesController < ApplicationController
     @addresses = current_user.addresses
     render json: {
       status: 'ok',
-      data: render_to_string(template: 'addresses/index.html.erb')
+      data: render_to_string(template: 'addresses/new.html.erb')
     }
   end
 
@@ -66,7 +66,7 @@ class AddressesController < ApplicationController
     @addresses = current_user.reload.addresses
     render json: {
       status: 'ok',
-      data: render_to_string(template: 'addresses/index.html.erb')
+      data: render_to_string(template: 'addresses/new.html.erb')
     }
   end
 

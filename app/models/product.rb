@@ -1,15 +1,13 @@
 class Product < ApplicationRecord
   belongs_to :category, optional: true
 
-  has_many :product_images, -> { order(weight: 'desc') }, dependent: :destroy
-
   has_many :records, dependent: :destroy
 
   has_many :favorites, dependent: :destroy
 
-  has_many :colors, dependent: :destroy
+  has_many :product_colors, dependent: :destroy
 
-  has_many :sizes, dependent: :destroy
+  has_many :product_sizes, dependent: :destroy
 
   before_create :set_default_attr
 
@@ -34,8 +32,17 @@ class Product < ApplicationRecord
                             if: proc { |product| !product.price.blank? }
 
   def main_product_image
-    product_items.first.image
+    product_items.first&.image
   end
+
+  def get_product_item(size_id, color_id)
+    item = self.product_items.find_by(product_id: self.id, size_id: size_id, color_id: color_id)
+
+    item
+  end
+
+
+
 
   private
 

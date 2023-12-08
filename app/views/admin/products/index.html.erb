@@ -1,6 +1,7 @@
 <div>
   <div class="pull-right">
     <%= link_to "新建商品", new_admin_product_path, class: "btn btn-primary" %>
+
   </div>
 
   <h1>
@@ -10,6 +11,7 @@
 
 <div>
   <table class="table table-striped">
+
     <tr>
       <th>ID</th>
       <th>名称</th>
@@ -30,10 +32,13 @@
         <td><%= product.status %></td>
         <td align="right">
           <%= link_to "编辑", edit_admin_product_path(product), class: "btn btn btn-primary" %>
+          <%= link_to "商品实体们", admin_product_product_items_path(product), class: "btn btn-primary" %>
+          <%= link_to "添加商品实体", new_admin_product_product_item_path(product), class: "btn btn-primary" %>
           <%= link_to "删除", admin_product_path(product), method: :delete, 'data-confirm': "确认删除吗?", class: "btn btn btn-danger" %>
         </td>
       </tr>
     <% end -%>
+
   </table>
 
   <%= will_paginate @products %>
@@ -99,4 +104,6 @@
         justify-content: center;
         margin-top: 20px;
     }
+
+
 </style>

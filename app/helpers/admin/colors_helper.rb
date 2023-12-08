@@ -11,13 +11,16 @@ module Admin::ColorsHelper
   end
 
   def get_color(color_id)
-    case color_id
-    when Color::ProductColor::Red
-      "<span class='var red'></span>"
-    when Color::ProductColor::Blue
-      "<span class='var blue'></span>"
-    else
-      "<span class='var yellow'></span>"
-    end
+
+    Color.find_by(id: color_id)&.hex_code
+
+    # case color_id
+    # when Color::ProductColor::Red
+    #   "<span class='var red'></span>"
+    # when Color::ProductColor::Blue
+    #   "<span class='var blue'></span>"
+    # else
+    #   "<span class='var yellow'></span>"
+    # end
   end
 end

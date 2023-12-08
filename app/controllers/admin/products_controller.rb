@@ -1,5 +1,7 @@
 class Admin::ProductsController < Admin::AdminController
   before_action :get_product, only: [:edit, :update, :destroy, :onShelf]
+  before_action :get_sizes, only: [:edit, :update, :destroy, :onShelf]
+  before_action :get_colors, only: [:edit, :update, :destroy, :onShelf]
 
   def new
     @product = Product.new
@@ -13,8 +15,8 @@ class Admin::ProductsController < Admin::AdminController
 
   def create
     @product = Product.new(product_params)
-    puts @product
-    puts params
+    # puts @product
+    # puts params
     @root_categories = Category.roots
 
     if @product.save
@@ -59,11 +61,28 @@ class Admin::ProductsController < Admin::AdminController
   end
 
   private
+
   def get_product
     @product = Product.find(params[:id])
   end
 
   def product_params
     params.require(:product).permit(:title, :category_id, :msrp, :price, :has_size, :has_color, :has_design, :description)
+  end
+
+  def get_sizes
+    @sizes = []
+
+    @product.product_sizes.each do |product_size|
+      @sizes << Size.find(product_size.size_id)
+    end
+  end
+
+  def get_colors
+    @colors = []
+
+    @product.product_colors.each do |product_color|
+      @colors << Color.find(product_color.color_id)
+    end
   end
 end

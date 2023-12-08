@@ -1,9 +1,12 @@
 require 'will_paginate/array'
+
 class ProductsController < ApplicationController
   def show
     @user_id = session[:user_id]
     @categories = Category.grouped_data
     @product = Product.find(params[:id])
+
+    @first_product_item_name = @product.product_items.first&.image
   end
 
   def search
@@ -27,14 +30,33 @@ class ProductsController < ApplicationController
     render template: 'welcome/index'
   end
 
+  def get_product_item
+    @product = Product.find(params[:product_id])
+    size_id = params[:size_id]
+    color_id = params[:color_id]
+    puts params
 
+    # 调用 get_product_item 方法，并返回库存数量
+    ele = @product.product_items.find_by(product_id: @product.id, color_id: color_id, size_id: size_id)
 
+    unless ele
+      render json: { inventory_id: 0, inventory_amount: 0, inventory_image: 0, flag: false }
+      return
+    end
 
+    inventory_amount = ele.amount
+    # inventory_amount = @product.product_items.find_by(product_id: @product.id, color_id: color_id, size_id: size_id).amount
+    inventory_image = rails_blob_path(ele.image, only_path: true)
+    inventory_id = ele.id
 
+    puts inventory_image
 
-
+    # 将库存数量以 JSON 形式返回
+    render json: { inventory_id: inventory_id, inventory_amount: inventory_amount, inventory_image: inventory_image, flag: true }
+  end
 
   private
+
   def similarity_score(str1, str2)
     # Convert strings to lowercase for case-insensitive comparison
     str1 = str1.downcase
@@ -60,13 +82,12 @@ class ProductsController < ApplicationController
 
     (1..n).each do |j|
       (1..m).each do |i|
-        cost = str1[i-1] == str2[j-1] ? 0 : 1
-        d[i][j] = [d[i-1][j] + 1, d[i][j-1] + 1, d[i-1][j-1] + cost].min
+        cost = str1[i - 1] == str2[j - 1] ? 0 : 1
+        d[i][j] = [d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost].min
       end
     end
 
     d[m][n]
   end
-
 
 end

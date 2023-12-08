@@ -7,6 +7,11 @@ class CartItemsController < ApplicationController
   end
 
   def create
+
+    puts params
+
+
+
     if logged_in?
       amount = params[:amount].to_i
       amount = amount <= 0 ? 1 : amount

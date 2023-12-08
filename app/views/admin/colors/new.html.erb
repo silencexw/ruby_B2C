@@ -1,0 +1,117 @@
+<h1> 颜色 </h1>
+
+<div class="form-body">
+  <%= form_for @color,
+               url: admin_product_colors_path,
+               method: 'post',
+               html: { class: 'form-horizontal' } do |f| %>
+
+    <%# unless @product.errors.blank? %>
+<!--      <div class="alert alert-danger">-->
+<!--        <ul class="list-unstyled">-->
+          <%# @product.errors.messages.values.flatten.each do |error| %>
+<!--            <li><i class="fa fa-exclamation-circle"></i> <%#= error %></li>-->
+          <%# end -%>
+<!--        </ul>-->
+<!--      </div>-->
+    <%# end -%>
+
+
+    <div class="form-group">
+      <label for="name" class="col-sm-2 control-label">颜色名字:*</label>
+      <div class="col-sm-5">
+        <%= f.text_field :name, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="hex_code" class="col-sm-2 control-label">颜色hex_code:*</label>
+      <div class="col-sm-5">
+        <%= f.text_field :hex_code, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="weight" class="col-sm-2 control-label">权重 id:*</label>
+      <div class="col-sm-5">
+        <%= f.text_field :weight, class: "form-control" %>
+      </div>
+    </div>
+
+
+
+
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-8">
+        <%= f.submit '确定颜色', class: "btn btn-success" %>
+
+      </div>
+    </div>
+
+
+
+  <% end -%>
+</div>
+
+<style>
+    .form-body {
+        margin: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    select,
+    input[type="text"],
+    textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+    }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+
+    .fa-exclamation-circle {
+        color: #721c24;
+        margin-right: 5px;
+    }
+</style>

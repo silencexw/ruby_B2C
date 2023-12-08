@@ -1,20 +1,23 @@
+<div class="pull-right">
+  <%= link_to "new size", new_admin_product_size_path, class: "btn btn-primary" %>
+
+</div>
 <div>
-  <h1>产品尺寸管理</h1>
+  <h1>所有产品尺寸</h1>
 
   <% if @sizes.any? %>
     <table class="table table-striped">
       <tr>
         <th>名称</th>
-        <th>操作</th>
         <th></th>
       </tr>
 
       <% @sizes.each do |size| %>
         <tr>
-          <td><%= size_name(size.size_id) %></td>
-          <td>
-            <%= link_to "删除", admin_product_size_path(product_id: @product, id: size), method: :delete, 'data-confirm': "确认删除吗?", class: "btn btn-sm btn-danger-small" %>
-          </td>
+          <td><%= size.id %></td>
+          <td><%= size.name %></td>
+          <td><%= size.weight %></td>
+          <td><%= link_to "kill size", admin_product_size_path(id:size.id), method: :delete, 'data-confirm': "确认删除吗?", class: "btn btn btn-danger" %></td>
         </tr>
       <% end %>
     </table>
@@ -22,24 +25,53 @@
     <p>暂无尺寸可供管理。</p>
   <% end %>
 
-  <h2>添加尺寸</h2>
-  <% if @product.sizes.any? %>
-    <p>已经选择了尺寸：<%= @product.sizes.map { |s| size_name(s.size_id) }.join(", ") %></p>
+
+
+
+
+
+
+  <h1>把尺寸给product</h1>
+
+  <% if @product.product_sizes.blank? %>
+    <p>此产品没有关联的尺寸。</p>
+  <% else %>
+    <h3>产品尺寸列表：</h3>
+    <ul>
+      <% @product.product_sizes.each do |product_size| %>
+
+        <% size = @sizes.find { |s| s.id == product_size.size_id } %>
+
+        <% if size %>
+          <li><%= size.name %></li>
+        <% end %>
+
+      <% end %>
+    </ul>
   <% end %>
-  <%= form_with(model: @size, url: admin_product_sizes_path(product_id: @product)) do |form| %>
-    <% sizes = [1, 2, 3, 4] %>
+
+
+
+
+
+  <%= form_with(model: @size, url: admin_select_size_path, local: true) do |form| %>
+
     <div class="size-selection">
-      <% sizes.each do |size| %>
-        <% unless @product.sizes.exists?(size_id: size) %>
+      <% @sizes.each do |size| %>
+        <% unless @product.product_sizes.exists?(size_id: size.id) %>
           <div>
-            <%= form.check_box :sizes, { multiple: true, checked: false }, size %>
-            <%= form.label size, size_name(size) %>
+            <%= form.check_box :sizes, { multiple: true, checked: false }, size.id %>
+            <%= form.label size.name %>
           </div>
         <% end %>
       <% end %>
     </div>
 
+
+
+    <%= form.hidden_field :product_id, value: @product.id %>
     <%= form.submit "添加尺寸", class: "btn btn-primary" %>
   <% end %>
+
 
 </div>

@@ -1,0 +1,120 @@
+<h1> 大小 </h1>
+
+<div class="form-body">
+  <%= form_for @size,
+               url: admin_product_sizes_path,
+               method: 'post',
+               html: { class: 'form-horizontal' } do |f| %>
+
+    <% unless @size.errors.blank? %>
+      <div class="alert alert-danger">
+        <ul class="list-unstyled">
+          <% @size.errors.messages.values.flatten.each do |error| %>
+            <li><i class="fa fa-exclamation-circle"></i> <%= error %></li>
+          <% end -%>
+        </ul>
+      </div>
+    <% end -%>
+
+    <div class="form-group">
+      <label for="name" class="col-sm-2 control-label">size名字:*</label>
+      <div class="col-sm-5">
+        <%= f.text_field :name, class: "form-control" %>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <label for="weight" class="col-sm-2 control-label">权重 id:*</label>
+      <div class="col-sm-5">
+        <%= f.text_field :weight, class: "form-control" %>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-8">
+        <%= f.submit '确定大小', class: "btn btn-success" %>
+        <%# unless @product.new_record? %>
+
+
+
+
+        <%#= link_to "图片管理", admin_product_product_images_path(product_id: @product), class: "btn btn btn-info"  %>
+        <%#= link_to "尺寸管理", admin_product_sizes_path(product_id: @product), class: "btn btn btn-info" %>
+
+
+        <%# end %>
+      </div>
+    </div>
+
+    <div class="form-group">
+
+
+    </div>
+
+
+  <% end -%>
+</div>
+
+<style>
+    .form-body {
+        margin: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    select,
+    input[type="text"],
+    textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+    }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+
+    .fa-exclamation-circle {
+        color: #721c24;
+        margin-right: 5px;
+    }
+</style>
