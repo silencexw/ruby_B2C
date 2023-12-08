@@ -5,7 +5,7 @@
 <div class="form-body">
   <%= form_for @product_item,
                url: (@product_item.new_record? ? admin_product_product_items_path(@product)
-                       : admin_product_product_item_path(id:@product_item)),
+                       : admin_product_product_item_path(id: @product_item)),
                method: (@product_item.new_record? ? 'post' : 'put'),
                html: { class: 'form-horizontal' } do |f| %>
 

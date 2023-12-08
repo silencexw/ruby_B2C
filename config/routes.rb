@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :users
   resources :sessions
   delete '/logout' => 'sessions#destroy', as: :logout
+  get '/products/get_product_item' => 'products#get_product_item', as: :get_product_item
 
   resources :products, only: [:show] do
     get :search, on: :collection

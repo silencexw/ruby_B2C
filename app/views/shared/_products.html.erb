@@ -9,11 +9,11 @@
 
       <div class="thumbnail">
 
-        <%# if product.main_product_image.nil? %>
+        <% if product.main_product_image.nil? %>
         <%= link_to image_tag("no_product.jpg", style: "width: 200px; height: 200px; display: block", alt: product.title), product_path(product) %>
-        <%# else %>
-        <%#= link_to image_tag(product.main_product_image.image, style: "width: 200px; height: 200px; display: block", alt: product.title), product_path(product) %>
-        <%#end %>
+        <% else %>
+        <%= link_to image_tag(product.main_product_image, style: "width: 200px; height: 200px; display: block", alt: product.title), product_path(product) %>
+        <%end %>
 
 
         <div class="caption">

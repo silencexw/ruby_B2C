@@ -1,5 +1,5 @@
 class CartItem < ApplicationRecord
-  validates :product_id, presence: true
+  validates :product_item_id, presence: true
   validates :amount, presence: true
 
   belongs_to :product_item
@@ -10,9 +10,7 @@ class CartItem < ApplicationRecord
   def self.create_or_update!(options = {})
     cond = {
       user_id: options[:user_id],
-      product_id: options[:product_id],
-      size_id: options[:size_id],
-      color_id: options[:color_id]
+      product_item_id: options[:product_item_id],
     }
 
     record = find_by(cond)
@@ -24,4 +22,16 @@ class CartItem < ApplicationRecord
 
     record
   end
+
+  def get_product
+    ele = Product.find_by(id: product_item.product_id)
+    puts ele.id
+    ele
+  end
+
+  def get_product_price
+    product = get_product
+    product.msrp
+  end
+
 end
