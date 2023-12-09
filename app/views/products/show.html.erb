@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-lg-3">
+  <div class="col-lg-2">
     <%= render 'shared/categories' %>
   </div>
   <div class="col-lg-9">
@@ -11,24 +11,32 @@
       <li class="active"><%= @product.title %></li>
     </ol>
 
+<!--    <div class="thumbnail detail"></div>-->
+<!--    <div class="small-thumbnail detail"></div>-->
+
+
+
+    <a class="thumbnail detail">
+      <div class="image-container">
+        <img id="inventory_image" alt="Inventory Image" class="resized-image" src="<%= rails_blob_path(@product.product_items.first.image, only_path: true) %>">
+      </div>
+    </a>
 
     <div class="row">
       <% @product.product_items.each do |pi| %>
-
         <% if pi.image.blank? %>
-          <div class="image-container">
+          <div class="small-image-container">
             <%= image_tag "no_product.jpg", class: "resized-image", alt: "" %>
           </div>
         <% else %>
-          <div class="col-xs-6 col-md-3 mb-4">
-            <a href="#" class="thumbnail detail">
-              <div class="image-container">
+          <div class="col-xs-6 col-md-1 mb-2">
+            <a class="small-thumbnail detail">
+              <div class="small-image-container">
                 <%= image_tag pi.image, class: "resized-image", alt: "" %>
               </div>
             </a>
           </div>
         <% end -%>
-
       <% end -%>
     </div>
 
@@ -74,6 +82,7 @@
               <% end %>
             </div>
           <% end %>
+
         </div>
       <% end %>
 
@@ -89,6 +98,7 @@
     <ul class="nav nav-tabs mt-5">
       <li role="presentation" class="active"><a href="javascript:">商品描述</a></li>
     </ul>
+
     <%= @product.description %>
 
 
@@ -106,18 +116,16 @@
         <input type="hidden" name="color_id" value="<%= @product.product_colors.first.color_id %>"/>
       <% end %>
 
-      <p>数量: <input type="text" name="amount" value="1"/></p>
+      <p>数量: <label>
+        <input type="text" name="amount" value="1"/>
+      </label></p>
 
       <p>
+
         <button type="submit" class="btn btn-primary"><span id="judge_submit"></span></button>
       </p>
     </form>
 
-
-<!--    <form id="dynamic-form" method="post" action="<%#= cart_items_path %>">-->
-      <%#= csrf_meta_tags %>
-      <%#= hidden_field_tag :authenticity_token, form_authenticity_token %>
-<!--    </form>-->
 
   </div>
 
@@ -127,14 +135,11 @@
   </h1>
 
 
-  <p>The result is: <span id="item_size"></span></p>
-  <p>The result is: <span id="item_color"></span></p>
+  <p>Size is: <span id="item_size"></span></p>
+  <p>Color is: <span id="item_color"></span></p>
 
   <div id="inventory_id"></div>
   <div id="inventory_amount"></div>
-  <div>
-    <img id="inventory_image" alt="Inventory Image" src="">
-  </div>
 
   <div id="submit_info"></div>
 
@@ -143,11 +148,20 @@
 
 
 <script>
-    let product_item_id = 0;
+    let product_item_id = <%= @product.product_items.first.id %>;
     let product_id = <%= @product.id %>;
-    let size_id = 0;
-    let color_id = 0;
-    document.getElementById("item_color").innerHTML = parseInt(2, 10);
+    let size_id = <%= @product.product_items.first.size.id %>;
+    let color_id = <%= @product.product_items.first.color.id %>;
+
+    // let size_id = 7;
+    // let color_id = 2;
+
+
+    document.getElementById("item_size").innerHTML = parseInt(size_id, 10);
+    document.getElementById("item_color").innerHTML = parseInt(color_id, 10);
+    document.getElementById("judge_submit").innerHTML = '加入购物车';
+    <!--    document.getElementById("inventory_image").src = <%#= rails_blob_path(@product.product_items.first.image , only_path: true)%>;-->
+    // updateInventory()
 
     // 当用户选择不同尺码时更新 size_id 的值
     document.querySelectorAll('input[name="option-size"]').forEach(function (radio) {
@@ -186,9 +200,9 @@
             success: function (response) {
 
                 if (false === response.flag) {
-                    document.getElementById("judge_submit").innerHTML = 'no sir'
+                    document.getElementById("judge_submit").innerHTML = '暂无库存'
                     document.getElementById("inventory_amount").innerText = '别看了sb';
-                    document.getElementById("inventory_image").src = 0;
+                    // document.getElementById("inventory_image").src = 0;
                     return
                 }
 
@@ -217,41 +231,5 @@
             }
         });
     }
-
-
-    // document.addEventListener('DOMContentLoaded', function () {
-    //
-    //     // 创建 hidden input 元素并添加到表单中
-    //     function createHiddenInput(name, value) {
-    //         var input = document.createElement('input');
-    //         input.type = 'hidden';
-    //         input.name = name;
-    //         input.value = value;
-    //         document.getElementById('dynamic-form').appendChild(input);
-    //     }
-    //
-    //     // 添加 product_id 到表单
-    //
-    //
-    //     createHiddenInput('product_item_id', product_item_id);
-    //     createHiddenInput('size_id', size_id);
-    //     createHiddenInput('color_id', color_id);
-    //
-    //     document.getElementById("submit_info").innerHTML = 'id: ' + product_item_id + ", size: " + size_id + ", color: " + color_id;
-    //
-    //     // 添加数量输入框到表单
-    //     var amountInput = document.createElement('input');
-    //     amountInput.type = 'text';
-    //     amountInput.name = 'amount';
-    //     amountInput.value = '1';
-    //     document.getElementById('dynamic-form').appendChild(amountInput);
-    //
-    //     // 添加提交按钮到表单
-    //     var submitButton = document.createElement('button');
-    //     submitButton.type = 'submit';
-    //     submitButton.className = 'btn btn-primary';
-    //     submitButton.innerHTML = '<span id="judge_submit"></span>';
-    //     document.getElementById('dynamic-form').appendChild(submitButton);
-    // });
 
 </script>

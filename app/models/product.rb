@@ -32,6 +32,10 @@ class Product < ApplicationRecord
                             if: proc { |product| !product.price.blank? }
 
   def main_product_image
+    if product_items.blank?
+      "no_product.jpg"
+      return
+    end
     product_items.first&.image
   end
 

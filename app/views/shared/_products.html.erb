@@ -1,6 +1,68 @@
-<div class="row">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Product Page</title>
+  <!-- Additional styles for this page -->
+  <style>
+      .thumbnail {
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          padding: 15px;
+          margin-bottom: 15px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
 
+      .small-thumbnail {
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          padding: 15px;
+          margin-bottom: 15px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .title {
+          color: #333;
+          text-decoration: none;
+      }
+
+      strong {
+          color: #007bff;
+      }
+
+      .msrp {
+          color: #868e96;
+          text-decoration: line-through;
+          margin-left: 10px;
+      }
+
+      .pagination {
+          display: flex;
+          justify-content: center;
+          margin-top: 20px;
+      }
+
+      .page-item {
+          margin: 0 5px;
+      }
+
+      .page-link {
+          color: #007bff;
+      }
+
+      .page-link:hover {
+          text-decoration: none;
+          background-color: #007bff;
+          border-color: #007bff;
+      }
+  </style>
+</head>
+<body>
+
+<div class="row">
   <% @products.each do |product| %>
+
     <div class="col-sm-6 col-md-4">
 
       <% if flash[:error].present? %>
@@ -8,29 +70,27 @@
       <% end %>
 
       <div class="thumbnail">
-
         <% if product.main_product_image.nil? %>
-        <%= link_to image_tag("no_product.jpg", style: "width: 200px; height: 200px; display: block", alt: product.title), product_path(product) %>
+          <%= link_to image_tag("no_product.jpg", style: "width: 200px; height: 200px; display: block", alt: product.title), product_path(product) %>
         <% else %>
-        <%= link_to image_tag(product.main_product_image, style: "width: 200px; height: 200px; display: block", alt: product.title), product_path(product) %>
-        <%end %>
-
+          <%= link_to image_tag(product.main_product_image, style: "width: 200px; height: 200px; display: block", alt: product.title), product_path(product) %>
+        <% end %>
 
         <div class="caption">
-          <h4><%= link_to product.title, product_path(product), class: 'title' %></h4>
+          <h3><%= link_to product.title, product_path(product), class: 'title' %></h3>
           <strong>¥<%= product.price %></strong> <span class="msrp">¥<%= product.msrp %></span>
-
-
-          <%# if product.amount.zero? %>
-          <!--            <a href="#" class="btn btn-danger disabled" style="display: inline-block; margin-left: 25px;">商品已售罄</a>-->
-          <%# else %>
-
-          <%# end %>
+          <h6>
+          --------------------商品描述---------------------</h6>
+          <h4><%= link_to product.description, product_path(product), class: 'title' %></h4>
         </div>
+
       </div>
     </div>
-  <% end -%>
 
+  <% end -%>
 </div>
 
 <%= will_paginate @products %>
+
+</body>
+</html>

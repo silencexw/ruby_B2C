@@ -18,7 +18,7 @@ class ProductsController < ApplicationController
     sorted_product_ids = product_ids.sort_by { |id| -similarity_score(Product.find(id).title, query) }
 
     sorted_products = Product.where(id: sorted_product_ids)
-                             .includes(:main_product_image)
+                             # .includes(:main_product_image)
 
     unless params[:category_id].blank?
       sorted_products = sorted_products.where(category_id: params[:category_id])

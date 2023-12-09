@@ -10,6 +10,7 @@ class AddressesController < ApplicationController
 
   def new
     @address = current_user.addresses.new
+    render action: index
   end
 
   def create

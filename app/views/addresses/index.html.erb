@@ -1,31 +1,112 @@
 <div class="pull-right">
   <%= link_to "添加收货地址", new_address_path, class: "btn btn-info btn-xs new-address-btn" %>
 </div>
-<div class="clearfix"></div>
-<br />
-<ul class="list-group">
-  <% unless @addresses.blank? %>
-    <% @addresses.each_with_index do |address, index| %>
-      <li class="list-group-item">
-        <label>
-          <input type="radio" name="address_id" value="<%= address.id %>" <%= 'checked' if current_user.default_address == address %> />
-          <%= address.contact_name %>
-          <%= address.address %>
-          <%= address.cellphone %>
 
-          <%= link_to "编辑", edit_address_path(address), remote: true, class: "inline edit-address-btn" %>
-          <%= link_to "删除", address_path(address), remote: true, method: 'delete', "data-confirm": "确认删除该地址吗？", class: "remove-address-btn inline" %>
-          <% if current_user.default_address == address %>
-            <span class="default_address">默认地址</span>
-          <% else %>
-            <%= link_to "设为默认收货地址", set_default_address_address_path(address), remote: true, method: 'put', class: "set-default-address-btn inline" %>
-          <% end %>
-        </label>
-      </li>
-    <% end %>
-  <% else %>
-    <li class="list-group-item">
-      请添加送货地址
-    </li>
-  <% end %>
-</ul>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 col-md-offset-0">
+      <div class="panel panel-info">
+
+        <div class="panel-heading">
+          <h3 class="panel-title">收货地址</h3>
+        </div>
+
+        <div class="panel-body">
+          <ul class="list-group">
+            <% if @addresses.blank? %>
+              <li class="list-group-item">
+                请添加送货地址
+              </li>
+            <% else %>
+              <% @addresses.each_with_index do |address, index| %>
+                <li class="list-group-item">
+                  <label>
+                    <input type="radio" name="address_id" value="<%= address.id %>" <%= 'checked' if current_user.default_address == address %> />
+                    <%= address.contact_name %>
+                    <%= address.address %>
+                    <%= address.cellphone %>
+
+                    <%= link_to "编辑", edit_address_path(address), remote: true, class: "btn btn-info edit-address-btn" %>
+                    <%= link_to "删除", address_path(address), remote: true, method: 'delete', "data-confirm": "确认删除该地址吗？", class: "btn btn-danger" %>
+
+                    <% if current_user.default_address == address %>
+                      <span class="default_address">默认地址</span>
+                    <% else %>
+                      <%= link_to "设为默认", set_default_address_address_path(address), remote: true, method: 'put', class: "btn btn-success" %>
+                    <% end %>
+                  </label>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+    /* 设置页面的背景色和字体 */
+    body {
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+    }
+
+    /* 设置面板的样式 */
+    .panel {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+
+    /* 设置面板标题的样式 */
+    .panel-title {
+        font-size: 20px;
+        font-weight: normal;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    /* 设置面板内容的样式 */
+    .panel-body {
+        padding: 20px;
+    }
+
+    /* 设置列表项的样式 */
+    .list-group-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 10px;
+    }
+
+    /* 设置输入框的样式 */
+    input[type="radio"] {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+    }
+
+    /* 设置链接的样式 */
+    a {
+        color: #333;
+        text-decoration: none;
+        margin-left: 10px;
+    }
+
+    /* 设置链接的悬停和聚焦效果 */
+    a:hover, a:focus {
+        color: #333;
+        text-decoration: underline;
+    }
+
+    /* 设置默认地址的样式 */
+    .default_address {
+        font-size: 15px;
+        font-weight: normal;
+        color: #540f0f;
+        margin-left: 12px;
+    }
+
+</style>
