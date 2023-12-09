@@ -23,4 +23,21 @@ module Admin::ColorsHelper
     #   "<span class='var yellow'></span>"
     # end
   end
+
+  def get_color_name(color_id)
+    Color.find_by(id: color_id)&.name
+
+  end
+
+  def get_color_self(color_id)
+    Color.find_by(id: color_id)
+
+  end
+  def get_colors(product_colors)
+    colors = []
+    product_colors.each do |pc|
+      colors << get_color_self(pc.color_id)
+    end
+    colors
+  end
 end

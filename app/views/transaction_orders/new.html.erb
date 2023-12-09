@@ -30,31 +30,32 @@
           <% end %>
           <% unless cart_item.product_item.color_id.nil? %>
             颜色:
-            <span class="var" style="background-color: <%= raw get_color(cart_item.product_item.color_id) %>;"></span>          <% end %>
+            <span class="var" style="background-color: <%= raw get_color(cart_item.product_item.color_id) %>;"></span>
+          <% end %>
         </div>
       </div>
     <% end -%>
 
-    <br />
+    <br/>
     <div class="pull-right">
       <%= form_tag transaction_orders_path, method: :post, class: "create-transaction_order-form" do %>
-        <input type="hidden" name="address_id" />
+        <input type="hidden" name="address_id"/>
         <strong>总价: ¥<%= @cart_items.sum { |cart| cart.amount * cart.get_product.price } %></strong>
-        <input type="submit" value="确认订单" class="btn btn-danger btn-lg" />
+        <input type="submit" value="确认订单" class="btn btn-danger btn-lg"/>
       <% end %>
     </div>
 
     <div class="clearfix"></div>
-    <br />
-    <br />
-    <br />
-    <br />
+    <br/>
+    <br/>
+    <br/>
+    <br/>
   </div>
 </div>
 
 <%= content_for :javascripts do %>
   <script>
-      $.get('/addresses', function(data) {
+      $.get('/addresses', function (data) {
           $('#address_list').html(data);
       })
   </script>

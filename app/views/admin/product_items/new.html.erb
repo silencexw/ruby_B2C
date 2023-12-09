@@ -23,12 +23,62 @@
 
     <%= f.hidden_field :product_id, value: @product.id %>
 
+    <div class="container_changed">
+      <div class="table-container">
+        <table class="table table-striped">
+          <tr>
+            <th>ID</th>
+            <th>名称</th>
+            <th>颜色</th>
+          </tr>
 
+          <div class="color-selection">
 
-    <div class="form-group">
-      <label for="color_id" class="col-sm-2 control-label">颜色:*</label>
-      <div class="col-sm-5">
-        <%= f.number_field :color_id, class: "form-control" %>
+            <% @product.product_colors.each do |color| %>
+              <% unless @product.product_colors.exists?(color_id: color) %>
+                <tr>
+                  <div class="color-option" data-color-id="<%= color.color_id %>">
+                    <td>
+                      <%= color.color_id %>
+                    </td>
+                    <td>
+                      <span><%= get_color_name(color.color_id) %></span>
+                    </td>
+                    <td>
+                      <div class="color-box" style="background-color: <%= get_color(color.color_id) %>;">
+                        <div class="checkmark"></div>
+                      </div>
+                    </td>
+                  </div>
+                </tr>
+              <% end %>
+            <% end %>
+
+          </div>
+
+        </table>
+      </div>
+      <div class="table-container">
+        <div class="size-selection">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>名称</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @product.product_sizes.each do |size| %>
+              <tr>
+                <td><%= size.size_id %></td>
+                <td><span><%= size_name(size.size_id) %></span></td>
+                <!--                <td><%#= radio_button_tag :size_id, value: size.size_id %></td>-->
+
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -36,7 +86,18 @@
     <div class="form-group">
       <label for="size_id" class="col-sm-2 control-label">大小:*</label>
       <div class="col-sm-5">
-        <%= f.number_field :size_id, class: "form-control" %>
+        <%= f.collection_select :size_id, get_sizes(@product.product_sizes), :id, :name, { include_blank: '请选择尺寸' }, { class: "form-control" } %>
+
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <label for="color_id" class="col-sm-2 control-label">颜色:*</label>
+      <div class="col-sm-5">
+        <%#= f.number_field :color_id, class: "form-control" %>
+        <%= f.collection_select :color_id, get_colors(@product.product_colors), :id, :name, { include_blank: '请选择颜色' }, { class: "form-control" } %>
+
       </div>
     </div>
 
@@ -69,9 +130,6 @@
 
         <%= f.submit (@product_item.new_record? ? "新建实体" : "编辑实体"), class: "btn btn-success" %>
 
-        <% unless @product_item.new_record? %>
-
-        <% end %>
 
       </div>
     </div>
@@ -80,8 +138,86 @@
 
 </div>
 
+<!--<div class="container">-->
+  <%# unless @product.product_sizes.empty? %>
+<!--    <div class="swatch clearfix" data-option-index="0" style="display: inline-block;">-->
+<!--      <div class="header">Size</div>-->
+      <%# @product.product_sizes.each_with_index do |size, index| %>
+<!--        <div class="swatch-element plain available">-->
+
+<!--          <input id="swatch-<%#= size.size_id %>" type="radio" name="option-size" value=<%#= size.size_id %>-->
+
+<!--              <%# if index == 0 %>checked="checked"-->
+<!--                 <%# end %> />-->
+
+<!--          <label for="swatch-<%#= size.size_id %>">-->
+            <%#= size_name(size.size_id) %>
+<!--          </label>-->
+
+<!--        </div>-->
+      <%# end %>
+<!--    </div>-->
+  <%# end %>
+  <%# unless @product.product_colors.empty? %>
+<!--    <div class="swatch clearfix" data-option-index="1" style="display: inline-block;">-->
+<!--      <div class="header">Color</div>-->
+      <%# @product.product_colors.each_with_index do |color, index| %>
+<!--        <div class="swatch-element color available">-->
+<!--          <input id="swatch-color-<%#= color.color_id %>" type="radio" name="option-color" value="<%#= color.color_id %>"-->
+<!--                 <%# if index == 0 %>checked="checked"-->
+<!--                 <%# end %> />-->
+<!--          <label for="swatch-color-<%#= color.color_id %>">-->
+<!--            <span class="var" style="background-color: <%#= Color.find_by(id: color.color_id)&.hex_code %>;"></span>-->
+<!--          </label>-->
+<!--        </div>-->
+      <%# end %>
+<!--    </div>-->
+  <%# end %>
 
 
+    <%#= csrf_meta_tags %>
+    <%#= hidden_field_tag :authenticity_token, form_authenticity_token %>
+<!--    <input type="hidden" name="product_id" value="<%#= @product.id %>>"/>-->
+
+    <%# unless @product.product_sizes.empty? %>
+<!--          <input type="number" name="size_id" value="<%#= @product.product_sizes.first.size_id %>"/>-->
+<!--  <input type="number" name="size_id" value="1"/>-->
+<%# end %>
+
+    <%# unless @product.product_colors.empty? %>
+      <!--        <input type="number" name="color_id" value="<%#= @product.product_colors.first.color_id %>"/>-->
+<!--      <input type="number" name="color_id" value="1"/>-->
+    <%# end %>
+
+<!--    <p>原价:-->
+<!--      <label>-->
+<!--        <input type="number" name="msrp" value="1"/>-->
+<!--      </label>-->
+<!--    </p>-->
+
+<!--    <p>库存:-->
+<!--      <label>-->
+<!--        <input type="number" name="amount" value="1"/>-->
+<!--      </label>-->
+<!--    </p>-->
+
+<!--    <p>图片:-->
+<!--      <label>-->
+<!--        <input type="file" name="image" value="no product.jpg"/>-->
+<!--      </label>-->
+<!--    </p>-->
+
+
+<!--    <p>-->
+
+<!--      <button type="submit" class="btn btn-primary"> submit</button>-->
+<!--    </p>-->
+<!--  </form>-->
+<!--</div>-->
+
+
+<!--<p>Size is: <span id="item_size"></span></p>-->
+<!--<p>Color is: <span id="item_color"></span></p>-->
 
 <style>
     .form-body {
@@ -143,4 +279,103 @@
         color: #721c24;
         margin-right: 5px;
     }
+
+
+    .container_changed {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .table-container {
+        width: 48%; /* Adjust the width as needed, leaving space for margins, etc. */
+    }
+
+
+    .color-box {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .checkmark {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        background-color: #4CAF50; /* Green color for the checkmark */
+        display: none; /* Initially hide the checkmark */
+    }
+
+    .color-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .color-list li {
+        margin-bottom: 10px;
+    }
+
+    .color-option {
+        display: flex;
+        align-items: center;
+        /*margin-bottom: 10px;*/
+        cursor: pointer;
+    }
+
+    .color-option .color-box {
+        margin-right: 10px;
+    }
+
+    .color-name {
+        vertical-align: middle;
+        font-size: 16px;
+    }
+
+
+    /* Show the checkmark when the checkbox is checked */
+    .checkbox-hidden:checked + .color-box .checkmark {
+        display: block;
+    }
+
+    .table {
+        width: 100%;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+        border-spacing: 0;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 </style>
+
+<script>
+    let size_id = 0;
+    let color_id = 0;
+    document.querySelectorAll('input[name="option-size"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+
+            document.querySelector('input[name="size_id"]').value = this.value;
+
+            size_id = this.value;
+            document.getElementById("item_size").innerHTML = parseInt(size_id, 10);
+        });
+    });
+
+    // 当用户选择不同颜色时更新 color_id 的值
+    document.querySelectorAll('input[name="option-color"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+
+            document.querySelector('input[name="color_id"]').value = this.value;
+
+            color_id = this.value;
+            document.getElementById("item_color").innerHTML = parseInt(color_id, 10);
+        });
+    });
+</script>

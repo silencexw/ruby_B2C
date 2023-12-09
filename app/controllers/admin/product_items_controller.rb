@@ -8,7 +8,10 @@ class Admin::ProductItemsController < Admin::AdminController
   end
 
   def create
-    # puts params
+    puts params
+    puts params[:size_id]
+
+    puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     @product_item = ProductItem.new(params.require(:product_item).permit!)
     if @product_item.save
       @product.product_items << @product_item
