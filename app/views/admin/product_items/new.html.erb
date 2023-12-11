@@ -1,3 +1,4 @@
+
 <div>
   <h1><%= @product_item.new_record? ? "创建实体" : "编辑实体" %></h1>
 </div>
@@ -58,166 +59,64 @@
 
         </table>
       </div>
-      <div class="table-container">
-        <div class="size-selection">
-          <table class="table table-striped">
-            <thead>
-            <tr>
-              <th>ID</th>
-              <th>名称</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% @product.product_sizes.each do |size| %>
-              <tr>
-                <td><%= size.size_id %></td>
-                <td><span><%= size_name(size.size_id) %></span></td>
-                <!--                <td><%#= radio_button_tag :size_id, value: size.size_id %></td>-->
+      <div class="bigger-container">
+        <div class="form-group">
+          <label for="color_id" class="col-sm-2 control-label">颜色:*</label>
+          <div class="col-sm-5">
+            <%#= f.number_field :color_id, class: "form-control" %>
+            <%= f.collection_select :color_id, get_colors(@product.product_colors), :id, :name, { include_blank: '请选择颜色' }, { class: "form-control" } %>
 
-              </tr>
-            <% end %>
-            </tbody>
-          </table>
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <label for="size_id" class="col-sm-2 control-label">大小:*</label>
+          <div class="col-sm-5">
+            <%= f.collection_select :size_id, get_sizes(@product.product_sizes), :id, :name, { include_blank: '请选择尺寸' }, { class: "form-control" } %>
+
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="msrp" class="col-sm-2 control-label">原价:*</label>
+          <div class="col-sm-5">
+            <%= f.number_field :msrp, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="amount" class="col-sm-2 control-label">库存:*</label>
+          <div class="col-sm-5">
+            <%= f.number_field :amount, class: "form-control" %>
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <label for="image" class="col-sm-2 control-label">图片:*</label>
+          <div class="col-sm-5">
+            <%= f.file_field :image, class: "form-control" %>
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-8">
+
+            <%= f.submit (@product_item.new_record? ? "新建实体" : "编辑实体"), class: "btn btn-success" %>
+
+
+          </div>
         </div>
       </div>
     </div>
 
 
-    <div class="form-group">
-      <label for="size_id" class="col-sm-2 control-label">大小:*</label>
-      <div class="col-sm-5">
-        <%= f.collection_select :size_id, get_sizes(@product.product_sizes), :id, :name, { include_blank: '请选择尺寸' }, { class: "form-control" } %>
-
-      </div>
-    </div>
-
-
-    <div class="form-group">
-      <label for="color_id" class="col-sm-2 control-label">颜色:*</label>
-      <div class="col-sm-5">
-        <%#= f.number_field :color_id, class: "form-control" %>
-        <%= f.collection_select :color_id, get_colors(@product.product_colors), :id, :name, { include_blank: '请选择颜色' }, { class: "form-control" } %>
-
-      </div>
-    </div>
-
-
-    <div class="form-group">
-      <label for="msrp" class="col-sm-2 control-label">原价:*</label>
-      <div class="col-sm-5">
-        <%= f.number_field :msrp, class: "form-control" %>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="amount" class="col-sm-2 control-label">库存:*</label>
-      <div class="col-sm-5">
-        <%= f.number_field :amount, class: "form-control" %>
-      </div>
-    </div>
-
-
-    <div class="form-group">
-      <label for="image" class="col-sm-2 control-label">图片:*</label>
-      <div class="col-sm-5">
-        <%= f.file_field :image, class: "form-control" %>
-      </div>
-    </div>
-
-
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-8">
-
-        <%= f.submit (@product_item.new_record? ? "新建实体" : "编辑实体"), class: "btn btn-success" %>
-
-
-      </div>
-    </div>
 
   <% end %>
 
 </div>
-
-<!--<div class="container">-->
-  <%# unless @product.product_sizes.empty? %>
-<!--    <div class="swatch clearfix" data-option-index="0" style="display: inline-block;">-->
-<!--      <div class="header">Size</div>-->
-      <%# @product.product_sizes.each_with_index do |size, index| %>
-<!--        <div class="swatch-element plain available">-->
-
-<!--          <input id="swatch-<%#= size.size_id %>" type="radio" name="option-size" value=<%#= size.size_id %>-->
-
-<!--              <%# if index == 0 %>checked="checked"-->
-<!--                 <%# end %> />-->
-
-<!--          <label for="swatch-<%#= size.size_id %>">-->
-            <%#= size_name(size.size_id) %>
-<!--          </label>-->
-
-<!--        </div>-->
-      <%# end %>
-<!--    </div>-->
-  <%# end %>
-  <%# unless @product.product_colors.empty? %>
-<!--    <div class="swatch clearfix" data-option-index="1" style="display: inline-block;">-->
-<!--      <div class="header">Color</div>-->
-      <%# @product.product_colors.each_with_index do |color, index| %>
-<!--        <div class="swatch-element color available">-->
-<!--          <input id="swatch-color-<%#= color.color_id %>" type="radio" name="option-color" value="<%#= color.color_id %>"-->
-<!--                 <%# if index == 0 %>checked="checked"-->
-<!--                 <%# end %> />-->
-<!--          <label for="swatch-color-<%#= color.color_id %>">-->
-<!--            <span class="var" style="background-color: <%#= Color.find_by(id: color.color_id)&.hex_code %>;"></span>-->
-<!--          </label>-->
-<!--        </div>-->
-      <%# end %>
-<!--    </div>-->
-  <%# end %>
-
-
-    <%#= csrf_meta_tags %>
-    <%#= hidden_field_tag :authenticity_token, form_authenticity_token %>
-<!--    <input type="hidden" name="product_id" value="<%#= @product.id %>>"/>-->
-
-    <%# unless @product.product_sizes.empty? %>
-<!--          <input type="number" name="size_id" value="<%#= @product.product_sizes.first.size_id %>"/>-->
-<!--  <input type="number" name="size_id" value="1"/>-->
-<%# end %>
-
-    <%# unless @product.product_colors.empty? %>
-      <!--        <input type="number" name="color_id" value="<%#= @product.product_colors.first.color_id %>"/>-->
-<!--      <input type="number" name="color_id" value="1"/>-->
-    <%# end %>
-
-<!--    <p>原价:-->
-<!--      <label>-->
-<!--        <input type="number" name="msrp" value="1"/>-->
-<!--      </label>-->
-<!--    </p>-->
-
-<!--    <p>库存:-->
-<!--      <label>-->
-<!--        <input type="number" name="amount" value="1"/>-->
-<!--      </label>-->
-<!--    </p>-->
-
-<!--    <p>图片:-->
-<!--      <label>-->
-<!--        <input type="file" name="image" value="no product.jpg"/>-->
-<!--      </label>-->
-<!--    </p>-->
-
-
-<!--    <p>-->
-
-<!--      <button type="submit" class="btn btn-primary"> submit</button>-->
-<!--    </p>-->
-<!--  </form>-->
-<!--</div>-->
-
-
-<!--<p>Size is: <span id="item_size"></span></p>-->
-<!--<p>Color is: <span id="item_color"></span></p>-->
 
 <style>
     .form-body {
@@ -287,7 +186,11 @@
     }
 
     .table-container {
-        width: 48%; /* Adjust the width as needed, leaving space for margins, etc. */
+        width: 30%; /* Adjust the width as needed, leaving space for margins, etc. */
+    }
+
+    .bigger-container {
+        width: 60%;
     }
 
 
@@ -356,6 +259,17 @@
 </style>
 
 <script>
+    // import $ from 'jquery';
+    //
+    // $(document).ready(function() {
+    //     $('.color-select option:not(:first)').each(function() {
+    //         var hexCode = $(this).val();
+    //         $(this).addClass('color-option');
+    //         $(this).css('background-color', hexCode);
+    //     });
+    // });
+
+
     let size_id = 0;
     let color_id = 0;
     document.querySelectorAll('input[name="option-size"]').forEach(function (radio) {
