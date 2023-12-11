@@ -17,3 +17,4 @@
 //= require home
 
 //= require product
+//= require echarts

@@ -136,8 +136,12 @@ behavior: 'view'/'buy'/'favor'/'refund'
     </div>
 </div>
 
+<button id="fetch-data-btn">查询</button>
+
 <div>
     <% @records = Record.all # 假设搜索的结果为'@records'%>
+    <div id="records" data-records="<%= @records %>"></div>
+    <% @categories = Category.all %>
 </div>
 
 <head>
@@ -157,59 +161,177 @@ behavior: 'view'/'buy'/'favor'/'refund'
     <div class="box"></div>
     <script src="echarts.js"></script>
     <script>
-        //3.初始化实例对象 echarts.init(dom容器)
-        var myChart = echarts.init(document.querySelector(".box"));
+        //全局变量
+        var records = [];
+        var time_range;//时间范围
+        var time_range_val;//时间数量
+        var time_gran;//时间粒度
+        var select_customer;//被统计对象
+        var select_product;
+        var select_category;
+        var stat_value;//被统计值
+        var current_user;//当前用户
 
-        //records
-        var ori_records = document.getElementById('@records');
+        //异步发送请求获得数据
+        document.getElementById('fetch-data-btn').addEventListener('click', function() {
+          var xhr = new XMLHttpRequest();
+          //获取用户输入的参数，用于统计图的生成逻辑
+          var producttype = document.getElementById('input-producttype');//这个也是我自己项目的参数
 
-        var map_type = document.getElementById('map-type');
+          //options
+          time_range = document.getElementById('time-range').time_range;//时间范围
+          time_range_val = document.getElementById('time-range').time_range_val;//时间数量
+          time_gran = document.getElementById('time-gran');//时间粒度
+          select_customer = document.getElementById('select-customer');//被统计对象
+          select_product = document.getElementById('select-product');
+          select_category = document.getElementById('select-category');
+          select_behavior = document.getElementById('select-behavior');//被统计值
+          current_user = document.getElementById('select-customer');//当前用户
 
-        //options
-        var time_range = document.getElementById('time-range').time_range;//时间范围
-        var time_range_val = document.getElementById('time-range').time_range_val;//时间数量
-        var time_gran = document.getElementById('time-gran');//时间粒度
-        var select_customer = document.getElementById('select-customer');//被统计对象
-        var select_product = document.getElementById('select-product');
-        var select_category = document.getElementById('select-category');
-        var stat_value = document.getElementById('select-behavior');//被统计值
-        var current_user = document.getElementById('select-customer');//当前用户
+          //url及相关参数，需要最后确定，现在的是我自己项目的url
+          var url = '/select/products';
+          url += '?selecttype=' + producttype.value;
+          xhr.open('GET', url, true); // 发送 GET 请求到 /products 路径
 
-        //4.指定配置项和数据
-        /*
-            time_gran不为空：折线图/柱状图
-            select_*的组合
-            product和category可以单独出现
-            customer与product和category之一结合 表示customer <behaviour> product/category
+          //发送请求，接受json格式数据
+          xhr.setRequestHeader("Content-type", "application/json");
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+              if (xhr.status === 200) {
+                //document.getElementById('data-container').innerHTML = xhr.responseText; // 将返回的数据显示在页面上
+                //response即为返回的record结构体数组，每个元素就是一个满足要求的record
+                var response = JSON.parse(xhr.responseText);
+                //var output = [];
+                records.length = 0;//每次查询刷新暂存的records数组
+                for (var i = 0; i < response.length; i++) {
+                  output.push(response[i].name);
+                  records.push(response[i]);
+                }
+                document.getElementById('result').textContent = output;
+              } else {
+                console.error('请求失败');
+              }
+            }
+          };
+          xhr.send();
+        });
 
-            product/category单独出现，表示它们被所有用户的 <behaviour>
+        function id2category(category_id) {
+            var categories = JSON.parse(document.getElementById('@categories'));
+            var foundCategory = categories.find(category => category.category_id === id);
+            return foundCategory;
+        }
 
-            time_gran为空：饼状图
-            customer有无确定对数据的全局筛选
-            time-range也为对数据的全局筛选
-            category为空，默认若干category
-            category指令，统计同categroy中不同product的behaviour的占比
-        */
-        var option = {
-            title: {
-                text: 'ECharts 入门示例'
-            },
-            tooltip: {},
-            legend: {
-                data:[stat_value]
-            },
-            xAxis: {
-                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]//横坐标各个数据名称
-            },
-            yAxis: {},
-            series: [{
-                name: '销量',
-                type: map_type,
-                data: [5, 20, 36, 10, 10, 20]//横坐标各个数据名称的数据值
-            }]
-        };
-        //5.将配置项设置给echarts实例对象，使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
+        function rubytime2jstime(ruby_time) {
+            return new Date(ruby_time);
+        }
+
+        function timegran2ms(val, type) {
+            if (type == 'day') {
+                return val * 24 * 3600 * 1000;
+            }
+            else if (type == 'week') {
+                return val * 7 * 24 * 3600 * 1000;
+            }
+            else if (type == 'hour') {
+                return val * 3600 * 1000;
+            }
+        }
+
+        //封装生成统计图的函数
+        function genGraph() {
+            //3.初始化实例对象 echarts.init(dom容器)
+            var myChart = echarts.init(document.querySelector(".box"));
+
+            //records
+            var map_type = time_gran.value == '' ? 'pie' : 'bar';
+            var stat_name = select_behavior.value;
+            var series_data = [];
+            var series_name = [];
+            var series = new Map();
+            if (map_type == 'pie') {
+                //将所有种类的特定行为的数据量求和
+                for (var i = 0; i < records.length; i++>) {
+                    var record = records[i];
+                    var category_name = id2category(record.id).title;
+                    if (!series.has(category_name)) {
+                        series.set(category_name, record.amount);
+                    }
+                    else {
+                        var ori_amount = series.get(category_name);
+                        ori_amount += record.amount;
+                        series.set(category_name, ori_amount);
+                    }
+                }
+
+                //将map中的数据顺序导出
+                series.forEach((value, key) => {
+                    series_name.push(key);
+                    series_data.push(value);
+                });
+            }
+            else {
+                var oritime = currentDate.getTime();
+                oritime = new Date(oritime - gran);
+                var gran = timegran2ms(JSON.parse(time_gran).value);
+
+                for (var i = 0; i < records.length; i++) {
+                    var record = record[i];
+                    var record_time = new Date(rubytime2jstime(record.created_at));
+                    if (record_time < oritime) {
+                        oritime = new Date(oritime - gran);
+                        series.set(oritime, record.amount);
+                    }
+                    else {
+                        var ori_amount = series.get(oritime);
+                        series.set(oritime, ori_amount + record.amount);
+                    }
+                }
+
+                series.forEach((value, key) => {
+                    series_name.push(key);
+                    series_data.push(value);
+                });
+            }
+
+            //4.指定配置项和数据
+            /*
+                time_gran不为空：折线图/柱状图
+                select_*的组合
+                product和category可以单独出现
+                customer与product和category之一结合 表示customer <behaviour> product/category
+
+                product/category单独出现，表示它们被所有用户的 <behaviour>
+
+                time_gran为空：饼状图
+                customer有无确定对数据的全局筛选
+                time-range也为对数据的全局筛选
+                category为空，默认若干category
+                category指令，统计同categroy中不同product的behaviour的占比
+            */
+            var option = {
+                title: {
+                    text: 'ECharts 入门示例'
+                },
+                tooltip: {},
+                legend: {
+                    data:[stat_value]
+                },
+                xAxis: {
+                    data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]//横坐标各个数据名称
+                },
+                yAxis: {},
+                series: [{
+                    //name: '销量',
+                    name: series_name,
+                    type: map_type,
+                    //data: [5, 20, 36, 10, 10, 20]//横坐标各个数据名称的数据值
+                    data: series_data
+                }]
+            };
+            //5.将配置项设置给echarts实例对象，使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        }
     </script>
 </body>
 </html>
