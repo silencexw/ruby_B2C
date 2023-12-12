@@ -29,11 +29,11 @@ class TransactionOrder < ApplicationRecord
           order.transaction_items.create!(
           product_item: cart_item.product_item,
           amount: cart_item.amount,
-          money: cart_item.amount * cart_item.get_product.msrp,
+          money: cart_item.amount * cart_item.product_item.msrp,
         )
 
         cart_item.product_item.update(amount: cart_item.product_item.amount - cart_item.amount)
-        total_money = total_money + cart_item.amount * cart_item.get_product.msrp
+        total_money = total_money + cart_item.amount * cart_item.product_item.msrp
       end
 
       order.update!(total_money: total_money)

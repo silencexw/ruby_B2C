@@ -32,6 +32,17 @@ class TransactionOrdersController < ApplicationController
   def pay
     @transaction_order = TransactionOrder.find(params[:id])
     @transaction_order.update(is_payed: true)
+    @transaction_order.transaction_items.each do |item|
+      product_item = item.product_item
+      amount = item.amount
+      product = product_item.product
+      record = Record.new(behaviour: Record::Behavior::Buy,
+                          product_id: product.id,
+                          user_id: session[:user_id],
+                          amount: amount,
+                          money: item.money)
+      record.save!
+    end
     redirect_to cart_items_path
   end
 

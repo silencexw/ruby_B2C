@@ -24,7 +24,7 @@
         <% end %>
         <div class="media-body">
           <h4 class="media-heading"><%= cart_item.get_product.title %></h4>
-          数量: <%= cart_item.amount %> 价格: ¥<%= cart_item.amount * cart_item.get_product.price %>
+          数量: <%= cart_item.amount %> 价格: ¥<%= cart_item.amount * cart_item.product_item.msrp %>
           <% unless cart_item.product_item.size_id.nil? %>
             <div> 尺寸: <%= size_name(cart_item.product_item.size_id) %></div>
           <% end %>
@@ -40,7 +40,7 @@
     <div class="pull-right">
       <%= form_tag transaction_orders_path, method: :post, class: "create-transaction_order-form" do %>
         <input type="hidden" name="address_id"/>
-        <strong>总价: ¥<%= @cart_items.sum { |cart| cart.amount * cart.get_product.price } %></strong>
+        <strong>总价: ¥<%= @cart_items.sum { |cart| cart.amount * cart.product_item.msrp } %></strong>
         <input type="submit" value="确认订单" class="btn btn-danger btn-lg"/>
       <% end %>
     </div>

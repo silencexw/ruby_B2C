@@ -106,7 +106,7 @@
     <form method="post" action="<%= cart_items_path %>">
       <%= csrf_meta_tags %>
       <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-      <input type="hidden" name="product_item_id" value="2"/>
+      <input type="hidden" name="product_item_id" value="1"/>
 
       <% unless @product.product_sizes.empty? %>
         <input type="hidden" name="size_id" value="<%= @product.product_sizes.first.size_id %>"/>

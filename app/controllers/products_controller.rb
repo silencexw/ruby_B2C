@@ -7,6 +7,8 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
 
     @first_product_item_name = @product.product_items.first&.image
+    record = Record.new(behaviour: Record::Behavior::Browse,  product_id: @product.id, user_id: session[:user_id])
+    record.save!
   end
 
   def search

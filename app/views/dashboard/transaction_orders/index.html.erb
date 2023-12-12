@@ -100,7 +100,7 @@
           <% order.transaction_items.each do |item| %>
             <div class="media-left">
               <p><%= item.get_product.title %></p>
-              <p>数量: <%= item.amount %> 价格: ¥<%= item.get_product.price %></p>
+              <p>数量: <%= item.amount %> 价格: ¥<%= item.money / item.amount %></p>
               <div>
               <% unless item.product_item.size_id.nil? %>
                 尺寸: <%= size_name(item.product_item.size_id) %>

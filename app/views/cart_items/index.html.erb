@@ -21,7 +21,7 @@
 
           <div class="media-body">
             <h4 class="media-heading"><%= link_to cart_item.get_product.title, product_path(cart_item.get_product.id) %></h4>
-            数量:<%= cart_item.amount %> 价格: ¥<%= cart_item.amount * cart_item.get_product.price %>
+            数量:<%= cart_item.amount %> 价格: ¥<%= cart_item.amount * cart_item.product_item.msrp %>
             <div>
               <% unless cart_item.product_item.size_id.nil? %>
                 尺寸: <%= size_name(cart_item.product_item.size_id) %>
@@ -53,7 +53,7 @@
   </div>
 
   <div class="pull-right">
-    <strong>总价: ¥<%= @cart_items.sum { |cart| cart.amount * cart.get_product.price } %></strong>
+    <strong>总价: ¥<%= @cart_items.sum { |cart| cart.amount * cart.product_item.msrp } %></strong>
     &nbsp;
     <%= link_to "去结算", new_transaction_order_path, class: "btn btn-danger btn-lg" %>
   </div>

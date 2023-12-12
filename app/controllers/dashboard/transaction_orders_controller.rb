@@ -21,6 +21,17 @@ class Dashboard::TransactionOrdersController < Dashboard::DashboardController
 
   def destroy
     @transaction_order = TransactionOrder.find(params[:id])
+    @transaction_order.transaction_items.each do |item|
+      product_item = item.product_item
+      amount = item.amount
+      product = product_item.product
+      record = Record.new(behaviour: Record::Behavior::Refund,
+                          product_id: product.id,
+                          user_id: session[:user_id],
+                          amount: amount,
+                          money: item.money)
+      record.save!
+    end
     @transaction_order.destroy
     redirect_to dashboard_transaction_orders_path
   end
@@ -28,6 +39,17 @@ class Dashboard::TransactionOrdersController < Dashboard::DashboardController
   def pay
     @transaction_order = TransactionOrder.find(params[:id])
     @transaction_order.update(is_payed: true)
+    @transaction_order.transaction_items.each do |cart_item|
+      product_item = cart_item.product_item
+      amount = cart_item.amount
+      product = product_item.product
+      record = Record.new(behaviour: Record::Behavior::Buy,
+                          product_id: product.id,
+                          user_id: session[:user_id],
+                          amount: amount,
+                          money: cart_item.money)
+      record.save!
+    end
     redirect_to dashboard_transaction_orders_path(order_status: "待付款")
   end
 
