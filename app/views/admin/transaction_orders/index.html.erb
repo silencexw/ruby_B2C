@@ -11,15 +11,15 @@
         </div>
       </div>
     </div>
-    <div class="panel-group" id="accordionPanels" aria-multiselectable="true">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4 class="panel-title">
-            <%= link_to "待付款订单", admin_transaction_orders_path(order_status: '待付款') %>
-          </h4>
-        </div>
-      </div>
-    </div>
+    <!--    <div class="panel-group" id="accordionPanels" aria-multiselectable="true">-->
+    <!--      <div class="panel panel-default">-->
+    <!--        <div class="panel-heading">-->
+    <!--          <h4 class="panel-title">-->
+    <%#= link_to "待付款订单", admin_transaction_orders_path(order_status: '待付款') %>
+    <!--          </h4>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </div>-->
     <div class="panel-group" id="accordionPanels" aria-multiselectable="true">
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -31,77 +31,133 @@
     </div>
   </div>
   <div class="container">
+    <div class="col-sm-6 col-md-9">
 
-    <div class="col-sm-6 col-md-8">
-      <% @transaction_orders.each do |order| %>
+      <table class="table">
+        <thead>
+        <tr>
+          <!--          <th class="sub_th">订单号</th>-->
+          <th class="sub_th">商品名</th>
+          <th class="sub_th">状态</th>
 
-        <div class="media-heading">订单号: <%= order.order_no %></div>
-        <%= "订单创建时间" %>
-        <%= order.created_at.strftime('%Y-%m-%d %H:%M:%S') %>
-        <!--        <p>-->
-        <span class="label <%= order.is_payed? ? 'label-success' : 'label-warning' %>">
-            <%= order.is_payed? ? '已付款' : '未付款' %>
-          </span>
-        <% if order.is_payed? %>
-            <span class="label <%= order.is_delivered? ? 'label-success' : 'label-warning' %>">
-            <%= order.is_delivered? ? '已发货' : '未发货' %>
-          </span>
-        <% end %>
-        <% if order.is_over? %>
-            <span class="label label-success"> 已完成
-            </span>
-        <% end %>
-        <div class="pull-right">
-          <form action="<%= admin_transaction_order_path(order) %>" method="post" id="delete-form">
-            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-            <input type="hidden" name="_method" value="delete">
-            <input type="submit" value="取消订单" class="btn btn-danger btn-lg merge" onclick="event.preventDefault(); deleteOrder();">
-          </form>
-        </div>
-        <div class="pull-right">
-          <% if order.is_payed? and not order.is_delivered? %>
-            <form action="<%= delivery_admin_transaction_order_path(order) %>" method="post">
-              <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-              <input type="submit" value="发货" class="btn btn-success btn-lg merge">
-            </form>
-          <% end %>
-        </div>
+          <th class="sub_th">商品实体</th>
+          <th class="sub_th">时间</th>
+          <th class="sub_th">总价</th>
 
-        <div class="media shopping-cart-row-wrap">
+          <th class="sub_th">Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @transaction_orders.each do |order| %>
+          <tr>
+            <!--            <td>-->
+            <!--              <div class="media-heading"><%#= order.order_no %></div>-->
+            <!--            </td>-->
 
-          <% order.transaction_items.each do |item| %>
-            <div class="media-left">
-              <p><%= item.get_product.title %></p>
-              <p>数量: <%= item.amount %> 价格: ¥<%= item.get_product.price %></p>
-              <div>
-                <% unless item.product_item.size_id.nil? %>
-                  尺寸: <%= size_name(item.product_item.size_id) %>
-                <% end %>
-                <% unless item.product_item.color_id.nil? %>
-                  颜色:
-                  <span class="var" style="background-color: <%= raw get_color(item.product_item.color_id) %>;"></span>
-                <% end %>
-              </div>
-            </div>
+            <td><%= order.transaction_items.first.get_product.title %></td>
+            <td>
+              <span class="label <%= order.is_payed? ? 'label-success' : 'label-warning' %>">
+                  <%= order.is_payed? ? '已付款' : '未付款' %>
+                </span>
+                            <% if order.is_payed? %>
+                  <span class="label <%= order.is_delivered? ? 'label-success' : 'label-warning' %>">
+                  <%= order.is_delivered? ? '已发货' : '未发货' %>
+                </span>
+              <% end %>
+              <% if order.is_over? %>
+                <span class="label label-success"> 已完成
+                </span>
+              <% end %>
+            </td>
+
+            <td class="media shopping-cart-row-wrap">
+
+              <table class="table">
+                <thead>
+                <tr>
+                  <th>数量</th>
+                  <th>价格</th>
+                  <th>尺寸</th>
+                  <th>颜色</th>
+                  <th>图片</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% order.transaction_items.each do |item| %>
+                  <tr>
+                    <!--                  <div class="media-left">-->
+
+                    <td><%= item.amount %></td>
+                    <td> ¥<%= item.money / item.amount %></td>
+                    <td>
+                      <% unless item.product_item.size_id.nil? %>
+                        <%= size_name(item.product_item.size_id) %>
+                      <% end %>
+                    </td>
+                    <td>
+                      <% unless item.product_item.color_id.nil? %>
+
+                        <div class="color-box" style="background-color: <%= get_color(item.product_item.color_id) %>;">
+                          <div class="checkmark"></div>
+                        </div>
+                      <% end %>
+                    </td>
+                    <td class="item-image-container">
+                      <% if item.product_item.image.nil? %>
+                        <%= image_tag "no_product.jpg", style: "width: 50px; height: 50px; display: block", class: "product-item-image", alt: item.get_product.title %>
+                      <% else %>
+                        <%= image_tag item.product_item.image, style: "width: 50px; height: 50px; display: block", class: "product-item-image", alt: item.get_product.title %>
+                      <% end %>
+                    </td>
+                    <!--                  </div>-->
+                  </tr>
+                <% end -%>
+                </tbody>
+              </table>
+              <p>
+                <%= order.address.contact_name %> <%= order.address.cellphone %> <%= order.address.address %></p>
+
+            </td>
+
+            <td>
+              <%= order.created_at.strftime('%Y-%m-%d %H:%M:%S') %>
+            </td>
+
+            <td>¥<%= order.total_money %></td>
+
+            <td>
+              <% if order.is_payed? and not order.is_delivered? %>
+                <form action="<%= delivery_admin_transaction_order_path(order) %>" method="post">
+                  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                  <input type="submit" value="发货" class="btn btn-success btn merge">
+                </form>
+              <% end %>
+              <form action="<%= admin_transaction_order_path(order) %>" method="post" id="delete-form">
+                <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                <input type="hidden" name="_method" value="delete">
+                <input type="submit" value="取消订单" class="btn btn-danger btn merge" onclick="event.preventDefault(); deleteOrder();">
+              </form>
+            </td>
 
 
-            <% if item.product_item.image.nil? %>
-              <%= image_tag "no_product.jpg", style: "width: 200px; height: 200px; display: block", class: 'media-object', alt: item.get_product.title %>
-            <% else %>
-              <%= image_tag item.product_item.image, style: "width: 200px; height: 200px; display: block", class: 'media-object', alt: item.get_product.title %>
-            <% end %>
-          <% end %>
-        </div>
-        <div class="media-body">
-        </div>
+            <!--            <td>-->
+            <%# unless order.is_payed? %>
+            <!--                <form action="<%#= to_pay_dashboard_transaction_order_path(order) %>" method="post">-->
+            <%#= hidden_field_tag :authenticity_token, form_authenticity_token %>
+            <!--                  <input type="submit" value="前去支付" class="btn btn-success btn-lg merge"/>-->
+            <!--                </form>-->
+            <%# end %>
+            <!--            </td>-->
 
 
-        <p>总价: ¥<%= order.total_money %></p>
-        <p><%= order.address.contact_name %> <%= order.address.cellphone %> <%= order.address.address %></p>
-      <% end -%>
+          </tr>
+        <% end -%>
+
+        </tbody>
+      </table>
+      <%#= will_paginate @orders %>
     </div>
 
-    <%# end -%>
   </div>
 
 
@@ -118,3 +174,124 @@
         }
     }
 </script>
+<style>
+    body {
+        font-family: 'Source Han Serif CN', sans-serif; /* Change 'Arial' to your preferred font-family */
+        font-size: 12px;
+    }
+
+    /* Paste the CSS styles here */
+    .container {
+        width: 1500px;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    .pull-right {
+        margin-bottom: 10px;
+    }
+
+    .btn-lg {
+        padding: 15px 20px;
+        font-size: 18px;
+    }
+
+    /*.table {*/
+    /*    width: 100%;*/
+    /*    margin-bottom: 20px;*/
+    /*    border-collapse: separate;*/
+    /*    border-spacing: 0;*/
+    /*    background-color: #fff;*/
+    /*    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+    /*}*/
+
+
+    /*th, td {*/
+    /*    width: auto;*/
+    /*    padding: 1px;*/
+    /*    text-align: left;*/
+    /*    border-bottom: 1px solid #ddd;*/
+    /*}*/
+
+    th {
+        background-color: rgba(246, 117, 72, 0.39);
+        color: #fff;
+    }
+
+    .sub_th {
+        background-color: rgba(0, 57, 122, 0.39);
+        color: #fff;
+    }
+
+    tbody tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    .item-image-container {
+        width: 50px; /* Adjust image container width */
+        height: 50px; /* Adjust image container height */
+        overflow: hidden;
+    }
+
+    .color-box {
+        position: relative;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 30%;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .product-item-image {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    .btn-primary {
+        background-color: #48aee5;
+        color: #fff;
+        border: 1px solid #007bff;
+        padding: 8px 15px;
+        text-decoration: none;
+        display: inline-block;
+        border-radius: 10px;
+        transition: background-color 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .table {
+        width: 100%;
+        margin-bottom: 20px;
+        border-collapse: separate;
+        border-spacing: 0;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        white-space: nowrap; /* Prevent line breaks */
+    }
+
+    th, td {
+        width: auto;
+        padding: 10px; /* Adjust padding as needed */
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .item-image-container {
+        width: 50px; /* Adjust image container width */
+        height: 50px; /* Adjust image container height */
+        overflow: hidden;
+    }
+
+    .product-item-image {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+</style>
