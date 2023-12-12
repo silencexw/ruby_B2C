@@ -8,10 +8,10 @@ Rails.application.routes.draw do
 
   resources :products, only: [:show] do
     get :search, on: :collection
+    resources :favorites
   end
   resources :categories
   resources :cart_items
-  resources :favorites
   resources :addresses do
     member do
       put :set_default_address
