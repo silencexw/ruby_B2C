@@ -1,14 +1,30 @@
 require 'will_paginate/array'
 
 class ProductsController < ApplicationController
+
   def show
     @user_id = session[:user_id]
     @categories = Category.grouped_data
     @product = Product.find(params[:id])
+    @product_colors = @product.product_colors.order(weight: "desc")
+    @product_sizes = @product.product_sizes.order(weight: "desc")
+    @is_favorite = false
+
+    if not logged_in?
+      @is_favorite = false
+    elsif @product.favorites.blank?
+      @is_favorite = false
+    else
+      favorite = @product.favorites.find_by(user_id: session[:user_id])
+      @is_favorite = favorite.nil? ? false : true
+    end
 
     @first_product_item_name = @product.product_items.first&.image
-    record = Record.new(behaviour: Record::Behavior::Browse,  product_id: @product.id, user_id: session[:user_id])
-    record.save!
+
+    if logged_in?
+      record = Record.new(behaviour: Record::Behavior::Browse, product_id: @product.id, user_id: session[:user_id])
+      record.save!
+    end
   end
 
   def search
@@ -20,7 +36,7 @@ class ProductsController < ApplicationController
     sorted_product_ids = product_ids.sort_by { |id| -similarity_score(Product.find(id).title, query) }
 
     sorted_products = Product.where(id: sorted_product_ids)
-                             # .includes(:main_product_image)
+    # .includes(:main_product_image)
 
     unless params[:category_id].blank?
       sorted_products = sorted_products.where(category_id: params[:category_id])

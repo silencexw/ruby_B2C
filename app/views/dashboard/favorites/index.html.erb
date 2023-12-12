@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Product Page</title>
+  <!-- Additional styles for this page -->
+  <style>
+      .thumbnail {
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          padding: 20px;
+          margin-bottom: 20px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .small-thumbnail {
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          padding: 15px;
+          margin-bottom: 15px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .title {
+          color: #333;
+          text-decoration: none;
+      }
+
+      strong {
+          color: #007bff;
+      }
+
+      .msrp {
+          color: #868e96;
+          text-decoration: line-through;
+          margin-left: 10px;
+      }
+
+      .pagination {
+          display: flex;
+          justify-content: center;
+          margin-top: 20px;
+      }
+
+      .page-item {
+          margin: 0 5px;
+      }
+
+      .page-link {
+          color: #007bff;
+      }
+
+      .page-link:hover {
+          text-decoration: none;
+          background-color: #007bff;
+          border-color: #007bff;
+      }
+  </style>
+</head>
+<body>
+
+<h1 class="title"> 我的收藏 </h1>
+
+<div class="row">
+  <% @favorites.each do |favorite| %>
+
+    <div class="col-sm-6 col-md-4">
+
+      <% if flash[:error].present? %>
+        <div class="alert alert-danger"><%= flash[:error] %></div>
+      <% end %>
+
+      <div class="thumbnail">
+        <% if favorite.main_favorite_image.nil? %>
+          <%= link_to image_tag("no_product.jpg", style: "width: 200px; height: 200px; display: block", alt: favorite.product.title), product_path(favorite.product) %>
+        <% else %>
+          <%= link_to image_tag(favorite.main_favorite_image, style: "width: 200px; height: 200px; display: block", alt: favorite.product.title), product_path(favorite.product) %>
+        <% end %>
+
+<!--        <div class="caption">-->
+          <h3><%= link_to favorite.product.title, product_path(favorite.product), class: 'title' %></h3>
+          <strong>¥<%= favorite.product.price %></strong> <span class="msrp">¥<%= favorite.product.msrp %></span>
+          <h4>
+            --------------------商品描述---------------------</h4>
+          <h4><%= link_to favorite.product.description, product_path(favorite.product), class: 'title' %></h4>
+<!--        </div>-->
+
+      </div>
+    </div>
+
+  <% end -%>
+</div>
+
+
+<%#= will_paginate @favorites %>
+
+
+</body>
+</html>

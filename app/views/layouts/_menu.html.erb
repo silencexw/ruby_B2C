@@ -43,6 +43,9 @@
             <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><%= link_to "我的订单", dashboard_transaction_orders_path(order_status: '待付款') %></li>
+
+            <li><%= link_to "我的收藏", dashboard_favorites_path %></li>
+
             <li><a href="<%= dashboard_addresses_path %>">我的收货地址</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="<%= dashboard_user_message_path %>">修改个人信息</a></li>

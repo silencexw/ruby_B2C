@@ -12,8 +12,10 @@ module Admin::ColorsHelper
 
   def get_color(color_id)
 
-    Color.find_by(id: color_id)&.hex_code
-
+    ele = Color.find_by(id: color_id)&.hex_code
+    puts ele
+    puts "ffffffffffffffffffffffffffffffffffffffffff"
+    ele
     # case color_id
     # when Color::ProductColor::Red
     #   "<span class='var red'></span>"
