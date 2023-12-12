@@ -11,9 +11,8 @@
       <li class="active"><%= @product.title %></li>
     </ol>
 
-<!--    <div class="thumbnail detail"></div>-->
-<!--    <div class="small-thumbnail detail"></div>-->
-
+    <!--    <div class="thumbnail detail"></div>-->
+    <!--    <div class="small-thumbnail detail"></div>-->
 
 
     <a class="thumbnail detail">
@@ -106,7 +105,7 @@
     <form method="post" action="<%= cart_items_path %>">
       <%= csrf_meta_tags %>
       <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-      <input type="hidden" name="product_item_id" value="1"/>
+      <input type="hidden" name="product_item_id" value=<%= @product.product_items.first.id %>>/>
 
       <% unless @product.product_sizes.empty? %>
         <input type="hidden" name="size_id" value="<%= @product.product_sizes.first.size_id %>"/>
@@ -121,8 +120,7 @@
       </label></p>
 
       <p>
-
-        <button type="submit" class="btn btn-primary"><span id="judge_submit"></span></button>
+        <button type="submit" class="btn btn-primary" id="myButton"><span id="judge_submit"></span></button>
       </p>
     </form>
 
@@ -131,8 +129,25 @@
 
 
   <h1>
-    --------
+    -------
   </h1>
+
+
+  <% if @is_favorite %>
+
+    <%= link_to "unfavor", product_favorite_path(@product.id ), method: :delete, 'data-confirm': "确认取消收藏吗?", class: "btn-lg btn-danger" %>
+
+  <% else %>
+    <form method="post" action="<%= product_favorites_path(@product.id) %>">
+      <%= csrf_meta_tags %>
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <p>
+        <button type="submit" class="btn-lg btn-success">favorite</button>
+      </p>
+    </form>
+  <% end -%>
+
+
 
 
   <p>Size is: <span id="item_size"></span></p>
@@ -160,8 +175,6 @@
     document.getElementById("item_size").innerHTML = parseInt(size_id, 10);
     document.getElementById("item_color").innerHTML = parseInt(color_id, 10);
     document.getElementById("judge_submit").innerHTML = '加入购物车';
-    <!--    document.getElementById("inventory_image").src = <%#= rails_blob_path(@product.product_items.first.image , only_path: true)%>;-->
-    // updateInventory()
 
     // 当用户选择不同尺码时更新 size_id 的值
     document.querySelectorAll('input[name="option-size"]').forEach(function (radio) {
@@ -202,7 +215,12 @@
                 if (false === response.flag) {
                     document.getElementById("judge_submit").innerHTML = '暂无库存'
                     document.getElementById("inventory_amount").innerText = '别看了sb';
-                    // document.getElementById("inventory_image").src = 0;
+                    document.querySelector('input[name="product_item_id"]').value = -product_item_id;
+                    document.getElementById("inventory_image").src = "<%= asset_path("no_product.jpg") %>";
+
+                    var button = document.getElementById("myButton");
+
+                    button.className = "btn btn-danger"
                     return
                 }
 
@@ -224,6 +242,7 @@
 
                 document.getElementById("submit_info").innerHTML = 'id: ' + product_item_id + ", size: " + size_id + ", color: " + color_id;
 
+                document.getElementById("myButton").className = "btn btn-primary"
 
             },
             error: function () {
