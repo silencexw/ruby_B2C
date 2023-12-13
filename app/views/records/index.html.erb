@@ -160,6 +160,7 @@ behavior: 'view'/'buy'/'favor'/'refund'
 	<!-- 2.准备具有大小的DOM容器 -->
     <div class="box"></div>
     <script src="echarts.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>-->
     <script>
         //全局变量
         var records = [];
@@ -238,6 +239,30 @@ behavior: 'view'/'buy'/'favor'/'refund'
             }
         }
 
+        function date2key(date, gran) {
+            var year = date.getFullYear();
+            var month = date.getMonth();
+            var day = date.getDate();
+            var weekday = date.getDay();
+            var hour = date.getHours();
+            if (gran == 'hour') {
+                return year + "-" + month + "-" + day + "-" + hour;
+            }
+            else if (gran == 'day') {
+                return year + "-" + month + "-" + day;
+            }
+            else if (gran == 'month') {
+                return year + "-" + month;
+            }
+            else if (gran == 'week') {
+                date.setDate(date - weekday);//回溯到所在周第一天
+                year = date.getFullYear();//重新获取年
+                month = date.getMonth();//重新获取月
+                day = date.getDate();//重新获取一个月的天数
+                return year + "-" + month + "-" + day;
+            }
+        }
+
         //封装生成统计图的函数
         function genGraph() {
             //3.初始化实例对象 echarts.init(dom容器)
@@ -271,22 +296,17 @@ behavior: 'view'/'buy'/'favor'/'refund'
                 });
             }
             else {
-                var oritime = currentDate.getTime();
-                oritime = new Date(oritime - gran);
-                var gran = timegran2ms(JSON.parse(time_gran).value);
-
-                for (var i = 0; i < records.length; i++) {
-                    var record = record[i];
-                    var record_time = new Date(rubytime2jstime(record.created_at));
-                    if (record_time < oritime) {
-                        oritime = new Date(oritime - gran);
-                        series.set(oritime, record.amount);
+                var gran = JSON.parse(time_gran).value;
+                records.array.forEach(record => {
+                    var date = new Date(record.created_at);
+                    var key = date2key(date, gran);
+                    if (!series.hasOwnProperty(key)) {
+                        series[key] = [record];
                     }
                     else {
-                        var ori_amount = series.get(oritime);
-                        series.set(oritime, ori_amount + record.amount);
+                        series[key].push(record);
                     }
-                }
+                });
 
                 series.forEach((value, key) => {
                     series_name.push(key);
@@ -318,12 +338,13 @@ behavior: 'view'/'buy'/'favor'/'refund'
                     data:[stat_value]
                 },
                 xAxis: {
-                    data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]//横坐标各个数据名称
+                    //data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]//横坐标各个数据名称
+                    date: series_name
                 },
                 yAxis: {},
                 series: [{
                     //name: '销量',
-                    name: series_name,
+                    name: stat_name,
                     type: map_type,
                     //data: [5, 20, 36, 10, 10, 20]//横坐标各个数据名称的数据值
                     data: series_data
