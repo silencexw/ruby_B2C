@@ -31,6 +31,8 @@ class Dashboard::ProfileController < Dashboard::DashboardController
   def get_records
     # 时间限制
     get_record_by_time
+
+    # render json: @records
     # 对应行为的record
     @records = @records.where(behaviour: params[:behaviour])
     # 用户
@@ -45,6 +47,8 @@ class Dashboard::ProfileController < Dashboard::DashboardController
     unless params[:category_id].nil?
       @records = @records.joins(:product).where(products: { category_id: params[:category_id] })
     end
+
+    render json: @records
   end
 
   private
@@ -65,6 +69,11 @@ class Dashboard::ProfileController < Dashboard::DashboardController
     end
 
     @records = Record.where("created_at >= ?", start_time)
+  end
+
+  def get_records_params
+    params.require(:profile).permit(:time_range, :time_range_val, :behaviour, :user_id, :product_id, 
+      :category_id)
   end
 
 end

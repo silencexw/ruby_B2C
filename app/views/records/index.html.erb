@@ -131,6 +131,7 @@ behavior: 'view'/'buy'/'favor'/'refund'
         <select id="stat-value">
             <option value='view'><%='浏览量'%></option>
             <option value='buy'><%='购买量/销量'%></option>
+            <option value='buyprice'<%='消费额/销售额'%>></option>
             <option value='favor'<%='收藏量'%>>
         </select>
     </div>
@@ -238,6 +239,22 @@ behavior: 'view'/'buy'/'favor'/'refund'
             }
         }
 
+        function parseBehavior(code) {
+            if (code == 1) {
+                return "buy";
+            }
+            else if (code == 2) {
+                return "refund";
+            }
+            else if (code == 3) {
+                return "view";
+            }
+            else if (code == 4) {
+                return "favor";
+            }
+            return "";
+        }
+
         //封装生成统计图的函数
         function genGraph() {
             //3.初始化实例对象 echarts.init(dom容器)
@@ -245,7 +262,7 @@ behavior: 'view'/'buy'/'favor'/'refund'
 
             //records
             var map_type = time_gran.value == '' ? 'pie' : 'bar';
-            var stat_name = select_behavior.value;
+            var stat_name = parseBehavior(select_behavior.value);
             var series_data = [];
             var series_name = [];
             var series = new Map();

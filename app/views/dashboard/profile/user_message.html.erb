@@ -45,3 +45,118 @@
 
   </div>
 </div>
+
+<button id="fetch-data-btn">获取数据</button>
+Result: <div id="result"></div>
+
+<strong>时间范围：</strong><div id="output-time-range-val"></div> <div id="output-time-range"></div>
+<strong>行为：</strong><div id="output-behaviour"></div>
+
+过去<input type="text" id="time_range_val" placeholder="请输入文本" oninput="displayUserInput()">
+<div class="form-group">
+    <div class="col-sm-5">
+        <select id="time-range" oninput="displayUserInput()">
+            <option value='year'>
+            <div class ='option'>
+                <div id="time_range" value='year'></div>
+                年
+            </div>
+            </option>
+            <option value='month'>
+            <div class ='option'>
+                <div id="time_range" value='month'></div>
+                月
+            </div>
+            </option>
+            <option value='week'>
+            <div class ='option'>
+                <div id="time_range" value='week'></div>
+                星期
+            </div>
+            </option>
+            <option value='day'>
+            <div class ='option'>
+                <div id="time_range" value='day'></div>
+                天
+            </div>
+            </option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-5">
+        <select id="behaviour" oninput="displayUserInput()">
+            <option value='1'>
+            <div class ='option'>
+                购买量
+            </div>
+            </option>
+            <option value='1'>
+            <div class ='option'>
+                消费额
+            </div>
+            </option>
+            <option value='2'>
+            <div class ='option'>
+                退货量
+            </div>
+            </option>
+            <option value='3'>
+            <div class ='option'>
+                浏览量
+            </div>
+            </option>
+            <option value='4'>
+            <div class ='option'>
+                收藏量
+            </div>
+            </option>
+        </select>
+    </div>
+</div>
+
+
+
+<script>
+  function displayUserInput() {
+    var time_range_val = document.getElementById('time_range_val').value;
+    var time_range = document.getElementById('time-range').value;
+    var behaviour = document.getElementById('behaviour').value;
+
+    var output_time_range_val = document.getElementById('output-time-range-val');
+    var output_time_range = document.getElementById('output-time-range');
+    var output_behaviour = document.getElementById('output-behaviour');
+
+    output_time_range.textContent = time_range;
+    output_time_range_val.textContent = time_range_val;
+    output_behaviour.textContent = behaviour;
+  }
+  document.getElementById('fetch-data-btn').addEventListener('click', function() {
+          document.getElementById('result').textContent = 'received'
+
+          var time_range_val = document.getElementById('time_range_val').value;
+          var time_range = document.getElementById('time-range').value;
+          var behaviour = document.getElementById('behaviour').value;
+          var xhr = new XMLHttpRequest();
+          //var producttype = document.getElementById('input-producttype');
+          var url = '/dashboard/profile/get_records';
+          url += '?time_range=' + time_range + '&time_range_val=' + time_range_val;
+          url += '&behaviour=' + behaviour;
+          xhr.open('GET', url, true); // 发送 GET 请求到 /products 路径
+          xhr.setRequestHeader("Content-type", "application/json");
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+              if (xhr.status === 200) {
+                //document.getElementById('data-container').innerHTML = xhr.responseText; // 将返回的数据显示在页面上
+                var response = JSON.parse(xhr.responseText);
+                document.getElementById('result').textContent = xhr.responseText;
+              } else {
+                //console.error('请求失败');
+                document.getElementById('result').textContent = 'failed'
+              }
+            }
+          };
+          xhr.send();
+        });
+</script>

@@ -28,6 +28,7 @@ Rails.application.routes.draw do
       controller :profile do
         get :user_message
         put :update_message
+        get :get_records
       end
     end
     resources :favorites
