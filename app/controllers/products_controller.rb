@@ -3,12 +3,19 @@ require 'will_paginate/array'
 class ProductsController < ApplicationController
 
   def show
+
+
+
     @user_id = session[:user_id]
     @categories = Category.grouped_data
     @product = Product.find(params[:id])
     @product_colors = @product.product_colors.order(weight: "desc")
     @product_sizes = @product.product_sizes.order(weight: "desc")
     @is_favorite = false
+
+
+    @products_like = @product.category.products.onShelf.page(params[:page]).per_page(params[:per_page] || 12)
+                        .order("id desc")
 
     if not logged_in?
       @is_favorite = false

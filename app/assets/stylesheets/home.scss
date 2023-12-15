@@ -282,3 +282,43 @@ th {
   background-color: rgba(130, 108, 190, 0.39);
   color: #fff;
 }
+
+
+body {
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--app-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.breadcrumb {
+  margin-top: 15px
+}
+.breadcrumb li {
+  display: inline-block
+}
+.breadcrumb a {
+  color: #b5b6bd;
+  display: inline-block;
+  margin-right: 5px;
+  padding-right: 14px;
+  position: relative
+}
+.breadcrumb a:hover {
+  color: #086fcf
+}
+.breadcrumb a:after {
+  color: #b5b6bd;
+  content: ">";
+  position: absolute;
+  right: 0
+}
+
+
+
+
+
+
+

@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your Product Page</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
   <!-- Additional styles for this page -->
   <style>
       .thumbnail {
@@ -71,21 +73,40 @@
         <div class="alert alert-danger"><%= flash[:error] %></div>
       <% end %>
 
-      <div class="thumbnail">
-        <% if favorite.main_favorite_image.nil? %>
-          <%= link_to image_tag("no_product.jpg", style: "width: 200px; height: 200px; display: block", alt: favorite.product.title), product_path(favorite.product) %>
-        <% else %>
-          <%= link_to image_tag(favorite.main_favorite_image, style: "width: 200px; height: 200px; display: block", alt: favorite.product.title), product_path(favorite.product) %>
-        <% end %>
+      <div class="wrapper">
+        <div class="container">
+          <div class="top">
 
-<!--        <div class="caption">-->
-          <h3><%= link_to favorite.product.title, product_path(favorite.product), class: 'title' %></h3>
-          <strong>¥<%= favorite.product.price %></strong> <span class="msrp">¥<%= favorite.product.msrp %></span>
-          <h4>
-            --------------------商品描述---------------------</h4>
-          <h4><%= link_to favorite.product.description, product_path(favorite.product), class: 'title' %></h4>
-<!--        </div>-->
+            <% if favorite.main_favorite_image.nil? %>
+              <%= link_to image_tag("no_product.jpg", style: "width: 200px; height: 200px; display: block", alt: favorite.product.title), product_path(favorite.product) %>
+            <% else %>
+              <%= link_to image_tag(favorite.main_favorite_image, style: "width: 200px; height: 200px; display: block", alt: favorite.product.title), product_path(favorite.product) %>
+            <% end %>
 
+
+          </div>
+          <div class="bottom">
+            <div class="left">
+              <div class="details">
+                <h1><%= link_to favorite.product.title, product_path(favorite.product), class: 'title' %></h1>
+                <p><strong>¥<%= favorite.product.price %></strong> <span class="msrp">¥<%= favorite.product.msrp %></span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="inside">
+          <div class="icon"><i class="material-icons">info_outline</i></div>
+          <div class="contents">
+            <table>
+              <tr>
+                <th>商品描述</th>
+              </tr>
+              <tr>
+                <td><%= favorite.product.description %></td>
+              </tr>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
 
