@@ -1,12 +1,18 @@
 class Admin::ProductItemsController < Admin::AdminController
-  before_action :get_product, get_colors, get_sizes
+  before_action :get_product
+  before_action :get_colors, :get_sizes
+  before_action :get_item ,only: [:update]
 
   def new
-    @product_item = Product.new
+    @product_item = ProductItem.new
   end
 
   def create
-    @product_item = @product.product_items.new(params.require(:product_item).permit!)
+    puts params
+    puts params[:size_id]
+
+    puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    @product_item = ProductItem.new(params.require(:product_item).permit!)
     if @product_item.save
       @product.product_items << @product_item
       flash[:success] = "商品创建成功"
@@ -22,7 +28,15 @@ class Admin::ProductItemsController < Admin::AdminController
                              .per_page(params[:per_page] || 10).order(id: "desc")
   end
 
+  def edit
+    @product_item = @product.product_items.find(params[:id])
+    render action: :new
+  end
+
   def update
+
+    puts @product_item
+
     @product_item.attributes = params.require(:product_item).permit!
     if @product_item.save
       redirect_to admin_product_product_items_path(product_id: @product), notice: "修改成功"
@@ -46,10 +60,16 @@ class Admin::ProductItemsController < Admin::AdminController
   end
 
   def get_colors
-    @colors = Color.all
+    get_product
+    @colors = @product.product_colors
   end
 
   def get_sizes
-    @sizes = Size.all
+    get_product
+    @sizes = @product.product_sizes
+  end
+
+  def get_item
+    @product_item = @product.product_items.find(params[:id])
   end
 end

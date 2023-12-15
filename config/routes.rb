@@ -4,13 +4,14 @@ Rails.application.routes.draw do
   resources :users
   resources :sessions
   delete '/logout' => 'sessions#destroy', as: :logout
+  get '/products/get_product_item' => 'products#get_product_item', as: :get_product_item
 
   resources :products, only: [:show] do
     get :search, on: :collection
+    resources :favorites
   end
   resources :categories
   resources :cart_items
-  resources :favorites
   resources :addresses do
     member do
       put :set_default_address
@@ -45,11 +46,13 @@ Rails.application.routes.draw do
     root 'transaction_orders#index'
     resources :sessions
     resources :categories
-    resources :sizes
-    resources :colors
+
+    post 'sizes/:product_id/select' => 'sizes#select', as: :select_size
+    post 'colors/:product_id/select' => 'colors#select', as: :select_color
     resources :products do
       resources :product_items
-      resources :product_images
+      resources :sizes
+      resources :colors
     end
     resources :transaction_orders do
       member do

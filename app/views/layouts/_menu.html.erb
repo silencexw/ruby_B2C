@@ -19,7 +19,7 @@
       <%= form_tag search_products_path, method: :get, class: "navbar-form navbar-left" do %>
         <div class="form-group">
           <% if @category %>
-            <input type="hidden" name="category_id" value="<%= @category.id %>" />
+            <input type="hidden" name="category_id" value="<%= @category.id %>"/>
           <% end %>
           <input type="text" name="w" value="<%= params[:w] %>" class="form-control search-input" placeholder="<%= @category ? "在 #{@category.title} 下搜索.." : '搜索整站商品..' %>">
         </div>
@@ -39,9 +39,13 @@
           <li><a href="<%= new_session_path %>">登录</a></li>
         <% end -%>
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人中心 <span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人中心
+            <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><%= link_to "我的订单", dashboard_transaction_orders_path(order_status: '待付款') %></li>
+
+            <li><%= link_to "我的收藏", dashboard_favorites_path %></li>
+
             <li><a href="<%= dashboard_addresses_path %>">我的收货地址</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="<%= dashboard_user_message_path %>">修改个人信息</a></li>
@@ -54,3 +58,80 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+
+
+<style>
+    /* Navbar Styles */
+    .navbar {
+        background-color: #ffffff; /* Navbar background color */
+        border-bottom: 1px solid #ddd; /* Border color */
+        margin-bottom: 0;
+        border-radius: 0; /* Optional: Adjust border radius if needed */
+    }
+
+    .navbar-default .navbar-brand {
+        color: #333; /* Navbar brand color */
+    }
+
+    .navbar-default .navbar-brand:hover,
+    .navbar-default .navbar-brand:focus {
+        color: #7fa0c6; /* Navbar brand color on hover/focus */
+    }
+
+    .navbar-default .navbar-nav > li > a {
+        color: #333; /* Navbar link color */
+    }
+
+    .navbar-default .navbar-nav > li > a:hover,
+    .navbar-default .navbar-nav > li > a:focus {
+        color: #6783a1; /* Navbar link color on hover/focus */
+    }
+
+    .navbar-default .navbar-nav > .active > a,
+    .navbar-default .navbar-nav > .active > a:hover,
+    .navbar-default .navbar-nav > .active > a:focus {
+        background-color: #81a9d5; /* Active link background color */
+        color: #fff; /* Active link text color */
+    }
+
+    .navbar-default .navbar-form .search-input {
+        width: 250px; /* Adjust the width of the search input */
+    }
+
+    .navbar-default .navbar-form .btn-default {
+        background-color: #007bff; /* Search button background color */
+        color: #fff; /* Search button text color */
+        border-color: #007bff; /* Search button border color */
+    }
+
+    .navbar-default .navbar-form .btn-default:hover,
+    .navbar-default .navbar-form .btn-default:focus {
+        background-color: #0056b3; /* Search button background color on hover/focus */
+        border-color: #0056b3; /* Search button border color on hover/focus */
+    }
+
+    .navbar-default .navbar-right > li > a {
+        color: #333; /* Navbar right link color */
+    }
+
+    .navbar-default .navbar-right > li > a:hover,
+    .navbar-default .navbar-right > li > a:focus {
+        color: #007bff; /* Navbar right link color on hover/focus */
+    }
+
+    /* Dropdown Styles */
+    .dropdown-menu {
+        border: 1px solid #ddd; /* Dropdown menu border color */
+    }
+
+    .dropdown-menu > li > a {
+        color: #333; /* Dropdown menu link color */
+    }
+
+    .dropdown-menu > li > a:hover,
+    .dropdown-menu > li > a:focus {
+        background-color: #f8f9fa; /* Dropdown menu link background color on hover/focus */
+        color: #333; /* Dropdown menu link color on hover/focus */
+    }
+
+</style>

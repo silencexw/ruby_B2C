@@ -13,48 +13,49 @@
     </div>
     <% @cart_items.each do |cart_item| %>
       <div class="media shopping-cart-row">
-        <% if cart_item.product.main_product_image.nil? %>
+        <% if cart_item.product_item.image.nil? %>
           <div class="media-left">
-            <%= image_tag "no_product.jpg", style: "width: 200px; height: 200px; display: block", class: 'media-object', alt: cart_item.product.title %>
+            <%= image_tag "no_product.jpg", style: "width: 200px; height: 200px; display: block", class: 'media-object', alt: cart_item.get_product.title %>
           </div>
         <% else %>
           <div class="media-left">
-            <%= image_tag cart_item.product.main_product_image.image, style: "width: 200px; height: 200px; display: block", class: 'media-object', alt: cart_item.product.title %>
+            <%= image_tag cart_item.product_item.image, style: "width: 200px; height: 200px; display: block", class: 'media-object', alt: cart_item.get_product.title %>
           </div>
         <% end %>
         <div class="media-body">
-          <h4 class="media-heading"><%= cart_item.product.title %></h4>
-          数量: <%= cart_item.amount %> 价格: ¥<%= cart_item.amount * cart_item.product.price %>
-          <% unless cart_item.size_id.nil? %>
-            <div> 尺寸: <%= size_name(cart_item.size_id) %></div>
+          <h4 class="media-heading"><%= cart_item.get_product.title %></h4>
+          数量: <%= cart_item.amount %> 价格: ¥<%= cart_item.amount * cart_item.product_item.msrp %>
+          <% unless cart_item.product_item.size_id.nil? %>
+            <div> 尺寸: <%= size_name(cart_item.product_item.size_id) %></div>
           <% end %>
-          <% unless cart_item.color_id.nil? %>
-            <div > 颜色: <%= raw get_color(cart_item.color_id) %></div>
+          <% unless cart_item.product_item.color_id.nil? %>
+            颜色:
+            <span class="var" style="background-color: <%= raw get_color(cart_item.product_item.color_id) %>;"></span>
           <% end %>
         </div>
       </div>
     <% end -%>
 
-    <br />
+    <br/>
     <div class="pull-right">
       <%= form_tag transaction_orders_path, method: :post, class: "create-transaction_order-form" do %>
-        <input type="hidden" name="address_id" />
-        <strong>总价: ¥<%= @cart_items.sum { |cart| cart.amount * cart.product.price } %></strong>
-        <input type="submit" value="确认订单" class="btn btn-danger btn-lg" />
+        <input type="hidden" name="address_id"/>
+        <strong>总价: ¥<%= @cart_items.sum { |cart| cart.amount * cart.product_item.msrp } %></strong>
+        <input type="submit" value="确认订单" class="btn btn-danger btn-lg"/>
       <% end %>
     </div>
 
     <div class="clearfix"></div>
-    <br />
-    <br />
-    <br />
-    <br />
+    <br/>
+    <br/>
+    <br/>
+    <br/>
   </div>
 </div>
 
 <%= content_for :javascripts do %>
   <script>
-      $.get('/addresses', function(data) {
+      $.get('/addresses', function (data) {
           $('#address_list').html(data);
       })
   </script>

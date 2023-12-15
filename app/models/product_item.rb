@@ -5,4 +5,6 @@ class ProductItem < ApplicationRecord
 
   belongs_to :size, optional: true
   belongs_to :color, optional: true
+
+
 end

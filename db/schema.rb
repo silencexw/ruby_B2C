@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_04_123141) do
+ActiveRecord::Schema.define(version: 2023_12_07_073158) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -81,37 +81,45 @@ ActiveRecord::Schema.define(version: 2023_12_04_123141) do
   end
 
   create_table "favorites", force: :cascade do |t|
-    t.integer "products_id", null: false
-    t.integer "users_id", null: false
+    t.integer "product_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["products_id"], name: "index_favorites_on_products_id"
-    t.index ["users_id"], name: "index_favorites_on_users_id"
+    t.index ["product_id"], name: "index_favorites_on_product_id"
+    t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
-  create_table "product_images", force: :cascade do |t|
-    t.integer "product_id"
-    t.integer "weight", default: 0
+  create_table "product_colors", force: :cascade do |t|
+    t.integer "product_id", null: false
+    t.integer "color_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "image"
-    t.index ["product_id", "weight"], name: "index_product_images_on_product_id_and_weight"
-    t.index ["product_id"], name: "index_product_images_on_product_id"
+    t.index ["color_id"], name: "index_product_colors_on_color_id"
+    t.index ["product_id"], name: "index_product_colors_on_product_id"
   end
 
   create_table "product_items", force: :cascade do |t|
     t.integer "product_id", null: false
     t.integer "color_id"
     t.integer "size_id"
-    t.string "design"
     t.decimal "msrp", precision: 10, scale: 2, default: "0.0"
     t.integer "amount", default: 0
     t.string "image"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["color_id"], name: "index_product_items_on_color_id"
+    t.index ["product_id", "size_id", "color_id"], name: "index_product_items_on_product_id_and_size_id_and_color_id"
     t.index ["product_id"], name: "index_product_items_on_product_id"
     t.index ["size_id"], name: "index_product_items_on_size_id"
+  end
+
+  create_table "product_sizes", force: :cascade do |t|
+    t.integer "product_id", null: false
+    t.integer "size_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["product_id"], name: "index_product_sizes_on_product_id"
+    t.index ["size_id"], name: "index_product_sizes_on_size_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -123,7 +131,6 @@ ActiveRecord::Schema.define(version: 2023_12_04_123141) do
     t.decimal "price", precision: 10, scale: 2, default: "0.0"
     t.boolean "has_color", default: false
     t.boolean "has_size", default: false
-    t.boolean "has_design", default: false
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -211,11 +218,15 @@ ActiveRecord::Schema.define(version: 2023_12_04_123141) do
   add_foreign_key "addresses", "users"
   add_foreign_key "cart_items", "product_items"
   add_foreign_key "cart_items", "users"
-  add_foreign_key "favorites", "products", column: "products_id"
-  add_foreign_key "favorites", "users", column: "users_id"
+  add_foreign_key "favorites", "products"
+  add_foreign_key "favorites", "users"
+  add_foreign_key "product_colors", "colors"
+  add_foreign_key "product_colors", "products"
   add_foreign_key "product_items", "colors"
   add_foreign_key "product_items", "products"
   add_foreign_key "product_items", "sizes"
+  add_foreign_key "product_sizes", "products"
+  add_foreign_key "product_sizes", "sizes"
   add_foreign_key "products", "categories"
   add_foreign_key "records", "products"
   add_foreign_key "records", "users"

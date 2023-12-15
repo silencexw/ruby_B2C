@@ -7,11 +7,27 @@ class CartItemsController < ApplicationController
   end
 
   def create
+
+    puts params
+
     if logged_in?
+
+      if params[:product_item_id].to_i < 0
+
+        nega = 0-params[:product_item_id].to_i
+
+        @product_item = ProductItem.find(nega)
+        @product = Product.find(@product_item.product_id)
+        flash[:error] = "暂无库存"
+        redirect_to product_path(@product)
+        return
+      end
+
       amount = params[:amount].to_i
       amount = amount <= 0 ? 1 : amount
 
       @product_item = ProductItem.find(params[:product_item_id])
+
       @product = Product.find(@product_item.product_id)
       @cart_item = CartItem.create_or_update!({
                                                 user_id: session[:user_id],
@@ -25,7 +41,6 @@ class CartItemsController < ApplicationController
       redirect_to new_session_path
     end
   end
-
 
   def update
     if @cart_item
@@ -43,10 +58,10 @@ class CartItemsController < ApplicationController
   end
 
   private
+
   def get_cart_item
     @cart_item = CartItem.find_by_user_id(session[:user_id])
-                                 .where(id: params[:id]).first
+                         .where(id: params[:id]).first
   end
-
 
 end

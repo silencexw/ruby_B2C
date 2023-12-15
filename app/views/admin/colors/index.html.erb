@@ -1,47 +1,194 @@
-<div>
-  <h1>产品颜色管理</h1>
+<div class="pull-right">
+  <%= link_to "new color", new_admin_product_color_path, class: "btn btn-primary" %>
+</div>
+
+<div class="container">
+  <h3>颜色表</h3>
 
   <% if @colors.any? %>
     <table class="table table-striped">
       <tr>
-        <th>名称</th>
+        <th>ID</th>
         <th>颜色</th>
-        <th>操作</th>
-        <th></th>
+        <th>名称</th>
+        <th>Edit</th>
       </tr>
 
       <% @colors.each do |color| %>
         <tr>
-          <td><%= color_name(color.color_id) %></td>
-          <td><%= raw get_color(color.color_id) %></td>
+          <td><%= color.id %></td>
           <td>
-            <%= link_to "删除", admin_product_color_path(product_id: @product, id: color), method: :delete, 'data-confirm': "确认删除吗?", class: "btn btn-sm btn-danger-small" %>
+            <div class="color-box" style="background-color: <%= color.hex_code %>;" data-color-id="<%= color.id %>">
+              <div class="checkmark"></div>
+            </div>
           </td>
+          <td>
+            <span class="color-name"><%= color.name %></span>
+          </td>
+          <td><%= link_to "kill color", admin_product_color_path(id: color.id), method: :delete, 'data-confirm': "确认删除吗?", class: "btn btn-danger" %></td>
         </tr>
       <% end %>
     </table>
   <% else %>
-    <p>暂无颜色可供管理。</p>
+    <p>暂无color可供管理。</p>
   <% end %>
+</div>
+<div class="container_changed">
+  <div class="table-container ">
+    <h3>已经添加的颜色</h3>
 
-  <h2>添加颜色</h2>
-  <% if @product.colors.any? %>
-    <p>已经选择了颜色：<%= @product.colors.map { |s| color_name(s.color_id) }.join(", ") %></p>
-  <% end %>
-  <%= form_with(model: @color, url: admin_product_colors_path(product_id: @product)) do |form| %>
-    <% colors = [1, 2, 3] %>
-    <div class="size-selection">
-      <% colors.each do |color| %>
-        <% unless @product.colors.exists?(color_id: color) %>
-          <div>
-            <%= form.check_box :colors, { multiple: true, checked: false }, color %>
-            <td><%= raw get_color(color) %></td>
-          </div>
+<!--    <div class="padding"></div>-->
+
+    <% if @product.product_colors.blank? %>
+      <p>此产品没有关联的color。</p>
+    <% else %>
+      <table class="table table-striped">
+        <tr>
+          <th>ID</th>
+          <th>名称</th>
+          <th>颜色</th>
+        </tr>
+
+        <% @product.product_colors.each do |product_color| %>
+          <% color = @colors.find { |s| s.id == product_color.color_id } %>
+          <% if color %>
+            <tr>
+              <td><%= color.id %></td>
+              <td>
+                <span class="color-name"><%= color.name %></span>
+              </td>
+              <td>
+                <div class="color-box" style="background-color: <%= color.hex_code %>;" data-color-id="<%= color.id %>">
+                  <div class="checkmark"></div>
+                </div>
+              </td>
+
+              <!--            <td><%#= link_to "kill color", admin_product_color_path(id: color.id), method: :delete, 'data-confirm': "确认删除吗?", class: "btn btn-danger" %></td>-->
+            </tr>
+          <% end %>
         <% end %>
-      <% end %>
-    </div>
+      </table>
+    <% end %>
 
-    <%= form.submit "添加颜色", class: "btn btn-primary" %>
-  <% end %>
+  </div>
+  <div class="table-container">
+    <h3>尚可添加的元素</h3>
+
+    <%= form_with(model: @color, url: admin_select_color_path, local: true) do |form| %>
+      <table class="table table-striped">
+        <tr>
+          <th>ID</th>
+          <th>名称</th>
+          <th>颜色</th>
+          <th>Select</th>
+        </tr>
+
+        <div class="color-selection">
+
+          <% @colors.each do |color| %>
+            <% unless @product.product_colors.exists?(color_id: color.id) %>
+              <tr>
+                <div class="color-option" data-color-id="<%= color.id %>">
+                  <td><%= color.id %></td>
+                  <td>
+                    <span><%= form.label color.name << "" %></span>
+                  </td>
+                  <td>
+                    <div class="color-box" style="background-color: <%= color.hex_code %>;">
+                      <div class="checkmark"></div>
+                    </div>
+                  </td>
+
+                  <td>
+                    <%= form.check_box :colors, { multiple: true, checked: false }, color.id %></td>
+                </div>
+            <% end %></tr>
+          <% end %>
+        </div>
+
+      </table>
+
+
+      <%= form.hidden_field :product_id, value: @product.id %>
+      <%= form.submit "添加color", class: "btn btn-primary" %>
+    <% end %>
+  </div>
 
 </div>
+
+
+<style>
+
+    .container_changed {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .table-container {
+        width: 48%; /* Adjust the width as needed, leaving space for margins, etc. */
+    }
+
+    .color-box {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .checkmark {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        background-color: #4CAF50; /* Green color for the checkmark */
+        display: none; /* Initially hide the checkmark */
+    }
+
+    .color-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .color-list li {
+        margin-bottom: 10px;
+    }
+
+    .color-option {
+        display: flex;
+        align-items: center;
+        /*margin-bottom: 10px;*/
+        cursor: pointer;
+    }
+
+    .color-option .color-box {
+        margin-right: 10px;
+    }
+
+    .color-name {
+        vertical-align: middle;
+        font-size: 16px;
+    }
+
+
+    /* Show the checkmark when the checkbox is checked */
+    .checkbox-hidden:checked + .color-box .checkmark {
+        display: block;
+    }
+
+    .table {
+        width: 100%;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+        border-spacing: 0;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
+

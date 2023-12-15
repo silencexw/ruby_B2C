@@ -1,0 +1,295 @@
+
+<div>
+  <h1><%= @product_item.new_record? ? "创建实体" : "编辑实体" %></h1>
+</div>
+
+<div class="form-body">
+  <%= form_for @product_item,
+               url: (@product_item.new_record? ? admin_product_product_items_path(@product)
+                       : admin_product_product_item_path(id: @product_item)),
+               method: (@product_item.new_record? ? 'post' : 'put'),
+               html: { class: 'form-horizontal' } do |f| %>
+
+
+    <% unless @product_item.errors.blank? %>
+      <div class="alert alert-danger">
+        <ul class="list-unstyled">
+          <% @product_item.errors.messages.values.flatten.each do |error| %>
+            <li><i class="fa fa-exclamation-circle"></i> <%= error %></li>
+          <% end -%>
+        </ul>
+      </div>
+    <% end -%>
+
+
+    <%= f.hidden_field :product_id, value: @product.id %>
+
+    <div class="container_changed">
+      <div class="table-container">
+        <table class="table table-striped">
+          <tr>
+            <th>ID</th>
+            <th>名称</th>
+            <th>颜色</th>
+          </tr>
+
+          <div class="color-selection">
+
+            <% @product.product_colors.each do |color| %>
+              <% unless @product.product_colors.exists?(color_id: color) %>
+                <tr>
+                  <div class="color-option" data-color-id="<%= color.color_id %>">
+                    <td>
+                      <%= color.color_id %>
+                    </td>
+                    <td>
+                      <span><%= get_color_name(color.color_id) %></span>
+                    </td>
+                    <td>
+                      <div class="color-box" style="background-color: <%= get_color(color.color_id) %>;">
+                        <div class="checkmark"></div>
+                      </div>
+                    </td>
+                  </div>
+                </tr>
+              <% end %>
+            <% end %>
+
+          </div>
+
+        </table>
+      </div>
+      <div class="bigger-container">
+        <div class="form-group">
+          <label for="color_id" class="col-sm-2 control-label">颜色:*</label>
+          <div class="col-sm-5">
+            <%#= f.number_field :color_id, class: "form-control" %>
+            <%= f.collection_select :color_id, get_colors(@product.product_colors), :id, :name, { include_blank: '请选择颜色' }, { class: "form-control" } %>
+
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <label for="size_id" class="col-sm-2 control-label">大小:*</label>
+          <div class="col-sm-5">
+            <%= f.collection_select :size_id, get_sizes(@product.product_sizes), :id, :name, { include_blank: '请选择尺寸' }, { class: "form-control" } %>
+
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="msrp" class="col-sm-2 control-label">原价:*</label>
+          <div class="col-sm-5">
+            <%= f.number_field :msrp, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="amount" class="col-sm-2 control-label">库存:*</label>
+          <div class="col-sm-5">
+            <%= f.number_field :amount, class: "form-control" %>
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <label for="image" class="col-sm-2 control-label">图片:*</label>
+          <div class="col-sm-5">
+            <%= f.file_field :image, class: "form-control" %>
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-8">
+
+            <%= f.submit (@product_item.new_record? ? "新建实体" : "编辑实体"), class: "btn btn-success" %>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  <% end %>
+
+</div>
+
+<style>
+    .form-body {
+        margin: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    select,
+    input[type="text"],
+    textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+    }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+
+    .fa-exclamation-circle {
+        color: #721c24;
+        margin-right: 5px;
+    }
+
+
+    .container_changed {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .table-container {
+        width: 30%; /* Adjust the width as needed, leaving space for margins, etc. */
+    }
+
+    .bigger-container {
+        width: 60%;
+    }
+
+
+    .color-box {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .checkmark {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        background-color: #4CAF50; /* Green color for the checkmark */
+        display: none; /* Initially hide the checkmark */
+    }
+
+    .color-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .color-list li {
+        margin-bottom: 10px;
+    }
+
+    .color-option {
+        display: flex;
+        align-items: center;
+        /*margin-bottom: 10px;*/
+        cursor: pointer;
+    }
+
+    .color-option .color-box {
+        margin-right: 10px;
+    }
+
+    .color-name {
+        vertical-align: middle;
+        font-size: 16px;
+    }
+
+
+    /* Show the checkmark when the checkbox is checked */
+    .checkbox-hidden:checked + .color-box .checkmark {
+        display: block;
+    }
+
+    .table {
+        width: 100%;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+        border-spacing: 0;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<script>
+    // import $ from 'jquery';
+    //
+    // $(document).ready(function() {
+    //     $('.color-select option:not(:first)').each(function() {
+    //         var hexCode = $(this).val();
+    //         $(this).addClass('color-option');
+    //         $(this).css('background-color', hexCode);
+    //     });
+    // });
+
+
+    let size_id = 0;
+    let color_id = 0;
+    document.querySelectorAll('input[name="option-size"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+
+            document.querySelector('input[name="size_id"]').value = this.value;
+
+            size_id = this.value;
+            document.getElementById("item_size").innerHTML = parseInt(size_id, 10);
+        });
+    });
+
+    // 当用户选择不同颜色时更新 color_id 的值
+    document.querySelectorAll('input[name="option-color"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+
+            document.querySelector('input[name="color_id"]').value = this.value;
+
+            color_id = this.value;
+            document.getElementById("item_color").innerHTML = parseInt(color_id, 10);
+        });
+    });
+</script>

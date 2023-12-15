@@ -2,7 +2,7 @@ class Dashboard::FavoritesController < Dashboard::DashboardController
   before_action :get_favorite, only: [:destroy]
 
   def index
-    @favorites = Favorite.find_by_user_id(session[:user_id])
+    @favorites = Favorite.where(user_id: session[:user_id])
                          .order(id: "desc").includes(:product)
   end
 
@@ -15,7 +15,6 @@ class Dashboard::FavoritesController < Dashboard::DashboardController
 
   private
   def get_favorite
-    @favorite = Favorite.find_by_user_id(session[:user_id])
-                        .where(id: params[:id]).first
+    @favorite = Favorite.find_by(user_id: session[:user_id], product_id: params[:product_id])
   end
 end

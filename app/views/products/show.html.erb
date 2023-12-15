@@ -1,9 +1,9 @@
-
 <div class="row">
-    <div class="col-lg-3">
-      <%= render 'shared/categories' %>
-    </div>
-    <div class="col-lg-9">
+  <div class="col-lg-2">
+<%= render 'shared/categories' %>
+  </div>
+
+<div class="col-lg-10">
 
       <ol class="breadcrumb">
         <li><a href="<%= root_path %>">Home</a></li>
@@ -11,111 +11,588 @@
         <li><a href="<%= category_path @product.category %>"><%= @product.category.title %></a></li>
         <li class="active"><%= @product.title %></li>
       </ol>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-      <div class="row">
-        <% @product.product_images.each do |product_image| %>
-          <div class="col-xs-6 col-md-3 mb-4">
-            <a href="#" class="thumbnail detail">
-              <div class="image-container">
-                <%= image_tag product_image.image, class: "resized-image", alt: "" %>
+  <section aria-label="Main content" role="main" class="product-detail">
+    <div itemscope itemtype="http://schema.org/Product">
+      <div class="shadow">
+        <div class="_cont detail-top">
+          <div class="cols">
+            <div class="left-col">
+
+              <a class="thumbnail detail">
+                <div class="image-container">
+                  <img id="inventory_image" alt="Inventory Image" class="resized-image" src="<%= rails_blob_path(@product.product_items.first.image, only_path: true) %>">
+                </div>
+              </a>
+
+              <div class="row">
+                <% @product.product_items.each do |pi| %>
+                  <% if pi.image.blank? %>
+                    <div class="small-image-container">
+                      <%= image_tag "no_product.jpg", class: "resized-image", alt: "" %>
+                    </div>
+                  <% else %>
+                    <div class="col-xs-5 col-md-2 mb-2">
+                      <a class="small-thumbnail detail">
+                        <div class="small-image-container">
+                          <%= image_tag pi.image, class: "resized-image", alt: "" %>
+                        </div>
+                      </a>
+                    </div>
+                  <% end -%>
+                <% end -%>
               </div>
-            </a>
+
+            </div>
+            <div class="right-col">
+
+              <div class="button-container">
+                <h1 itemprop="name"><%= @product.title %></h1>
+
+                <hi class="white-text"> fuckfuckfuck</hi>
+
+                <% if @is_favorite %>
+
+                  <%= form_tag product_favorite_path(@product.id), method: :delete, 'data-confirm': "确认取消收藏吗?", class: " material-symbols-outlined" do %>
+                    <button class="btn-xs btn-warning">
+                      <span class="material-symbols-outlined">
+                        grade
+                      </span>
+                    </button>
+                  <% end -%>
+
+                <% else %>
+                  <form method="post" action="<%= product_favorites_path(@product.id) %>">
+                    <%= csrf_meta_tags %>
+                    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                    <button type="submit" class="btn-xs btn-success">
+                    <span class="material-symbols-outlined">
+                        grade
+                    </span>
+                    </button>
+
+
+                  </form>
+                <% end -%>
+              </div>
+
+              <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                <meta itemprop="priceCurrency" content="USD">
+                <link itemprop="availability" href="http://schema.org/InStock">
+                <div class="price-shipping">
+                  <div class="price" id="price-preview" quickbeam="price" quickbeam-price="800">
+                    ¥<%= @product.price %>
+                  </div>
+                  <span class="msrp" style="font-size: 16px;">¥<%= @product.msrp %></span>
+
+                </div>
+                <div class="swatches">
+                  <% unless @product.product_sizes.empty? and @product.product_colors.empty? %>
+                    <div>
+
+                      <% unless @product.product_sizes.empty? %>
+                        <div class="swatch clearfix" data-option-index="0" style="display: inline-block;">
+                          <div class="header">Size</div>
+                          <% @product.product_sizes.each_with_index do |size, index| %>
+                            <div class="swatch-element plain available">
+
+                              <input id="swatch-<%= size.size_id %>" type="radio" name="option-size" value=<%= size.size_id %>
+
+                                  <% if index == 0 %>checked="checked"
+                                     <% end %> />
+
+                              <label for="swatch-<%= size.size_id %>">
+                                <%= size_name(size.size_id) %>
+                              </label>
+
+                            </div>
+                          <% end %>
+                        </div>
+                      <% end %>
+
+                      <% unless @product.product_colors.empty? %>
+                        <div class="swatch clearfix" data-option-index="1" style="display: inline-block;">
+                          <div class="header">Color</div>
+                          <% @product.product_colors.each_with_index do |color, index| %>
+                            <div class="swatch-element color available">
+                              <input id="swatch-color-<%= color.color_id %>" type="radio" name="option-color" value="<%= color.color_id %>"
+                                     <% if index == 0 %>checked="checked"
+                                     <% end %> />
+                              <label for="swatch-color-<%= color.color_id %>">
+                                <span class="var" style="background-color: <%= Color.find_by(id: color.color_id)&.hex_code %>;"></span>
+                              </label>
+                            </div>
+                          <% end %>
+                        </div>
+                      <% end %>
+
+                    </div>
+                  <% end %>
+
+                </div>
+
+
+                <form method="post" action="<%= cart_items_path %>">
+                  <%= csrf_meta_tags %>
+                  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                  <input type="hidden" name="product_item_id" value="<%= @product.product_items.first.id %>"/>
+
+                  <% unless @product.product_sizes.empty? %>
+                    <input type="hidden" name="size_id" value="<%= @product.product_sizes.first.size_id %>"/>
+                  <% end %>
+
+                  <% unless @product.product_colors.empty? %>
+                    <input type="hidden" name="color_id" value="<%= @product.product_colors.first.color_id %>"/>
+                  <% end %>
+
+                  <p>
+                    <label for="amount">Quantity:</label>
+                    <input type="text" name="amount" value="1"/>
+                  </p>
+
+                  <button type="submit" class="btn btn-primary" id="myButton">
+                    <span id="judge_submit"></span>
+                  </button>
+                </form>
+
+
+                <div class="tabs">
+                  <div class="tab-labels">
+                    <span data-id="1" class="active">Info</span>
+                    <span data-id="2">Brand</span>
+                  </div>
+                  <div class="tab-slides">
+                    <div id="tab-slide-1" itemprop="description" class="slide active">
+                      <%= @product.description %>
+                    </div>
+                    <div id="tab-slide-2" class="slide">
+                      Tony Hunfinger
+                    </div>
+                  </div>
+                </div>
+                <div class="social-sharing-btn-wrapper">
+                  <span id="social_sharing_btn">Share</span>
+                </div>
+              </div>
+            </div>
           </div>
-        <% end -%>
-        <% if @product.product_images.blank? %>
-          <div class="image-container">
-          <%= image_tag "no_product.jpg", class: "resized-image", alt: "" %>
-          </div>
-        <% end %>
+        </div>
       </div>
 
-      <h1><%= @product.title %></h1>
-
-      <ul class="list-unstyled">
-        <% if @product.amount.zero? %>
-          <li>库存: 商品已被卖完</li>
-        <% else %>
-          <li>库存: <%= @product.amount %></li>
-        <% end %>
-        <% unless @product.sizes.empty? and @product.colors.empty?%>
-        <div>
-          <% unless @product.sizes.empty? %>
-          <div class="swatch clearfix" data-option-index="0" style="display: inline-block;">
-              <div class="header">Size</div>
-              <% @product.sizes.each_with_index do |size, index| %>
-                <div class="swatch-element plain available">
-                  <input id="swatch-<%= size.size_id %>" type="radio" name="option-size" value="<%= size.size_id %>" <% if index == 0 %>checked="checked"<% end %> />
-                  <label for="swatch-<%= size.size_id %>">
-                    <%= size_name(size.size_id) %>
-                    <img class="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />
-                  </label>
-                </div>
-              <% end %>
-          </div>
-            <% end %>
-          <% unless @product.colors.empty? %>
-          <div class="swatch clearfix" data-option-index="1" style="display: inline-block;">
-              <div class="header">Color</div>
-              <% @product.colors.each_with_index do |color, index| %>
-                <div class="swatch-element color available">
-                  <input id="swatch-color-<%= color.color_id %>" type="radio" name="option-color" value="<%= color.color_id %>" <% if index == 0 %>checked="checked"<% end %> />
-                  <label for="swatch-color-<%= color.color_id %>">
-                    <%= raw get_color(color.color_id) %>
-                    <img class="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />
-                  </label>
-                </div>
-              <% end %>
-          </div>
-          <% end %>
-        </div>
-
-        <% end %>
-
-      </ul>
-
-
-      <strong style="font-weight: bold; font-size: 24px;">¥<%= @product.price %></strong>
-      <span class="msrp" style="font-weight: bold; font-size: 16px;">¥<%= @product.msrp %></span>
-
-      <% if @product.amount.zero? %>
-        <p><a href="#" class="btn btn-danger disabled">商品已售罄</a></p>
-      <% else %>
-        <form method="post" action="<%= cart_items_path %>">
-          <%= csrf_meta_tags %>
-          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-          <input type="hidden" name="product_id" value="<%= @product.id %>" />
-          <% unless @product.sizes.empty? %>
-          <input type="hidden" name="size_id" value="<%= @product.sizes.first.size_id %>" />
-            <% end %>
-            <% unless @product.colors.empty? %>
-          <input type="hidden" name="color_id" value="<%= @product.colors.first.color_id %>" />
-          <% end %>
-          <p>数量: <input type="text" name="amount" value="1" /></p>
-          <p><button type="submit" class="btn btn-primary">加入购物车</button></p>
-        </form>
-      <% end %>
-
-      <ul class="nav nav-tabs mt-5">
-        <li role="presentation" class="active"><a href="javascript:;">商品描述</a></li>
-      </ul>
-      <%= @product.description %>
 
     </div>
-  </div>
 
+  </section>
+
+</div>
+</div>
+
+
+
+<aside class="related">
+  <div class="_cont">
+    <h2>你可能也喜欢</h2>
+    <div class="collection-list cols-4" id="collection-list" data-products-per-page="4">
+
+
+      <% @products_like.first(3).each do |product| %>
+
+        <div class="col-sm-6 col-md-4">
+
+          <% if flash[:error].present? %>
+            <div class="alert alert-danger"><%= flash[:error] %></div>
+          <% end %>
+          <div class="product-box">
+            <div class="wrapper">
+              <div class="container">
+                <div class="top">
+
+                  <% if product.main_product_image.nil? %>
+                    <%= link_to image_tag("no_product.jpg", style: "width: 270px; height: 300px; display: block", alt: product.title), product_path(product) %>
+                  <% else %>
+                    <%= link_to image_tag(product.main_product_image, style: "width: 270px; height: 270px; display: block", alt: product.title), product_path(product) %>
+                  <% end %>
+
+
+                </div>
+                <div class="bottom">
+                  <div class="left">
+                    <div class="details">
+                      <h1><%= link_to product.title, product_path(product), class: 'title' %></h1>
+                      <p><strong>¥<%= product.price %></strong> <span class="msrp">¥<%= product.msrp %></span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="inside">
+                <div class="icon"><i class="material-icons">info_outline</i></div>
+                <div class="contents">
+                  <table>
+                    <tr>
+                      <th>商品描述</th>
+                    </tr>
+                    <tr>
+                      <td><%= product.description %></td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      <% end -%>
+    </div>
+
+    <p>
+      <a href="<%= root_path %>" class="centered-btn btn btn-primary" id="more-products-wrap">More products</a>
+    </p>
+
+    <p></p>
+
+  </div>
+</aside>
+<h1 class="white-text">
+  -------
+</h1>
+
+
+<p class="white-text">Size is: <span id="item_size"></span></p>
+<p class="white-text">Color is: <span id="item_color"></span></p>
+
+<div class="white-text" id="inventory_id"></div>
+<div class="white-text" id="inventory_amount"></div>
+<div class="white-text" id="submit_info"></div>
+
+<!--</div>-->
 
 <script>
+    let product_item_id = <%= @product.product_items.first.id %>;
+    let product_id = <%= @product.id %>;
+    let size_id = <%= @product.product_items.first.size.id %>;
+    let color_id = <%= @product.product_items.first.color.id %>;
+
+
+    document.getElementById("item_size").innerHTML = parseInt(size_id, 10);
+    document.getElementById("item_color").innerHTML = parseInt(color_id, 10);
+    document.getElementById("judge_submit").innerHTML = '加入购物车';
+
     // 当用户选择不同尺码时更新 size_id 的值
-    document.querySelectorAll('input[name="option-size"]').forEach(function(radio) {
-        radio.addEventListener('change', function() {
+    document.querySelectorAll('input[name="option-size"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+
             document.querySelector('input[name="size_id"]').value = this.value;
+
+            size_id = this.value;
+            document.getElementById("item_size").innerHTML = parseInt(size_id, 10);
+            updateInventory()
         });
     });
 
     // 当用户选择不同颜色时更新 color_id 的值
-    document.querySelectorAll('input[name="option-color"]').forEach(function(radio) {
-        radio.addEventListener('change', function() {
+    document.querySelectorAll('input[name="option-color"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+
             document.querySelector('input[name="color_id"]').value = this.value;
+
+            color_id = this.value;
+            document.getElementById("item_color").innerHTML = parseInt(color_id, 10);
+            updateInventory()
         });
     });
+
+    function updateInventory() {
+        var size_id = parseInt(document.getElementById("item_size").innerHTML, 10);
+        var color_id = parseInt(document.getElementById("item_color").innerHTML, 10);
+
+        // 使用 AJAX 请求向服务器发送尺寸和颜色的值
+        $.ajax({
+            type: "GET",
+            url: "/products/get_product_item",
+            data: {product_id: product_id, size_id: size_id, color_id: color_id},
+            dataType: "json",
+            success: function (response) {
+
+                if (false === response.flag) {
+                    document.getElementById("judge_submit").innerHTML = '暂无库存'
+                    document.getElementById("inventory_amount").innerText = '别看了sb';
+                    document.querySelector('input[name="product_item_id"]').value = -product_item_id;
+                    document.getElementById("inventory_image").src = "<%= asset_path("no_product.jpg") %>";
+
+                    var button = document.getElementById("myButton");
+
+                    button.className = "btn btn-danger"
+                    return
+                }
+
+                var inventoryAmount = response.inventory_amount;
+                var inventoryImage = response.inventory_image;
+
+                product_item_id = response.inventory_id;
+
+
+                document.getElementById("judge_submit").innerHTML = '加入购物车'
+                document.getElementById("inventory_id").innerText = 'item_id: ' + product_item_id;
+                document.getElementById("inventory_amount").innerText = '库存: ' + inventoryAmount;
+                document.getElementById("inventory_image").src = inventoryImage;
+
+
+                document.querySelector('input[name="product_item_id"]').value = product_item_id;
+                document.querySelector('input[name="size_id"]').value = size_id;
+                document.querySelector('input[name="color_id"]').value = color_id;
+
+                document.getElementById("submit_info").innerHTML = 'id: ' + product_item_id + ", size: " + size_id + ", color: " + color_id;
+
+                document.getElementById("myButton").className = "btn btn-primary"
+
+            },
+            error: function () {
+                console.error("Failed to fetch inventory data.");
+            }
+        });
+    }
+
 </script>
+
+<style>
+    .product-detail {
+        padding-top: 15px
+    }
+
+    .product-detail .shadow {
+        -moz-box-shadow: rgba(17, 17, 18, 0.04) 0 2px 4px, rgba(19, 20, 20, 0.06) 0 1px 1px;
+        -webkit-box-shadow: rgba(17, 17, 18, 0.04) 0 2px 4px, rgba(19, 20, 20, 0.06) 0 1px 1px;
+        box-shadow: rgba(17, 17, 18, 0.04) 0 2px 4px, rgba(19, 20, 20, 0.06) 0 1px 1px;
+        margin-bottom: 2px
+    }
+
+    .product-detail .cols {
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 30px 0 50px
+    }
+
+    .product-detail .cols:after {
+        content: " ";
+        display: block;
+        clear: both
+    }
+
+    .product-detail .left-col {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 25px;
+        width: 50.27586%;
+        background: #f3fdf6;
+        float: left;
+        max-width: 80%;
+        margin-left: auto;
+    }
+
+    .product-detail .left-col:after {
+        content: " ";
+        display: block;
+        clear: both
+    }
+
+    .product-detail .left-col .thumbs a {
+        -moz-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+        -webkit-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+        -moz-border-radius: 1px;
+        -webkit-border-radius: 1px;
+        border-radius: 1px;
+        border: 1px solid #e2e2e3;
+        display: block;
+        margin-bottom: 8px;
+        position: relative;
+        width: 100%
+    }
+
+    .product-detail .left-col .thumbs a.active {
+        border-color: #086fcf
+    }
+
+    .product-detail .left-col .thumbs a.active:hover {
+        border-color: #086fcf
+    }
+
+    .product-detail .left-col .thumbs a:hover {
+        border-color: #b5b6bd
+    }
+
+    .product-detail .right-col {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background: #fcfcf6;
+        padding: 25px;
+        width: 40.27586%;
+        float: right;
+        margin-right: 0
+    }
+
+    .product-detail h1 {
+        font-size: 184.61538%;
+        line-height: 141.66667%;
+    }
+
+    .product-detail a {
+        font-size: 100%;
+        line-height: 123.07692%;
+        color: #b5b6bd;
+        text-decoration: underline
+    }
+
+    .product-detail a:hover {
+        color: #086fcf
+    }
+
+    .product-detail .price-shipping {
+        border-bottom: 1px solid #edeff2;
+        padding-bottom: 14px
+    }
+
+    .product-detail .price-shipping a {
+        display: block;
+        float: left;
+        margin: 19px 0 0 25px
+    }
+
+    .product-detail .price {
+        font-size: 369.23077%;
+        line-height: 108.33333%;
+        color: #086fcf;
+        float: left;
+        letter-spacing: -2px
+    }
+
+    .product-detail .price del {
+        font-size: 54.16667%;
+        line-height: 200%;
+        color: #b5b6bd
+    }
+
+    .related {
+        background-color: #f7f7fa;
+        padding: 40px 0 85px
+    }
+
+    .related h2 {
+        font-size: 184.61538%;
+        line-height: 150%;
+        text-align: center
+    }
+
+    .related .collection-list {
+        margin-top: 26px
+    }
+
+    .spinner input {
+        border: 0 none;
+        color: #16161a;
+        display: block;
+        float: left;
+        font-size: 14px;
+        height: 17px !important;
+        line-height: 17px !important;
+        margin-left: 1px;
+        padding-bottom: 0;
+        padding-top: 0;
+        text-align: right;
+        width: 30px
+    }
+
+    .tabs {
+        margin: 30px 0
+    }
+
+    .tabs .tab-labels {
+        position: relative;
+        top: 1px;
+        z-index: 100
+    }
+
+    .tabs .tab-labels span {
+        font-family: "montserratbold", sans-serif;
+        font-size: 100%;
+        line-height: 123.07692%;
+        -moz-border-radius: 1px;
+        -webkit-border-radius: 1px;
+        border-radius: 1px;
+        border: 1px solid #fff;
+        border-bottom: 0 none;
+        color: #086fcf;
+        cursor: pointer;
+        display: block;
+        float: left;
+        padding: 7px 15px 9px;
+        text-transform: uppercase
+    }
+
+    .tabs .tab-labels span.active {
+        background-color: #fff;
+        border-color: #edeff2;
+        color: #16161a
+    }
+
+    .tabs .tab-slides {
+        font-size: 100%;
+        line-height: 184.61538%;
+        border-top: 1px solid #edeff2;
+        padding-top: 10px;
+        position: relative
+    }
+
+    .tabs .tab-slides > div {
+        display: none
+    }
+
+    .tabs .tab-slides > div.active {
+        display: block
+    }
+
+    .social-sharing-btn-wrapper {
+        display: none
+    }
+
+
+</style>
+
+<style>
+    body {
+        overflow-y: auto; /* 允许垂直滚动 */
+    }
+
+    .centered-btn {
+        position: absolute;
+        top: 160%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        /* 可选：为按钮添加其他样式，例如 padding、font-size 等 */
+    }
+
+    .white-text {
+        color: white;
+    }
+
+    .button-container {
+        display: flex;
+        align-items: center;
+    }
+</style>
+
+<style>
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 5,
+        'wght' 500,
+        'GRAD' 1,
+        'opsz' 0
+    }
+</style>

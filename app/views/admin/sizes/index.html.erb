@@ -1,45 +1,134 @@
-<div>
-  <h1>产品尺寸管理</h1>
+<div class="pull-right">
+  <%= link_to "new size", new_admin_product_size_path, class: "btn btn-primary" %>
+</div>
+
+<div class="container">
+  <h3>所有产品尺寸</h3>
 
   <% if @sizes.any? %>
     <table class="table table-striped">
       <tr>
+        <th>ID</th>
         <th>名称</th>
-        <th>操作</th>
-        <th></th>
+        <th>权重</th>
+        <th>Edit</th>
       </tr>
 
       <% @sizes.each do |size| %>
         <tr>
-          <td><%= size_name(size.size_id) %></td>
-          <td>
-            <%= link_to "删除", admin_product_size_path(product_id: @product, id: size), method: :delete, 'data-confirm': "确认删除吗?", class: "btn btn-sm btn-danger-small" %>
-          </td>
+          <td><%= size.id %></td>
+          <td><%= size.name %></td>
+          <td><%= size.weight %></td>
+          <td><%= link_to "kill size", admin_product_size_path(id: size.id), method: :delete, 'data-confirm': "确认删除吗?", class: "btn btn-danger" %></td>
         </tr>
       <% end %>
     </table>
   <% else %>
     <p>暂无尺寸可供管理。</p>
   <% end %>
-
-  <h2>添加尺寸</h2>
-  <% if @product.sizes.any? %>
-    <p>已经选择了尺寸：<%= @product.sizes.map { |s| size_name(s.size_id) }.join(", ") %></p>
-  <% end %>
-  <%= form_with(model: @size, url: admin_product_sizes_path(product_id: @product)) do |form| %>
-    <% sizes = [1, 2, 3, 4] %>
-    <div class="size-selection">
-      <% sizes.each do |size| %>
-        <% unless @product.sizes.exists?(size_id: size) %>
-          <div>
-            <%= form.check_box :sizes, { multiple: true, checked: false }, size %>
-            <%= form.label size, size_name(size) %>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
-
-    <%= form.submit "添加尺寸", class: "btn btn-primary" %>
-  <% end %>
-
 </div>
+
+<div class="container_changed">
+  <div class="table-container">
+    <h3>已经添加的尺寸</h3>
+    <% if @product.product_sizes.blank? %>
+      <p>此产品没有关联的尺寸。</p>
+    <% else %>
+      <table class="table table-striped">
+        <tr>
+          <th>ID</th>
+          <th>名称</th>
+        </tr>
+
+        <% @product.product_sizes.each do |product_size| %>
+          <% size = @sizes.find { |s| s.id == product_size.size_id } %>
+          <% if size %>
+            <tr>
+              <td><%= size.id %></td>
+              <td>
+                <span> <%= size.name %></span>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </table>
+    <% end %>
+  </div>
+  <div class="table-container">
+    <h3>尚可添加的尺寸</h3>
+    <%= form_with(model: @size, url: admin_select_size_path, local: true) do |form| %>
+      <table class="table table-striped">
+        <tr>
+          <th>ID</th>
+          <th>名称</th>
+          <th>Select</th>
+        </tr>
+
+        <div class="size-selection">
+          <% @sizes.each do |size| %>
+            <% unless @product.product_sizes.exists?(size_id: size.id) %>
+              <tr>
+                <td><%= size.id %></td>
+                <td><%= size.name %></td>
+                <td>
+                  <%= form.check_box :sizes, { multiple: true, checked: false }, size.id %>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+        </div>
+
+      </table>
+
+      <%= form.hidden_field :product_id, value: @product.id %>
+      <%= form.submit "添加尺寸", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
+
+
+<style>
+
+    .padding {
+        margin-top: 20px;
+    }
+
+    .container_changed {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .table-container {
+        width: 48%; /* Adjust the width as needed, leaving space for margins, etc. */
+    }
+
+    .checkmark {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        background-color: #4CAF50; /* Green color for the checkmark */
+        display: none; /* Initially hide the checkmark */
+    }
+
+
+    /* Show the checkmark when the checkbox is checked */
+    .checkbox-hidden:checked + .color-box .checkmark {
+        display: block;
+    }
+
+    .table {
+        width: 100%;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+        border-spacing: 0;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+
