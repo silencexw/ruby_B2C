@@ -36,8 +36,14 @@ class Dashboard::ProfileController < Dashboard::DashboardController
     # 对应行为的record
     @records = @records.where(behaviour: params[:behaviour])
     # 用户
-    unless params[:user_id].nil?
-      @records = @records.where(user_id: params[:user_id])
+    unless params[:user_name].nil?
+      @user = User.find_by(username: params[:user_name])
+      if (@user == nil) 
+        @records = @records
+      else
+        @records = @records.where(user_id: @user.id)
+      end
+      # @records = @records.where(user_id: params[:user_id])
     end
     # 产品
     unless params[:product_id].nil?
@@ -49,6 +55,10 @@ class Dashboard::ProfileController < Dashboard::DashboardController
     end
 
     render json: @records
+  end
+
+  def get_stat
+    render 'index'
   end
 
   private
@@ -72,7 +82,7 @@ class Dashboard::ProfileController < Dashboard::DashboardController
   end
 
   def get_records_params
-    params.require(:profile).permit(:time_range, :time_range_val, :behaviour, :user_id, :product_id, 
+    params.require(:profile).permit(:time_range, :time_range_val, :behaviour, :user_name, :product_id, 
       :category_id)
   end
 

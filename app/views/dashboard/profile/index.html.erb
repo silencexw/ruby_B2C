@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+Result: <div id="result"></div>
+
+<strong>时间范围：</strong><div id="output-time-range-val"></div> <div id="output-time-range"></div>
+<strong>行为：</strong><div id="output-behaviour"></div>
+
+Map Type: <div id="map-type"></div>
+
+<div class='container'>
+    <div>
+        <button id="fetch-data-btn">获取数据</button>
+    </div>
+
+    <div>
+        <table class="table table-striped">
+            <tr>
+                <th>名称</th>
+                <th>值</th>
+            </tr>
+            
+            <tr>
+                <td>目标用户</td>
+                <td><input type='text' style='width: 400px;' id='username' placeholder="请输入用户名，为空则默认针对所有用户" oninput="displayUserInput()"></td>
+            </tr>
+            <tr>
+                <td>时间值</td>
+                <td><input type="number" min="1" id="time_range_val" placeholder="默认值为1" oninput="displayUserInput()"></td>
+            </tr>
+            <tr>
+                <td>时间单位（选择'无'时生成饼图）</td>
+                <td>
+                    <select id="time-range" oninput="displayUserInput()">
+                        <option value='year'>
+                        <div class ='option'>
+                            <div id="time_range" value='year'></div>
+                            年
+                        </div>
+                        </option>
+                        <option value='month'>
+                        <div class ='option'>
+                            <div id="time_range" value='month'></div>
+                            月
+                        </div>
+                        </option>
+                        <option value='week'>
+                        <div class ='option'>
+                            <div id="time_range" value='week'></div>
+                            星期
+                        </div>
+                        </option>
+                        <option value='day'>
+                        <div class ='option'>
+                            <div id="time_range" value='day'></div>
+                            天
+                        </div>
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>时间粒度</td>
+                <td>
+                    <select id="time-gran" oninput="displayUserInput()">
+                        <option value=''>
+                        <div class = 'option'>
+                            无
+                        </div>
+                        </option>
+                        <option value='hour'>
+                        <div class ='option'>
+                            小时
+                        </div>
+                        </option>
+                        <option value='day'>
+                        <div class ='option'>
+                            日
+                        </div>
+                        </option>
+                        <option value='week'>
+                        <div class ='option'>
+                            周
+                        </div>
+                        </option>
+                        <option value='month'>
+                        <div class ='option'>
+                            月
+                        </div>
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>行为</td>
+                <td>
+                    <select id="behaviour" oninput="displayUserInput()">
+                        <option value='1'>
+                        <div class ='option'>
+                            购买量
+                        </div>
+                        </option>
+                        <option value='5'>
+                        <div class ='option'>
+                            消费额
+                        </div>
+                        </option>
+                        <option value='2'>
+                        <div class ='option'>
+                            退货量
+                        </div>
+                        </option>
+                        <option value='3'>
+                        <div class ='option'>
+                            浏览量
+                        </div>
+                        </option>
+                        <option value='4'>
+                        <div class ='option'>
+                            收藏量
+                        </div>
+                        </option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<!--
+<div class="form-group">
+    <div class="col-sm-5">
+        <select id="time-range" oninput="displayUserInput()">
+            <option value='year'>
+            <div class ='option'>
+                <div id="time_range" value='year'></div>
+                年
+            </div>
+            </option>
+            <option value='month'>
+            <div class ='option'>
+                <div id="time_range" value='month'></div>
+                月
+            </div>
+            </option>
+            <option value='week'>
+            <div class ='option'>
+                <div id="time_range" value='week'></div>
+                星期
+            </div>
+            </option>
+            <option value='day'>
+            <div class ='option'>
+                <div id="time_range" value='day'></div>
+                天
+            </div>
+            </option>
+        </select>
+    </div>
+</div>
+-->
+
+<!--
+时间粒度
+<div class="form-group">
+    <div class="col-sm-5">
+        <select id="time-gran" oninput="displayUserInput()">
+            <option value=''>
+            <div class = 'option'>
+                无
+            </div>
+            </option>
+            <option value='hour'>
+            <div class ='option'>
+                小时
+            </div>
+            </option>
+            <option value='day'>
+            <div class ='option'>
+                日
+            </div>
+            </option>
+            <option value='week'>
+            <div class ='option'>
+                周
+            </div>
+            </option>
+            <option value='month'>
+            <div class ='option'>
+                月
+            </div>
+            </option>
+        </select>
+    </div>
+</div>
+-->
+<!--
+<div class="form-group">
+    <div class="col-sm-5">
+        <select id="behaviour" oninput="displayUserInput()">
+            <option value='1'>
+            <div class ='option'>
+                购买量
+            </div>
+            </option>
+            <option value='5'>
+            <div class ='option'>
+                消费额
+            </div>
+            </option>
+            <option value='2'>
+            <div class ='option'>
+                退货量
+            </div>
+            </option>
+            <option value='3'>
+            <div class ='option'>
+                浏览量
+            </div>
+            </option>
+            <option value='4'>
+            <div class ='option'>
+                收藏量
+            </div>
+            </option>
+        </select>
+    </div>
+</div>
+-->
+<div>
+  <% stat_products = []%>
+  <% stat_categories = []%>
+  <% Product.all.each do |product| %>
+    <% stat_products << product %>
+  <% end %>
+  <% Category.all.each do |category|%>
+    <% stat_categories << category %>
+  <% end %>
+  <% stat_products = stat_products.to_json%>
+  <% stat_categories = stat_categories.to_json%>
+  <%#= stat_products %>
+  <div id="stat-products" data-stat-products="<%= stat_products %>"></div>
+  <div id="stat-categories" data-stat-categories="<%= stat_categories %>"></div>
+</div>
+
+here is chart: <div id="chart" style="width: 1200px; height: 400px;">fuck</div>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document01</title>
+    <style>
+        .box{
+            width: 300px;
+            height: 300px;
+            background-color: rgb(188, 227, 236);
+        }
+        .body {
+            overflow-y: auto; /* 允许垂直滚动 */
+        }
+    </style>
+    <%= javascript_include_tag 'jquery' %>
+    <%= javascript_include_tag 'echarts.min' %>
+</head>
+<body>
+<!--<div class="box"></div>-->
+<script>
+  //全局变量
+  var records = [];
+  var time_range;//时间范围
+  var time_range_val;//时间数量
+  var time_gran;//时间粒度
+  var select_customer;//被统计对象
+  var select_product;
+  var select_category;
+  var behaviour;//被统计值
+  var current_user;//当前用户
+  var username;
+
+  function displayUserInput() {
+    var time_range_val = document.getElementById('time_range_val').value;
+    var time_range = document.getElementById('time-range').value;
+    var behaviour = document.getElementById('behaviour').value;
+
+    var output_time_range_val = document.getElementById('output-time-range-val');
+    var output_time_range = document.getElementById('output-time-range');
+    var output_behaviour = document.getElementById('output-behaviour');
+
+    output_time_range.textContent = time_range;
+    output_time_range_val.textContent = time_range_val;
+    output_behaviour.textContent = behaviour;
+  }
+  document.getElementById('fetch-data-btn').addEventListener('click', function() {
+          document.getElementById('result').textContent = 'received'
+
+          time_range_val = document.getElementById('time_range_val').value;
+          if (time_range_val == '') {
+            time_range_val = '1';
+          }
+          time_range = document.getElementById('time-range').value;
+          time_gran = document.getElementById('time-gran').value;
+          behaviour = document.getElementById('behaviour').value;
+          username = document.getElementById('username').value;
+          var xhr = new XMLHttpRequest();
+          //var producttype = document.getElementById('input-producttype');
+          var url = '/dashboard/profile/get_records';
+          url += '?time_range=' + time_range + '&time_range_val=' + time_range_val;
+          url += '&behaviour=' + (parseInt(behaviour) == 5 ? 1 : parseInt(behaviour));
+          if (username != '') {
+            url += '&user_name=' + username;
+          }
+          xhr.open('GET', url, true); // 发送 GET 请求到 /products 路径
+          xhr.setRequestHeader("Content-type", "application/json");
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+              if (xhr.status === 200) {
+                //document.getElementById('data-container').innerHTML = xhr.responseText; // 将返回的数据显示在页面上
+                //var response = JSON.parse(xhr.responseText);
+                var response = $.parseJSON(xhr.responseText);
+                //document.getElementById('result').textContent = response;
+                
+                records.length=0;
+                for (var i = 0; i < response.length; i++) {
+                  records.push(response[i]);
+                }
+                document.getElementById('result').textContent = records.length;
+                genGraph();
+              } else {
+                //console.error('请求失败');
+                document.getElementById('result').textContent = xhr.responseText;
+              }
+            }
+          };
+          xhr.send();
+        });
+        
+        function parseBehaviour(code) {
+            if (code == 1) {
+                return "buy-volume";
+            }
+            else if (code == 2) {
+                return "refund";
+            }
+            else if (code == 3) {
+                return "view";
+            }
+            else if (code == 4) {
+                return "favor";
+            }
+            else if (code == 5) {
+                return "buy-price"
+            }
+            return "";
+        }
+        function parseAmount(record) {
+            if (parseInt(behaviour) == 5) {
+                return parseInt(record.amount) * parseInt(record.money);
+            }
+            return parseInt(record.amount);
+        }
+        function id2category(product_id) {
+            //document.getElementById('result').textContent = 'search category ' + product_id;
+            var products = document.getElementById('stat-products').dataset.statProducts;
+            //products = JSON.parse(products);
+            products = $.parseJSON(products);
+            var foundProduct = products.find(product => product.id === product_id);
+            //document.getElementById('result').textContent = 'found ' + foundProduct.id;
+
+            var categories = document.getElementById('stat-categories').dataset.statCategories;
+            categories = $.parseJSON(categories);
+            var foundCategory = categories.find(category => category.id === foundProduct.category_id);
+            //document.getElementById('result').textContent = 'found category ' + foundCategory.id;
+            return foundCategory;
+        }
+        function timegran2ms(val, type) {
+            if (type == 'day') {
+                return val * 24 * 3600 * 1000;
+            }
+            else if (type == 'week') {
+                return val * 7 * 24 * 3600 * 1000;
+            }
+            else if (type == 'hour') {
+                return val * 3600 * 1000;
+            }
+            else if (type == 'month') {
+                return val = 30 * 24 * 3600 * 1000;
+            }
+            return 0;
+        }
+        function rubytime2jstime(ruby_time) {
+            return new Date(ruby_time);
+        }
+        function time2seriesname(time, time_gran) {
+            var ret = time.getFullYear() + '';
+            if (time_gran == 'year') {
+                return ret;
+            }
+            ret += '/' + time.getMonth();
+            if (time_gran == 'month') {
+                return ret;
+            }
+            ret += '/' + time.getDate();
+            if (time_gran == 'week' || time_gran == 'day') {
+                return ret;
+            }
+            ret += '/' + time.getHours();
+            return ret;
+        }
+        function time2oritime(time, time_gran) {
+            //设置oritime，把当前时间根据时间粒度对齐
+
+            var date = new Date(time);
+            if (time_gran == 'hour') {
+                date.setHours(date.getHours(), 0, 0, 0);
+            }
+            else if (time_gran == 'day') {
+                date.setHours(0, 0, 0, 0);
+            }
+            else if (time_gran == 'week') {
+                var t = date.getDate() - date.getDay();
+                date.setDate(t);
+                date.setHours(0, 0, 0, 0);
+            }
+            else if (time_gran == 'month') {
+                date.setDate(1);
+                date.setHours(0, 0, 0, 0);
+            }
+            return date;
+        }
+        function reduceGran(time, time_gran) {
+            var date = new Date(time);
+            if (time_gran == 'hour') {
+                date.setHours(date.getHours() - 1, 0, 0, 0);
+            }
+            else if (time_gran == 'day') {
+                date.setDate(date.getDate() - 1);
+            }
+            else if (time_gran == 'week') {
+                date.setDate(date.getDate() - 7);
+            }
+            else if (time_gran == 'month') {
+                date.setMonth(date.getMonth() - 1);
+            }
+            return date;
+        }
+        //封装生成统计图的函数
+        function genGraph() {
+            //3.初始化实例对象 echarts.init(dom容器)
+            //var myChart = echarts.init(document.querySelector(".box"));
+            var myChart = echarts.init(document.getElementById('chart'));
+
+            //records
+            var map_type = time_gran == '' ? 'pie' : 'bar';
+            var output_map_type = document.getElementById('map-type');
+            output_map_type.textContent = myChart;
+            var stat_name = parseBehaviour(behaviour);
+            document.getElementById('result').textContent = stat_name;
+            var series_data = [];
+            var series_name = [];
+            var series = new Map();
+            var pie_data = [];
+            
+            document.getElementById('result').textContent = 'gen map';
+            if (map_type == 'pie') {
+                //将所有种类的特定行为的数据量求和
+                document.getElementById('result').textContent = 'gen pie map';
+                //document.getElementById('result').textContent = records[0].product_id;
+                for (var i = 0; i < records.length; i++) {
+                    var record = records[i];
+                    var category_name = id2category(record.product_id).title;
+                    
+                    if (!series.has(category_name)) {
+                        series.set(category_name, parseAmount(record));
+                    }
+                    else {
+                        var ori_amount = series.get(category_name);
+                        ori_amount += parseAmount(record);
+                        series.set(category_name, ori_amount);
+                    }
+                }
+
+                //将map中的数据顺序导出
+                series.forEach((value, key) => {
+                    series_name.push(key);
+                    series_data.push(value);
+                    pie_data.push({name: key, value: value});
+                });
+                //document.getElementById('result').textContent = series_data;
+                document.getElementById('result').textContent = 'series_name: ' + series_name + '\n' + 
+                'series_data: ' + series_data;
+            }
+            else {
+                document.getElementById('result').textContent = 'gen bar map';
+                var oritime = time2oritime(new Date(), time_gran);
+                document.getElementById('result').textContent = oritime;
+
+                output = [];
+                for (var i = records.length - 1; i >= 0; i--) {
+                    var record = records[i];
+                    //document.getElementById('result').textContent = record;
+                    //document.getElementById('result').textContent = 'record created at: ' + record.created_at;
+                    var record_time = new Date(rubytime2jstime(record.created_at));
+                    output.push(record_time);
+                    /*document.getElementById('result').textContent = 'record time:' + record_time + 
+                      'oritime: ' + oritime;*/
+                    if (record_time < oritime) {
+                        while (record_time < oritime) {
+                          oritime = reduceGran(oritime, time_gran);
+                        }
+                        document.getElementById('result').textContent = 'create new time ' + oritime + 
+                        'amount: ' + parseInt(record.amount) + 'created_at: ' + record_time;
+                        series.set(oritime, parseAmount(record));
+                    }
+                    else {
+                        if (!series.has(oritime)) {
+                          series.set(oritime, 0);
+                        }
+                        var ori_amount = series.get(oritime);
+                        series.set(oritime, (parseInt(ori_amount) + parseAmount(record)));
+                    }
+                }
+                series.forEach((value, key) => {
+                    series_name.push(time2seriesname(key));
+                    series_data.push(value);
+                });
+                document.getElementById('result').textContent = 'series_name: ' + series_name + '\n' + 
+                'series_data: ' + series_data;
+                //document.getElementById('result').textContent = output;
+            }
+            //4.指定配置项和数据
+            /*
+                time_gran不为空：折线图/柱状图
+                select_*的组合
+                product和category可以单独出现
+                customer与product和category之一结合 表示customer <behaviour> product/category
+
+                product/category单独出现，表示它们被所有用户的 <behaviour>
+
+                time_gran为空：饼状图
+                customer有无确定对数据的全局筛选
+                time-range也为对数据的全局筛选
+                category为空，默认若干category
+                category指令，统计同categroy中不同product的behaviour的占比
+            */
+
+            var option;
+            if (map_type == 'pie') {
+                option = {
+                    title: {
+                        text: '饼图' + stat_name
+                    },
+                    series: [{
+                        //name: '销量',
+                        name: behaviour,
+                        //type: 'bar',
+                        type: map_type,
+                        //data: [5, 20, 36, 10, 10, 20]//横坐标各个数据名称的数据值
+                        data: pie_data
+                    }]
+                };
+            }
+            else {
+                option = {
+                    title: {
+                        text: '柱状图' + stat_name
+                    },
+                    tooltip: {},
+                    legend: {
+                        //data:[stat_value]
+                    },
+                    xAxis: {
+                        //data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]//横坐标各个数据名称
+                        data: series_name
+                    },
+                    yAxis: {},
+                    series: [{
+                        //name: '销量',
+                        name: behaviour,
+                        //type: 'bar',
+                        type: map_type,
+                        //data: [5, 20, 36, 10, 10, 20]//横坐标各个数据名称的数据值
+                        data: series_data
+                    }]
+                };
+            }
+            //5.将配置项设置给echarts实例对象，使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        }
+</script>
+</body>
+</html>

@@ -29,6 +29,7 @@ Rails.application.routes.draw do
         get :user_message
         put :update_message
         get :get_records
+        get :get_stat
       end
     end
     resources :favorites
