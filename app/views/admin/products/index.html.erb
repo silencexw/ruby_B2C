@@ -121,7 +121,11 @@
   </div>
 </div>
 </body>
+</html>
 
+
+<!DOCTYPE html>
+<html lang="en">
 <button id="fetch-data-btn">获取数据</button>
 Result: <div id="result"></div>
 
@@ -166,6 +170,11 @@ Map Type: <div id="map-type"></div>
 <div class="form-group">
     <div class="col-sm-5">
         <select id="time-gran" oninput="displayUserInput()">
+            <option value=''>
+            <div class = 'option'>
+                无
+            </div>
+            </option>
             <option value='hour'>
             <div class ='option'>
                 小时
@@ -238,6 +247,8 @@ Map Type: <div id="map-type"></div>
   <div id="stat-categories" data-stat-categories="<%= stat_categories %>"></div>
 </div>
 
+here is chart: <div id="chart" style="width: 1200px; height: 400px;">fuck</div>
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -249,8 +260,11 @@ Map Type: <div id="map-type"></div>
             background-color: rgb(188, 227, 236);
         }
     </style>
+    <%= javascript_include_tag 'jquery' %>
+    <%= javascript_include_tag 'echarts.min' %>
 </head>
 <body>
+<!--<div class="box"></div>-->
 <script>
   //全局变量
   var records = [];
@@ -262,7 +276,6 @@ Map Type: <div id="map-type"></div>
   var select_category;
   var behaviour;//被统计值
   var current_user;//当前用户
-
 
   function displayUserInput() {
     var time_range_val = document.getElementById('time_range_val').value;
@@ -353,6 +366,9 @@ Map Type: <div id="map-type"></div>
             else if (type == 'hour') {
                 return val * 3600 * 1000;
             }
+            else if (type == 'month') {
+                return val = 30 * 24 * 3600 * 1000;
+            }
             return 0;
         }
         function rubytime2jstime(ruby_time) {
@@ -362,11 +378,12 @@ Map Type: <div id="map-type"></div>
         function genGraph() {
             //3.初始化实例对象 echarts.init(dom容器)
             //var myChart = echarts.init(document.querySelector(".box"));
+            var myChart = echarts.init(document.getElementById('chart'));
 
             //records
             var map_type = time_gran == '' ? 'pie' : 'bar';
             var output_map_type = document.getElementById('map-type');
-            output_map_type.textContent = map_type;
+            output_map_type.textContent = myChart;
             var stat_name = parseBehavior(behaviour);
             document.getElementById('result').textContent = stat_name;
             var series_data = [];
@@ -398,6 +415,8 @@ Map Type: <div id="map-type"></div>
                     series_data.push(value);
                 });
                 //document.getElementById('result').textContent = series_data;
+                document.getElementById('result').textContent = 'series_name: ' + series_name + '\n' + 
+                'series_data: ' + series_data;
             }
             else {
                 document.getElementById('result').textContent = 'gen bar map';
@@ -458,31 +477,32 @@ Map Type: <div id="map-type"></div>
                 category为空，默认若干category
                 category指令，统计同categroy中不同product的behaviour的占比
             */
-            /*
+            
             var option = {
                 title: {
                     text: 'ECharts 入门示例'
                 },
                 tooltip: {},
                 legend: {
-                    data:[stat_value]
+                    //data:[stat_value]
                 },
                 xAxis: {
-                    data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]//横坐标各个数据名称
+                    //data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]//横坐标各个数据名称
+                    data: series_name
                 },
                 yAxis: {},
                 series: [{
-                    //name: '销量',
-                    name: series_name,
+                    name: '销量',
+                    //name: series_name,
+                    //type: 'bar',
                     type: map_type,
                     //data: [5, 20, 36, 10, 10, 20]//横坐标各个数据名称的数据值
                     data: series_data
                 }]
             };
             //5.将配置项设置给echarts实例对象，使用刚指定的配置项和数据显示图表。
-            myChart.setOption(option);*/
+            myChart.setOption(option);
         }
 </script>
 </body>
 </html>
-
