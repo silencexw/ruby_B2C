@@ -74,7 +74,14 @@
 </head>
 
 <body>
+<%= form_tag(admin_import_products_path, multipart: true, encoding: 'bom|utf-8') do %>
+  <div class="form-group">
+    <%= label_tag(:file_path, "选择 CSV 文件：") %>
+    <%= file_field_tag(:file_path, accept: ".csv", class: 'form-control-file') %>
+  </div>
 
+  <%= submit_tag("导入", class: "btn btn-primary") %>
+<% end %>
 <div class="container">
   <div>
     <div class="pull-right">

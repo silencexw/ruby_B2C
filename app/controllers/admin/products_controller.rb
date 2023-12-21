@@ -1,3 +1,5 @@
+require 'csv'
+
 class Admin::ProductsController < Admin::AdminController
   before_action :get_product, only: [:edit, :update, :destroy, :onShelf]
   before_action :get_sizes, only: [:edit, :update, :destroy, :onShelf]
@@ -38,6 +40,34 @@ class Admin::ProductsController < Admin::AdminController
       redirect_to admin_products_path, notice: "修改成功"
     else
       render action: :new
+    end
+  end
+
+  require 'csv'
+
+  def import_products_from_csv
+    file_path = params[:file_path].tempfile.path
+
+    begin
+      csv = CSV.open(file_path,  headers: true, encoding: 'utf-8')
+
+      csv.each do |row|
+        product_attributes = row.to_hash.symbolize_keys
+        category = Category.find_by(title: product_attributes[:category_name])
+        puts product_attributes
+        puts product_attributes[:category_name]
+        puts category
+
+        product_attributes[:category_id] = category.id
+        product_attributes.delete(:category_name)
+
+        Product.create!(product_attributes)
+      end
+
+      redirect_to admin_products_path, notice: "导入成功"
+    rescue CSV::MalformedCSVError => e
+      flash[:error] = "文件格式不正确，无法解析"
+      redirect_to admin_products_path
     end
   end
 

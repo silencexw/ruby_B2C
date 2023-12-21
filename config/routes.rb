@@ -47,6 +47,7 @@ Rails.application.routes.draw do
     resources :sessions
     resources :categories
 
+    post 'import_products', to: 'products#import_products_from_csv', as: :import_products
     post 'sizes/:product_id/select' => 'sizes#select', as: :select_size
     post 'colors/:product_id/select' => 'colors#select', as: :select_color
     resources :products do
