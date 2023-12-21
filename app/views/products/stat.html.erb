@@ -10,6 +10,10 @@ Map Type: <div id="map-type"></div>
 -->
 <div class='container'>
     <div>
+        <h2><%= @product.title %>'s statistics information</h2>
+    </div>
+
+    <div>
         <button id="fetch-data-btn">获取数据</button>
     </div>
 
@@ -18,23 +22,6 @@ Map Type: <div id="map-type"></div>
             <tr>
                 <th>名称</th>
                 <th>值</th>
-            </tr>
-            <tr>
-                <td>目标种类</td>
-                <td>
-                    <select id="category" oninput="displayUserInput()">
-                        <option value=''>全部一级类别</option>
-                        <% Category.all.each do |category| %>
-                            <% if category.ancestry == nil%>
-                                <optgroup label="<%= category.title %>"></optgroup>
-                                <option value="<%= category.id%>"><%=category.title%></option>
-                            <% end %>
-                            <% category.children.each do |sub_category| %>
-                                <option value="<%= sub_category.id %>" <%#= @product.category_id == sub_category.id ? 'selected' : '' %>><%= sub_category.title %></option>
-                            <% end -%>
-                        <% end -%>
-                    </select>
-                </td>
             </tr>
             <tr>
                 <td>目标用户</td>
@@ -71,19 +58,14 @@ Map Type: <div id="map-type"></div>
                             <div id="time_range" value='year'></div>
                             年
                         </div>
-                        </option>
+                        </option> 
                     </select>
                 </td>
             </tr>
             <tr>
-                <td>时间粒度（选择'无'时生成饼图）</td>
+                <td>时间粒度</td>
                 <td>
                     <select id="time-gran" oninput="displayUserInput()">
-                        <option value=''>
-                        <div class = 'option'>
-                            无
-                        </div>
-                        </option>
                         <option value='hour'>
                         <div class ='option'>
                             小时
@@ -118,7 +100,7 @@ Map Type: <div id="map-type"></div>
                         </option>
                         <option value='5'>
                         <div class ='option'>
-                            消费额
+                            销售额
                         </div>
                         </option>
                         <option value='2'>
@@ -292,12 +274,13 @@ Map Type: <div id="map-type"></div>
   var current_user;//当前用户
   var username;
   var category;
+  var product;
 
   function displayUserInput() {
     var time_range_val = document.getElementById('time_range_val').value;
     var time_range = document.getElementById('time-range').value;
     var behaviour = document.getElementById('behaviour').value;
-    var category = document.getElementById('category').value;
+    var category = "<%= @product.id %>"
     /*
     var output_time_range_val = document.getElementById('output-time-range-val');
     var output_time_range = document.getElementById('output-time-range');
@@ -312,7 +295,8 @@ Map Type: <div id="map-type"></div>
   document.getElementById('fetch-data-btn').addEventListener('click', function() {
           //document.getElementById('result').textContent = 'received'
 
-          category = document.getElementById('category').value;
+          //category = document.getElementById('category').value;
+          var product_id = "<%= @product.id %>";
           time_range_val = document.getElementById('time_range_val').value;
           if (time_range_val == '') {
             time_range_val = '1';
@@ -329,9 +313,10 @@ Map Type: <div id="map-type"></div>
           if (username != '') {
             url += '&user_name=' + username;
           }
-          if (category != '') {
+          url += '&product_id=' + product_id;
+          /*if (category != '') {
             url += '&category_id=' + category;
-          }
+          }*/
           xhr.open('GET', url, true); // 发送 GET 请求到 /products 路径
           xhr.setRequestHeader("Content-type", "application/json");
           xhr.onreadystatechange = function() {
@@ -616,7 +601,7 @@ Map Type: <div id="map-type"></div>
                     },
                     series: [{
                         //name: '销量',
-                        name: behaviour,
+                        name: parseBehaviour(behaviour),
                         //type: 'bar',
                         type: map_type,
                         //data: [5, 20, 36, 10, 10, 20]//横坐标各个数据名称的数据值
@@ -631,11 +616,11 @@ Map Type: <div id="map-type"></div>
                 };
             }
             else {
+                myChart = echarts.init(document.getElementById('chart'));
+                myChart.clear();
                 if (parseInt(behaviour) != 5) {
                     map_type = 'line';
                 }
-                myChart = echarts.init(document.getElementById('chart'));
-                myChart.clear();
                 option = {
                     title: {
                         text: stat_name + '变化'
@@ -666,36 +651,6 @@ Map Type: <div id="map-type"></div>
             }
             //5.将配置项设置给echarts实例对象，使用刚指定的配置项和数据显示图表。
             myChart.setOption(option);
-
-            // 将图表导出为 PDF 文件
-            var exportCanvas = document.createElement('canvas');
-            exportCanvas.width = chart.getWidth();
-            exportCanvas.height = chart.getHeight();
-            var ctx = exportCanvas.getContext('2d');
-            var canvasList = echarts.util.map([chart], function (chart) {
-                var canvas = chart.getDom().getElementsByTagName('canvas')[0];
-                var oldWidth = canvas.width;
-                var oldHeight = canvas.height;
-                canvas.width = exportCanvas.width;
-                canvas.height = exportCanvas.height;
-                canvas.style.width = exportCanvas.width + 'px';
-                canvas.style.height = exportCanvas.height + 'px';
-                ctx.drawImage(canvas, 0, 0, oldWidth, oldHeight, 0, 0, exportCanvas.width, exportCanvas.height);
-                canvas.width = oldWidth;
-                canvas.height = oldHeight;
-                canvas.style.width = oldWidth + 'px';
-                canvas.style.height = oldHeight + 'px';
-                return {
-                    canvas: canvas,
-                    width: oldWidth,
-                    height: oldHeight
-                };
-            });
-            echarts.stat.exporting.downloadECharts({
-                filename: 'myChart.pdf',
-                charts: canvasList,
-                downloadPDF: true
-            });
         }
 </script>
 </body>

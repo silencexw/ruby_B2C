@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :sessions
   delete '/logout' => 'sessions#destroy', as: :logout
   get '/products/get_product_item' => 'products#get_product_item', as: :get_product_item
+  get '/products/stat/:product_id', to: 'products#stat', as: 'stat'
 
   resources :products, only: [:show] do
     get :search, on: :collection

@@ -76,6 +76,16 @@
 
                   </form>
                 <% end -%>
+
+                <form method='get' action="<%= stat_path(@product.id) %>">
+                  <%= csrf_meta_tags %>
+                    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                    <button type="submit" class="btn-xs btn-success">
+                    <span class="material-symbols-outlined">
+                        stat
+                    </span>
+                    </button>
+                </form>
               </div>
 
               <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
