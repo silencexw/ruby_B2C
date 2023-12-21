@@ -51,7 +51,17 @@ class Dashboard::ProfileController < Dashboard::DashboardController
     end
     # 种类
     unless params[:category_id].nil?
-      @records = @records.joins(:product).where(products: { category_id: params[:category_id] })
+      # @records = @records.joins(:product).where(products: { category_id: params[:category_id].to_i })
+      ans = []
+      @records.each do |record|
+        product = Product.find(record.product_id)  
+        if product.category_id == params[:category_id].to_i
+          ans << record
+        elsif Category.find(product.category_id).ancestry.to_i == params[:category_id].to_i
+          ans << record
+        end
+      end
+      @records = ans
     end
 
     render json: @records

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+<!--
 Result: <div id="result"></div>
 
 <strong>时间范围：</strong><div id="output-time-range-val"></div> <div id="output-time-range"></div>
 <strong>行为：</strong><div id="output-behaviour"></div>
-
+<strong>种类：</strong><div id="output-category"></div>
 Map Type: <div id="map-type"></div>
-
+-->
 <div class='container'>
     <div>
         <button id="fetch-data-btn">获取数据</button>
@@ -18,7 +19,23 @@ Map Type: <div id="map-type"></div>
                 <th>名称</th>
                 <th>值</th>
             </tr>
-            
+            <tr>
+                <td>目标种类</td>
+                <td>
+                    <select id="category" oninput="displayUserInput()">
+                        <option value=''>全部一级类别</option>
+                        <% Category.all.each do |category| %>
+                            <% if category.ancestry == nil%>
+                                <optgroup label="<%= category.title %>"></optgroup>
+                                <option value="<%= category.id%>"><%=category.title%></option>
+                            <% end %>
+                            <% category.children.each do |sub_category| %>
+                                <option value="<%= sub_category.id %>" <%#= @product.category_id == sub_category.id ? 'selected' : '' %>><%= sub_category.title %></option>
+                            <% end -%>
+                        <% end -%>
+                    </select>
+                </td>
+            </tr>
             <tr>
                 <td>目标用户</td>
                 <td><input type='text' style='width: 400px;' id='username' placeholder="请输入用户名，为空则默认针对所有用户" oninput="displayUserInput()"></td>
@@ -28,7 +45,7 @@ Map Type: <div id="map-type"></div>
                 <td><input type="number" min="1" id="time_range_val" placeholder="默认值为1" oninput="displayUserInput()"></td>
             </tr>
             <tr>
-                <td>时间单位（选择'无'时生成饼图）</td>
+                <td>时间单位</td>
                 <td>
                     <select id="time-range" oninput="displayUserInput()">
                         <option value='year'>
@@ -59,7 +76,7 @@ Map Type: <div id="map-type"></div>
                 </td>
             </tr>
             <tr>
-                <td>时间粒度</td>
+                <td>时间粒度（选择'无'时生成饼图）</td>
                 <td>
                     <select id="time-gran" oninput="displayUserInput()">
                         <option value=''>
@@ -241,7 +258,7 @@ Map Type: <div id="map-type"></div>
   <div id="stat-categories" data-stat-categories="<%= stat_categories %>"></div>
 </div>
 
-here is chart: <div id="chart" style="width: 1200px; height: 400px;">fuck</div>
+<div id="chart" style="width: 1200px; height: 400px;"></div>
 
 <head>
     <meta charset="UTF-8" />
@@ -274,23 +291,28 @@ here is chart: <div id="chart" style="width: 1200px; height: 400px;">fuck</div>
   var behaviour;//被统计值
   var current_user;//当前用户
   var username;
+  var category;
 
   function displayUserInput() {
     var time_range_val = document.getElementById('time_range_val').value;
     var time_range = document.getElementById('time-range').value;
     var behaviour = document.getElementById('behaviour').value;
-
+    var category = document.getElementById('category').value;
+    /*
     var output_time_range_val = document.getElementById('output-time-range-val');
     var output_time_range = document.getElementById('output-time-range');
     var output_behaviour = document.getElementById('output-behaviour');
+    var output_category = document.getElementById('output-category');
 
     output_time_range.textContent = time_range;
     output_time_range_val.textContent = time_range_val;
     output_behaviour.textContent = behaviour;
+    output_category.textContent = category;*/
   }
   document.getElementById('fetch-data-btn').addEventListener('click', function() {
-          document.getElementById('result').textContent = 'received'
+          //document.getElementById('result').textContent = 'received'
 
+          category = document.getElementById('category').value;
           time_range_val = document.getElementById('time_range_val').value;
           if (time_range_val == '') {
             time_range_val = '1';
@@ -307,6 +329,9 @@ here is chart: <div id="chart" style="width: 1200px; height: 400px;">fuck</div>
           if (username != '') {
             url += '&user_name=' + username;
           }
+          if (category != '') {
+            url += '&category_id=' + category;
+          }
           xhr.open('GET', url, true); // 发送 GET 请求到 /products 路径
           xhr.setRequestHeader("Content-type", "application/json");
           xhr.onreadystatechange = function() {
@@ -321,11 +346,11 @@ here is chart: <div id="chart" style="width: 1200px; height: 400px;">fuck</div>
                 for (var i = 0; i < response.length; i++) {
                   records.push(response[i]);
                 }
-                document.getElementById('result').textContent = records.length;
+                //document.getElementById('result').textContent = records.length;
                 genGraph();
               } else {
                 //console.error('请求失败');
-                document.getElementById('result').textContent = xhr.responseText;
+                //document.getElementById('result').textContent = xhr.responseText;
               }
             }
           };
@@ -370,6 +395,23 @@ here is chart: <div id="chart" style="width: 1200px; height: 400px;">fuck</div>
             //document.getElementById('result').textContent = 'found category ' + foundCategory.id;
             return foundCategory;
         }
+        function id2product(product_id) {
+            //document.getElementById('result').textContent = 'search category ' + product_id;
+            var products = document.getElementById('stat-products').dataset.statProducts;
+            //products = JSON.parse(products);
+            products = $.parseJSON(products);
+            var foundProduct = products.find(product => product.id === product_id);
+            //document.getElementById('result').textContent = 'found ' + foundProduct.id;
+
+            return foundProduct;
+        }
+        function getCategoryAnc(category_id) {
+            var categories = document.getElementById('stat-categories').dataset.statCategories;
+            categories = $.parseJSON(categories);
+            var foundCategory = categories.find(category => category.id === category_id);
+            var anc = categories.find(category => category.id === parseInt(foundCategory.ancestry));
+            return anc;
+        }
         function timegran2ms(val, type) {
             if (type == 'day') {
                 return val * 24 * 3600 * 1000;
@@ -393,7 +435,7 @@ here is chart: <div id="chart" style="width: 1200px; height: 400px;">fuck</div>
             if (time_gran == 'year') {
                 return ret;
             }
-            ret += '/' + time.getMonth();
+            ret += '/' + (time.getMonth() + 1);
             if (time_gran == 'month') {
                 return ret;
             }
@@ -401,7 +443,7 @@ here is chart: <div id="chart" style="width: 1200px; height: 400px;">fuck</div>
             if (time_gran == 'week' || time_gran == 'day') {
                 return ret;
             }
-            ret += '/' + time.getHours();
+            ret += '-' + time.getHours() + ':00';
             return ret;
         }
         function time2oritime(time, time_gran) {
@@ -445,27 +487,41 @@ here is chart: <div id="chart" style="width: 1200px; height: 400px;">fuck</div>
         function genGraph() {
             //3.初始化实例对象 echarts.init(dom容器)
             //var myChart = echarts.init(document.querySelector(".box"));
-            var myChart = echarts.init(document.getElementById('chart'));
+            //var myChart = echarts.init(document.getElementById('chart'));
 
             //records
             var map_type = time_gran == '' ? 'pie' : 'bar';
-            var output_map_type = document.getElementById('map-type');
-            output_map_type.textContent = myChart;
+            //var output_map_type = document.getElementById('map-type');
+            //output_map_type.textContent = map_type;
             var stat_name = parseBehaviour(behaviour);
-            document.getElementById('result').textContent = stat_name;
+            //document.getElementById('result').textContent = stat_name;
             var series_data = [];
             var series_name = [];
             var series = new Map();
             var pie_data = [];
             
-            document.getElementById('result').textContent = 'gen map';
+            //document.getElementById('result').textContent = 'gen map';
             if (map_type == 'pie') {
                 //将所有种类的特定行为的数据量求和
-                document.getElementById('result').textContent = 'gen pie map';
+                //document.getElementById('result').textContent = 'gen pie map';
                 //document.getElementById('result').textContent = records[0].product_id;
                 for (var i = 0; i < records.length; i++) {
                     var record = records[i];
-                    var category_name = id2category(record.product_id).title;
+                    var category_name;
+                    if (category == '') {
+                        //查找的是全部分类
+                        category_name = getCategoryAnc(id2category(record.product_id).id).title;
+                    }
+                    else {
+                        if (parseInt(id2category(record.product_id).id) != parseInt(category)) {
+                            //分类名与record产品所属分类不符，此时一定查找的是一级分类
+                            category_name = id2category(record.product_id).title;
+                        }
+                        else {
+                            //查找的是二级分类
+                            category_name = id2product(record.product_id).title;
+                        }
+                    }
                     
                     if (!series.has(category_name)) {
                         series.set(category_name, parseAmount(record));
@@ -478,19 +534,21 @@ here is chart: <div id="chart" style="width: 1200px; height: 400px;">fuck</div>
                 }
 
                 //将map中的数据顺序导出
+                series_name.length = 0;
+                series_data.length = 0;
                 series.forEach((value, key) => {
                     series_name.push(key);
                     series_data.push(value);
                     pie_data.push({name: key, value: value});
                 });
                 //document.getElementById('result').textContent = series_data;
-                document.getElementById('result').textContent = 'series_name: ' + series_name + '\n' + 
-                'series_data: ' + series_data;
+                /*document.getElementById('result').textContent = 'series_name: ' + series_name + '\n' + 
+                'series_data: ' + series_data;*/
             }
             else {
-                document.getElementById('result').textContent = 'gen bar map';
+                //document.getElementById('result').textContent = 'gen bar map';
                 var oritime = time2oritime(new Date(), time_gran);
-                document.getElementById('result').textContent = oritime;
+                //document.getElementById('result').textContent = oritime;
 
                 output = [];
                 for (var i = records.length - 1; i >= 0; i--) {
@@ -505,8 +563,8 @@ here is chart: <div id="chart" style="width: 1200px; height: 400px;">fuck</div>
                         while (record_time < oritime) {
                           oritime = reduceGran(oritime, time_gran);
                         }
-                        document.getElementById('result').textContent = 'create new time ' + oritime + 
-                        'amount: ' + parseInt(record.amount) + 'created_at: ' + record_time;
+                        /*document.getElementById('result').textContent = 'create new time ' + oritime + 
+                        'amount: ' + parseInt(record.amount) + 'created_at: ' + record_time;*/
                         series.set(oritime, parseAmount(record));
                     }
                     else {
@@ -517,12 +575,16 @@ here is chart: <div id="chart" style="width: 1200px; height: 400px;">fuck</div>
                         series.set(oritime, (parseInt(ori_amount) + parseAmount(record)));
                     }
                 }
+                series_name.length = 0;
+                series_data.length = 0;
                 series.forEach((value, key) => {
                     series_name.push(time2seriesname(key));
                     series_data.push(value);
                 });
-                document.getElementById('result').textContent = 'series_name: ' + series_name + '\n' + 
-                'series_data: ' + series_data;
+                series_name.reverse();
+                series_data.reverse();
+                /*document.getElementById('result').textContent = 'series_name: ' + series_name + '\n' + 
+                'series_data: ' + series_data;*/
                 //document.getElementById('result').textContent = output;
             }
             //4.指定配置项和数据
@@ -542,7 +604,11 @@ here is chart: <div id="chart" style="width: 1200px; height: 400px;">fuck</div>
             */
 
             var option;
+            var myChart;
             if (map_type == 'pie') {
+                myChart = echarts.init(document.getElementById('chart'));
+                myChart.clear();
+                //document.getElementById('result').textContent = 'output pie graph';
                 option = {
                     title: {
                         text: '饼图' + stat_name
@@ -553,11 +619,19 @@ here is chart: <div id="chart" style="width: 1200px; height: 400px;">fuck</div>
                         //type: 'bar',
                         type: map_type,
                         //data: [5, 20, 36, 10, 10, 20]//横坐标各个数据名称的数据值
-                        data: pie_data
+                        data: pie_data,
+                        label: {
+                            show: true,
+                            formatter: function (arg) {
+                                return arg.name + ": " + arg.value + "\n" + arg.percent + "%";
+                            }
+                        }
                     }]
                 };
             }
             else {
+                myChart = echarts.init(document.getElementById('chart'));
+                myChart.clear();
                 option = {
                     title: {
                         text: '柱状图' + stat_name
@@ -577,7 +651,12 @@ here is chart: <div id="chart" style="width: 1200px; height: 400px;">fuck</div>
                         //type: 'bar',
                         type: map_type,
                         //data: [5, 20, 36, 10, 10, 20]//横坐标各个数据名称的数据值
-                        data: series_data
+                        data: series_data,
+                        label: {
+                            show: true,
+                            position: 'top'
+                        },
+                        barWidth: '30%'
                     }]
                 };
             }
