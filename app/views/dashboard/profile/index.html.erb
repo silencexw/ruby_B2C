@@ -578,7 +578,7 @@ Map Type: <div id="map-type"></div>
                 series_name.length = 0;
                 series_data.length = 0;
                 series.forEach((value, key) => {
-                    series_name.push(time2seriesname(key));
+                    series_name.push(time2seriesname(key, time_gran));
                     series_data.push(value);
                 });
                 series_name.reverse();
