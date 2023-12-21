@@ -4,3 +4,4 @@
 //= link_tree ../../../vendor/javascript .js
 //= link jquery.js
 //= link echarts.min.js
+//= link FileSaver.js

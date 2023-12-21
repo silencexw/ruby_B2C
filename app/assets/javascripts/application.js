@@ -19,3 +19,4 @@
 
 //= require product
 //= require echarts.min
+//= require FileSaver

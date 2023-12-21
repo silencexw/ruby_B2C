@@ -12,6 +12,9 @@ Map Type: <div id="map-type"></div>
     <div>
         <button id="fetch-data-btn">获取数据</button>
     </div>
+    <div>
+        <button id='output-data-btn'>导出图表</button>
+    </div>
 
     <div>
         <table class="table table-striped">
@@ -276,9 +279,12 @@ Map Type: <div id="map-type"></div>
     </style>
     <%= javascript_include_tag 'jquery' %>
     <%= javascript_include_tag 'echarts.min' %>
+    <%= javascript_include_tag 'FileSaver' %>
 </head>
 <body>
 <!--<div class="box"></div>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
 <script>
   //全局变量
   var records = [];
@@ -292,6 +298,8 @@ Map Type: <div id="map-type"></div>
   var current_user;//当前用户
   var username;
   var category;
+
+  var myChart;
 
   function displayUserInput() {
     var time_range_val = document.getElementById('time_range_val').value;
@@ -355,6 +363,39 @@ Map Type: <div id="map-type"></div>
             }
           };
           xhr.send();
+        });
+
+        document.getElementById('output-data-btn').addEventListener('click', function() {
+            //导出图表为pdf文件
+            //document.getElementById('result').textContent = '试图导出图表';
+            /*
+            let blob = new Blob(['保存一个文本'],{type: 'text/plain;charset=utf-8'});
+            document.getElementById('result').textContent = '测试文件创建';
+            document.getElementById('result').textContent = FileSaver.toString();
+            console.log(FileSaver);
+            saveAs(blob, 'a.docx');
+            document.getElementById('result').textContent = '导出完成';
+            */
+            // 将图表容器转换为 Canvas 对象
+            html2canvas(document.getElementById('chart')).then(function(canvas) {
+                // 创建 PDF 对象
+                var pdf = new jsPDF();
+
+                // 获取 Canvas 对象的数据 URL
+                var canvasDataURL = canvas.toDataURL('image/jpeg', 1);
+
+                // 设置 PDF 的尺寸和偏移量
+                var pdfWidth = canvas.width / 2;
+                var pdfHeight = canvas.height / 2;
+                var offsetX = (pdf.internal.pageSize.getWidth() - pdfWidth) / 2;
+                var offsetY = (pdf.internal.pageSize.getHeight() - pdfHeight) / 2;
+
+                // 将图像插入到 PDF 中
+                pdf.addImage(canvasDataURL, 'JPEG', offsetX, offsetY, pdfWidth, pdfHeight);
+
+                // 保存 PDF 文件
+                pdf.save('chart.pdf');
+            });
         });
         
         function parseBehaviour(code) {
@@ -605,7 +646,6 @@ Map Type: <div id="map-type"></div>
             */
 
             var option;
-            var myChart;
             if (map_type == 'pie') {
                 myChart = echarts.init(document.getElementById('chart'));
                 myChart.clear();
@@ -666,36 +706,6 @@ Map Type: <div id="map-type"></div>
             }
             //5.将配置项设置给echarts实例对象，使用刚指定的配置项和数据显示图表。
             myChart.setOption(option);
-
-            // 将图表导出为 PDF 文件
-            var exportCanvas = document.createElement('canvas');
-            exportCanvas.width = chart.getWidth();
-            exportCanvas.height = chart.getHeight();
-            var ctx = exportCanvas.getContext('2d');
-            var canvasList = echarts.util.map([chart], function (chart) {
-                var canvas = chart.getDom().getElementsByTagName('canvas')[0];
-                var oldWidth = canvas.width;
-                var oldHeight = canvas.height;
-                canvas.width = exportCanvas.width;
-                canvas.height = exportCanvas.height;
-                canvas.style.width = exportCanvas.width + 'px';
-                canvas.style.height = exportCanvas.height + 'px';
-                ctx.drawImage(canvas, 0, 0, oldWidth, oldHeight, 0, 0, exportCanvas.width, exportCanvas.height);
-                canvas.width = oldWidth;
-                canvas.height = oldHeight;
-                canvas.style.width = oldWidth + 'px';
-                canvas.style.height = oldHeight + 'px';
-                return {
-                    canvas: canvas,
-                    width: oldWidth,
-                    height: oldHeight
-                };
-            });
-            echarts.stat.exporting.downloadECharts({
-                filename: 'myChart.pdf',
-                charts: canvasList,
-                downloadPDF: true
-            });
         }
 </script>
 </body>
