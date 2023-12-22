@@ -21,6 +21,13 @@ gem 'puma', '~> 5.0'
 gem 'sorcery'
 gem 'bootstrap-sass'
 
+# echart
+gem 'echarts-rails'
+# gem 'echarts-rails-helper'
+gem 'wicked_pdf'
+
+gem 'pdfkit'
+
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'

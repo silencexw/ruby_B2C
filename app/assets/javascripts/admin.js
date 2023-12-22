@@ -3,4 +3,4 @@
 
 //= require bootstrap-sprockets
 //= require product
-
+//= require FileSaver

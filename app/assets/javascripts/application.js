@@ -10,6 +10,7 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+
 //= require jquery
 //= require jquery_ujs
 
@@ -17,3 +18,5 @@
 //= require home
 
 //= require product
+//= require echarts.min
+//= require FileSaver

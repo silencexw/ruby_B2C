@@ -31,11 +31,19 @@ class Dashboard::ProfileController < Dashboard::DashboardController
   def get_records
     # 时间限制
     get_record_by_time
+
+    # render json: @records
     # 对应行为的record
     @records = @records.where(behaviour: params[:behaviour])
     # 用户
-    unless params[:user_id].nil?
-      @records = @records.where(user_id: params[:user_id])
+    unless params[:user_name].nil?
+      @user = User.find_by(username: params[:user_name])
+      if (@user == nil) 
+        @records = @records
+      else
+        @records = @records.where(user_id: @user.id)
+      end
+      # @records = @records.where(user_id: params[:user_id])
     end
     # 产品
     unless params[:product_id].nil?
@@ -43,8 +51,24 @@ class Dashboard::ProfileController < Dashboard::DashboardController
     end
     # 种类
     unless params[:category_id].nil?
-      @records = @records.joins(:product).where(products: { category_id: params[:category_id] })
+      # @records = @records.joins(:product).where(products: { category_id: params[:category_id].to_i })
+      ans = []
+      @records.each do |record|
+        product = Product.find(record.product_id)  
+        if product.category_id == params[:category_id].to_i
+          ans << record
+        elsif Category.find(product.category_id).ancestry.to_i == params[:category_id].to_i
+          ans << record
+        end
+      end
+      @records = ans
     end
+
+    render json: @records
+  end
+
+  def get_stat
+    render 'index'
   end
 
   private
@@ -65,6 +89,11 @@ class Dashboard::ProfileController < Dashboard::DashboardController
     end
 
     @records = Record.where("created_at >= ?", start_time)
+  end
+
+  def get_records_params
+    params.require(:profile).permit(:time_range, :time_range_val, :behaviour, :user_name, :product_id, 
+      :category_id)
   end
 
 end

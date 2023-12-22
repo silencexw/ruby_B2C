@@ -103,6 +103,7 @@
         <th>标价</th>
         <th>零售价</th>
         <th>状态</th>
+        <th>统计信息</th>
         <th></th>
       </tr>
 
@@ -114,6 +115,7 @@
           <td><%= product.price %></td>
           <td><%= product.msrp %></td>
           <td><strong><%= product.status %></strong></td>
+          <td><%= link_to "查看", stat_path(product.id), method: :get, class: "btn btn btn-info"%></td>
           <td align="right">
             <%= link_to "编辑信息", edit_admin_product_path(product), class: "btn btn btn-info" %>
             <%= link_to "商品实体", admin_product_product_items_path(product), class: "btn btn-info" %>
@@ -129,4 +131,3 @@
 </div>
 </body>
 </html>
-

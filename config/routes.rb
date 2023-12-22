@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :sessions
   delete '/logout' => 'sessions#destroy', as: :logout
   get '/products/get_product_item' => 'products#get_product_item', as: :get_product_item
+  get '/products/stat/:product_id', to: 'products#stat', as: 'stat'
 
   resources :products, only: [:show] do
     get :search, on: :collection
@@ -28,6 +29,8 @@ Rails.application.routes.draw do
       controller :profile do
         get :user_message
         put :update_message
+        get :get_records
+        get :get_stat
       end
     end
     resources :favorites

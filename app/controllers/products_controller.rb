@@ -80,6 +80,11 @@ class ProductsController < ApplicationController
     render json: { inventory_id: inventory_id, inventory_amount: inventory_amount, inventory_image: inventory_image, flag: true }
   end
 
+  def stat
+    @product = Product.find(params[:product_id].to_i);
+    render 'stat'
+  end
+
   private
 
   def similarity_score(str1, str2)

@@ -26,9 +26,12 @@
         <button type="submit" class="btn btn-default">搜索</button>
       <% end %>
       <ul class="nav navbar-nav navbar-right">
+        <% if logged_in? and current_user.is_admin %>
+          <li><%= link_to "统计界面", dashboard_get_stat_path, method: :get%></li>
+        <% end -%>
         <% if logged_in? and current_user.is_admin? %>
           <li><%= link_to "管理界面", admin_root_path %></li>
-        <% end %>
+        <% end -%>
         <% if logged_in? %>
           <li><%= link_to "购物车", cart_items_path %></li>
         <% end -%>

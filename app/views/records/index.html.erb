@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!--
+选项1：时间
+范围：'year', 'month', 'week', 'day'
+粒度：'hour', 'day', 'week', 'month'
+
+选项2: 被统计的对象 
+'product'
+'customer'
+
+选项3: 统计值
+'view'
+'buy'
+'favor'
+
+模式1：
+统计过去时间段内特定用户/特定种类/特定产品的各种量
+
+模式2：
+统计过去时间段内不同种类产品的各种量
+
+向后端的查询接口
+time-range: 'year'/'month'/'week'/'day'
+time-range-val: <integer> 几个月/几天
+user_id: <integer> ,can be null
+product_id: <integer> ,can be null
+category_id: <integer> ,can be null
+behavior: 'view'/'buy'/'favor'/'refund'
+为null时，意味着对查询不受限制
+
+返回一个由满足查询条件的record构成的list
+
+-->
+<div name="choose-type">
+    <div class='col-sm-5'>
+        <select id='map-type'>
+            <option value='bar'><%='柱状图'%></option>
+            <option value='pie'><%='饼状图'%></option>
+        </select>
+    </div>
+</div>
+
+<div name="choose-time-gran">
+    <div class="col-sm-5">
+        <select id="time-gran">
+            <option value='month'><%='月'%></option>
+            <option value='week'><%='周'%></option>
+            <option value='day'><%='日'%></option>
+            <option value='hour'><%='小时'%></option>
+        </select>
+    </div>
+</div>
+
+<!--向后端的查询接口-->
+
+<div class="form-group">
+    <label for='time_range_val' class="col-sm-2 control-label">时间值</label>
+    <div class="col-sm-5" id="select-category">
+        <%= f.number_field :time_range_val, class: "form-control" %>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for='category_name' class="col-sm-2 control-label">分类</label>
+    <div class="col-sm-5" id="select-category">
+        <%= f.text_field :category_name, class: "form-control" %>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-5">
+        <select id="time-range">
+            <div class ='option'>
+                过去
+                <%= f.hidden_field :time_range, value: 'year' %>
+                <%= f.label :time_range_val, style: "display: block" %>
+                <%= f.number_field :time_range_val %>
+                年
+            </div>
+            <div class ='option'>
+                过去
+                <%= f.hidden_field :time_range, value: 'month' %>
+                <%= f.label :time_range_val, style: "display: block" %>
+                <%= f.number_field :time_range_val %>
+                个月
+            </div>
+            <div class ='option'>
+                过去
+                <%= f.hidden_field :time_range, value: 'week' %>
+                <%= f.label :time_range_val, style: "display: block" %>
+                <%= f.number_field :time_range_val %>
+                周
+            </div>
+            <div class ='option'>
+                过去
+                <%= f.hidden_field :time_range, value: 'day' %>
+                <%= f.label :time_range_val, style: "display: block" %>
+                <%= f.number_field :time_range_val %>
+                天
+            </div>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for='category_name' class="col-sm-2 control-label">分类</label>
+    <div class="col-sm-5" id="select-category">
+        <%= f.text_field :category_name, class: "form-control" %>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for='product_name' class="col-sm-2 control-label">分类</label>
+    <div class="col-sm-5" id="select-product">
+        <%= f.text_field :product_name, class: "form-control" %>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for='user_name' class="col-sm-2 control-label">分类</label>
+    <div class="col-sm-5" id="select-customer">
+        <%= f.text_field :user_name, class: "form-control" %>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for='behavior' class="col-sm-2 control-label">分类</label>
+    <div class="col-sm-5" name="select-behavior">
+        <select id="stat-value">
+            <option value='view'><%='浏览量'%></option>
+            <option value='buy'><%='购买量/销量'%></option>
+            <option value='buyprice'<%='消费额/销售额'%>></option>
+            <option value='favor'<%='收藏量'%>>
+        </select>
+    </div>
+</div>
+
+<button id="fetch-data-btn">查询</button>
+
+<div>
+    <% @records = Record.all # 假设搜索的结果为'@records'%>
+    <div id="records" data-records="<%= @records %>"></div>
+    <% @categories = Category.all %>
+</div>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document01</title>
+    <style>
+        .box{
+            width: 300px;
+            height: 300px;
+            background-color: rgb(188, 227, 236);
+        }
+    </style>
+</head>
+<body>
+	<!-- 2.准备具有大小的DOM容器 -->
+    <div class="box"></div>
+    <script src="echarts.js"></script>
+    <script>
+        //全局变量
+        var records = [];
+        var time_range;//时间范围
+        var time_range_val;//时间数量
+        var time_gran;//时间粒度
+        var select_customer;//被统计对象
+        var select_product;
+        var select_category;
+        var stat_value;//被统计值
+        var current_user;//当前用户
+
+        //异步发送请求获得数据
+        document.getElementById('fetch-data-btn').addEventListener('click', function() {
+          var xhr = new XMLHttpRequest();
+          //获取用户输入的参数，用于统计图的生成逻辑
+          var producttype = document.getElementById('input-producttype');//这个也是我自己项目的参数
+
+          //options
+          time_range = document.getElementById('time-range').time_range;//时间范围
+          time_range_val = document.getElementById('time-range').time_range_val;//时间数量
+          time_gran = document.getElementById('time-gran');//时间粒度
+          select_customer = document.getElementById('select-customer');//被统计对象
+          select_product = document.getElementById('select-product');
+          select_category = document.getElementById('select-category');
+          select_behavior = document.getElementById('select-behavior');//被统计值
+          current_user = document.getElementById('select-customer');//当前用户
+
+          //url及相关参数，需要最后确定，现在的是我自己项目的url
+          var url = '/select/products';
+          url += '?selecttype=' + producttype.value;
+          xhr.open('GET', url, true); // 发送 GET 请求到 /products 路径
+
+          //发送请求，接受json格式数据
+          xhr.setRequestHeader("Content-type", "application/json");
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+              if (xhr.status === 200) {
+                //document.getElementById('data-container').innerHTML = xhr.responseText; // 将返回的数据显示在页面上
+                //response即为返回的record结构体数组，每个元素就是一个满足要求的record
+                var response = JSON.parse(xhr.responseText);
+                //var output = [];
+                records.length = 0;//每次查询刷新暂存的records数组
+                for (var i = 0; i < response.length; i++) {
+                  output.push(response[i].name);
+                  records.push(response[i]);
+                }
+                document.getElementById('result').textContent = output;
+              } else {
+                console.error('请求失败');
+              }
+            }
+          };
+          xhr.send();
+        });
+
+        function id2category(category_id) {
+            var categories = JSON.parse(document.getElementById('@categories'));
+            var foundCategory = categories.find(category => category.category_id === id);
+            return foundCategory;
+        }
+
+        function rubytime2jstime(ruby_time) {
+            return new Date(ruby_time);
+        }
+
+        function timegran2ms(val, type) {
+            if (type == 'day') {
+                return val * 24 * 3600 * 1000;
+            }
+            else if (type == 'week') {
+                return val * 7 * 24 * 3600 * 1000;
+            }
+            else if (type == 'hour') {
+                return val * 3600 * 1000;
+            }
+        }
+
+        function parseBehavior(code) {
+            if (code == 1) {
+                return "buy";
+            }
+            else if (code == 2) {
+                return "refund";
+            }
+            else if (code == 3) {
+                return "view";
+            }
+            else if (code == 4) {
+                return "favor";
+            }
+            return "";
+        }
+
+        //封装生成统计图的函数
+        function genGraph() {
+            //3.初始化实例对象 echarts.init(dom容器)
+            var myChart = echarts.init(document.querySelector(".box"));
+
+            //records
+            var map_type = time_gran.value == '' ? 'pie' : 'bar';
+            var stat_name = parseBehavior(select_behavior.value);
+            var series_data = [];
+            var series_name = [];
+            var series = new Map();
+            if (map_type == 'pie') {
+                //将所有种类的特定行为的数据量求和
+                for (var i = 0; i < records.length; i++>) {
+                    var record = records[i];
+                    var category_name = id2category(record.id).title;
+                    if (!series.has(category_name)) {
+                        series.set(category_name, record.amount);
+                    }
+                    else {
+                        var ori_amount = series.get(category_name);
+                        ori_amount += record.amount;
+                        series.set(category_name, ori_amount);
+                    }
+                }
+
+                //将map中的数据顺序导出
+                series.forEach((value, key) => {
+                    series_name.push(key);
+                    series_data.push(value);
+                });
+            }
+            else {
+                var oritime = currentDate.getTime();
+                oritime = new Date(oritime - gran);
+                var gran = timegran2ms(JSON.parse(time_gran).value);
+
+                for (var i = 0; i < records.length; i++) {
+                    var record = record[i];
+                    var record_time = new Date(rubytime2jstime(record.created_at));
+                    if (record_time < oritime) {
+                        oritime = new Date(oritime - gran);
+                        series.set(oritime, record.amount);
+                    }
+                    else {
+                        var ori_amount = series.get(oritime);
+                        series.set(oritime, ori_amount + record.amount);
+                    }
+                }
+
+                series.forEach((value, key) => {
+                    series_name.push(key);
+                    series_data.push(value);
+                });
+            }
+
+            //4.指定配置项和数据
+            /*
+                time_gran不为空：折线图/柱状图
+                select_*的组合
+                product和category可以单独出现
+                customer与product和category之一结合 表示customer <behaviour> product/category
+
+                product/category单独出现，表示它们被所有用户的 <behaviour>
+
+                time_gran为空：饼状图
+                customer有无确定对数据的全局筛选
+                time-range也为对数据的全局筛选
+                category为空，默认若干category
+                category指令，统计同categroy中不同product的behaviour的占比
+            */
+            var option = {
+                title: {
+                    text: 'ECharts 入门示例'
+                },
+                tooltip: {},
+                legend: {
+                    data:[stat_value]
+                },
+                xAxis: {
+                    data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]//横坐标各个数据名称
+                },
+                yAxis: {},
+                series: [{
+                    //name: '销量',
+                    name: series_name,
+                    type: map_type,
+                    //data: [5, 20, 36, 10, 10, 20]//横坐标各个数据名称的数据值
+                    data: series_data
+                }]
+            };
+            //5.将配置项设置给echarts实例对象，使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        }
+    </script>
+</body>
+</html>
