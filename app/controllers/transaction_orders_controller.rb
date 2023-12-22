@@ -42,6 +42,7 @@ class TransactionOrdersController < ApplicationController
                           amount: amount,
                           money: item.money)
       record.save!
+      product.update(sale_num: product.sale_num + 1)
     end
     redirect_to cart_items_path
   end
