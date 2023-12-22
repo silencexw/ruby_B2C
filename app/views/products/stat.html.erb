@@ -16,6 +16,12 @@ Map Type: <div id="map-type"></div>
     <div>
         <button id="fetch-data-btn">获取数据</button>
     </div>
+    <div>
+        <button id='output-data-btn'>导出图表</button>
+    </div>
+    <div>
+        <button id='export-records-btn'>导出日志表(utf-8)</button>
+    </div>
 
     <div>
         <table class="table table-striped">
@@ -261,6 +267,8 @@ Map Type: <div id="map-type"></div>
 </head>
 <body>
 <!--<div class="box"></div>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
 <script>
   //全局变量
   var records = [];
@@ -341,6 +349,118 @@ Map Type: <div id="map-type"></div>
           };
           xhr.send();
         });
+
+        document.getElementById('output-data-btn').addEventListener('click', function() {
+            //导出图表为pdf文件
+            //document.getElementById('result').textContent = '试图导出图表';
+            /*
+            let blob = new Blob(['保存一个文本'],{type: 'text/plain;charset=utf-8'});
+            document.getElementById('result').textContent = '测试文件创建';
+            document.getElementById('result').textContent = FileSaver.toString();
+            console.log(FileSaver);
+            saveAs(blob, 'a.docx');
+            document.getElementById('result').textContent = '导出完成';
+            */
+            // 将图表容器转换为 Canvas 对象
+            html2canvas(document.getElementById('chart')).then(function(canvas) {
+                // 创建 PDF 对象
+                var pdf = new jsPDF();
+
+                // 获取 Canvas 对象的数据 URL
+                var canvasDataURL = canvas.toDataURL('image/jpeg', 1);
+
+                // 设置 PDF 的尺寸和偏移量
+
+                //根据图片大小调整统计图显示尺寸
+                var fileWidth = pdf.internal.pageSize.getWidth();
+                var fileHeight = pdf.internal.pageSize.getHeight();
+                var _width = canvas.width / fileWidth;
+                var _height = canvas.height / fileHeight;
+                var zoom = _width < _height ? _height : _width;
+
+                var pdfWidth = canvas.width / zoom;
+                var pdfHeight = canvas.height / zoom;
+                var offsetX = (pdf.internal.pageSize.getWidth() - pdfWidth) / 2;
+                var offsetY = (pdf.internal.pageSize.getHeight() - pdfHeight) / 2;
+
+                // 将图像插入到 PDF 中
+                pdf.addImage(canvasDataURL, 'JPEG', offsetX, offsetY, pdfWidth, pdfHeight);
+
+                // 保存 PDF 文件
+                pdf.save('chart.pdf');
+            });
+        });
+
+        document.getElementById('export-records-btn').addEventListener('click', function() {
+            //document.getElementById('result').textContent = '试图导出日志表';
+            // 创建CSV文件内容
+            var csvContent = 'data:text/csv;charset=utf-8,';
+
+            // 添加表头行
+            /*
+            tableHTML += '<tr>';
+            tableHTML += '<th>用户id</th>';
+            tableHTML += '<th>产品id</th>';
+            tableHTML += '<th>产品单价</th>';
+            tableHTML += '<th>行为</th>';
+            tableHTML += '<th>数量</th>';
+            tableHTML += '<th>时间</th>';
+            */
+            //csvContent += 'Column 1,Column 2\n';
+            csvContent += '用户id';
+            csvContent += ',产品id';
+            csvContent += ',产品单价';
+            //csvContent += ',行为';
+            csvContent += ',数量';
+            csvContent += ',时间\n';
+
+            // 添加数据行
+            for (var i = 0; i < records.length; i++) {
+                //csvContent += records[i].column1 + ',' + records[i].column2 + '\n';
+                // 添加其他列的数据
+                var record = records[i];
+
+                var user_id = record.user_id;
+                var product_id = record.product_id;
+                var product_price = record.money;
+                //var user_behaviour = parseBehaviour(record.behaviour);
+                var amount = record.amount;
+                var time = rubytime2jstime(record.created_at);
+
+                csvContent += user_id + ',' + 
+                            product_id + ',' + 
+                            product_price + ',' + 
+                            //user_behaviour + ',' + 
+                            amount + ',' + 
+                            time + '\n';
+            }
+
+            // 创建一个隐藏的下载链接并设置下载属性
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', encodeBehaviour(behaviour) + '-records.csv');
+
+            // 模拟点击下载链接
+            link.click();
+        });
+
+        function encodeBehaviour(code) {
+            code = (parseInt(code) == 5 ? 1 : parseInt(code))
+            if (code == 1) {
+                return "buy";
+            }
+            else if (code == 2) {
+                return "refund";
+            }
+            else if (code == 3) {
+                return "browse";
+            }
+            else if (code == 4) {
+                return "collect";
+            }
+            return "";
+        }
         
         function parseBehaviour(code) {
             if (code == 1) {
