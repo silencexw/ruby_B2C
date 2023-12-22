@@ -8,26 +8,33 @@ Result: <div id="result"></div>
 <strong>种类：</strong><div id="output-category"></div>
 Map Type: <div id="map-type"></div>
 -->
+
+<style>
+  .pull-right {
+      padding: 10px;
+  }
+</style>
 <div class='container'>
 
-    <div>
-        <button id="fetch-data-btn">获取数据</button>
-    </div>
-    <div>
-        <button id='output-data-btn'>导出图表</button>
-    </div>
-    <div>
-        <button id='export-records-btn'>导出日志表(utf-8)</button>
+    <div class="pull-right">
+        <button class="btn btn-success" id="fetch-data-btn">获取数据</button>
+        <button class="btn btn-info" id='output-data-btn'>导出图表</button>
+        <button class="btn btn-info" id='export-records-btn'>导出日志表(utf-8)</button>
     </div>
 
     <div>
         <table class="table table-striped">
             <tr>
-                <th>名称</th>
-                <th>值</th>
+
+                <th>目标种类</th>
+              <th>目标用户</th>
+              <th>时间值</th>
+              <th>时间单位</th>
+              <th>时间粒度（选择'无'时生成饼图）</th>
+              <th>行为</th>
+
             </tr>
             <tr>
-                <td>目标种类</td>
                 <td>
                     <select id="category" oninput="displayUserInput()">
                         <option value=''>全部一级类别</option>
@@ -42,17 +49,11 @@ Map Type: <div id="map-type"></div>
                         <% end -%>
                     </select>
                 </td>
-            </tr>
-            <tr>
-                <td>目标用户</td>
+
                 <td><input type='text' style='width: 400px;' id='username' placeholder="请输入用户名，为空则默认针对所有用户" oninput="displayUserInput()"></td>
-            </tr>
-            <tr>
-                <td>时间值</td>
+
                 <td><input type="number" min="1" id="time_range_val" placeholder="默认值为1" oninput="displayUserInput()"></td>
-            </tr>
-            <tr>
-                <td>时间单位</td>
+
                 <td>
                     <select id="time-range" oninput="displayUserInput()">
                         <option value='day'>
@@ -81,9 +82,7 @@ Map Type: <div id="map-type"></div>
                         </option>
                     </select>
                 </td>
-            </tr>
-            <tr>
-                <td>时间粒度（选择'无'时生成饼图）</td>
+
                 <td>
                     <select id="time-gran" oninput="displayUserInput()">
                         <option value=''>
@@ -113,9 +112,7 @@ Map Type: <div id="map-type"></div>
                         </option>
                     </select>
                 </td>
-            </tr>
-            <tr>
-                <td>行为</td>
+
                 <td>
                     <select id="behaviour" oninput="displayUserInput()">
                         <option value='1'>

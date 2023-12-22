@@ -80,7 +80,7 @@
             <% if favorite.main_favorite_image.nil? %>
               <%= link_to image_tag("no_product.jpg", style: "width: 200px; height: 200px; display: block", alt: favorite.product.title), product_path(favorite.product) %>
             <% else %>
-              <%= link_to image_tag(favorite.main_favorite_image, style: "width: 200px; height: 200px; display: block", alt: favorite.product.title), product_path(favorite.product) %>
+              <%= link_to image_tag(favorite.main_favorite_image, style: "width: 270px; height: 270px; display: block", alt: favorite.product.title), product_path(favorite.product) %>
             <% end %>
 
 
