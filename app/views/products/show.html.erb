@@ -285,8 +285,8 @@
 <script>
     let product_item_id = <%= @product.product_items.first.id %>;
     let product_id = <%= @product.id %>;
-    let size_id = <%= @product.product_items.first.size.id %>;
-    let color_id = <%= @product.product_items.first.color.id %>;
+    let size_id = <%= @product.product_sizes.first.size_id %>;
+    let color_id = <%= @product.product_colors.first.color_id %>;
 
 
     document.getElementById("item_size").innerHTML = parseInt(size_id, 10);
