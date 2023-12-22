@@ -36,7 +36,7 @@
       }
 
       th {
-          background-color: rgba(53, 0, 197, 0.39);
+          background-color: rgba(33, 60, 128, 0.39);
           color: #fff;
       }
 
@@ -114,7 +114,7 @@
         <td><%= category.title %></td>
         <td><%= category.weight %></td>
         <td>
-          <%= link_to "编辑", edit_admin_category_path(category), class: "btn btn btn-primary" %>
+          <%= link_to "编辑", edit_admin_category_path(category), class: "btn btn btn-info" %>
           <% if category.root? %>
             <%= link_to "查看子分类", admin_categories_path(id: category), class: "btn btn-info" %>
           <% end -%>

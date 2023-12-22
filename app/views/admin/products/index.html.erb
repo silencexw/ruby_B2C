@@ -36,7 +36,7 @@
       }
 
       th {
-          background-color: rgba(53, 0, 197, 0.39);
+          background-color: rgba(33, 60, 128, 0.39);
           color: #fff;
       }
 
@@ -56,37 +56,43 @@
           border-radius: 5px;
       }
 
-      .btn-primary {
-          background-color: rgba(0, 141, 203, 0.56);
-          color: #fff;
-          border: 1px solid #007bff;
-          padding: 7px 15px;
-          text-decoration: none;
-          display: inline-block;
-          border-radius: 10px;
-          transition: background-color 0.3s;
-      }
-
       .btn-primary:hover {
           background-color: #0056b3;
+      }
+
+       .pull-right {
+           float: right;
+           margin-top: 10px; /* Adjust the margin as needed */
+       }
+
+      .form-group {
+          margin-bottom: 15px; /* Adjust the margin as needed */
+      }
+
+      label {
+          font-weight: bold;
+          display: block;
+      }
+
+      .form-control-file {
+          width: 100%;
+          padding: 5px;
+          box-sizing: border-box;
+          margin-top: 5px; /* Adjust the margin as needed */
       }
   </style>
 </head>
 
 <body>
-<%= form_tag(admin_import_products_path, multipart: true, encoding: 'bom|utf-8') do %>
-  <div class="form-group">
-    <%= label_tag(:file_path, "选择 CSV 文件：") %>
-    <%= file_field_tag(:file_path, accept: ".csv", class: 'form-control-file') %>
-  </div>
 
-  <%= submit_tag("导入", class: "btn btn-primary") %>
-<% end %>
 <div class="container">
   <div>
     <div class="pull-right">
       <%= link_to "新建商品", new_admin_product_path, class: "btn-lg btn-success" %>
     </div>
+
+
+
 
     <h1>
       商品
@@ -115,8 +121,8 @@
           <td><%= product.price %></td>
           <td><%= product.msrp %></td>
           <td><strong><%= product.status %></strong></td>
-          <td><%= link_to "查看", stat_path(product.id), method: :get, class: "btn btn btn-info"%></td>
           <td align="right">
+            <%= link_to "查看", stat_path(product.id), method: :get, class: "btn btn btn-info"%>
             <%= link_to "编辑信息", edit_admin_product_path(product), class: "btn btn btn-info" %>
             <%= link_to "商品实体", admin_product_product_items_path(product), class: "btn btn-info" %>
             <%= link_to "删除", admin_product_path(product), method: :delete, 'data-confirm': "确认删除吗?", class: "btn btn btn-danger" %>
@@ -125,6 +131,18 @@
       <% end -%>
 
     </table>
+
+    <div class="pull-right">
+      <%= form_tag(admin_import_products_path, multipart: true, encoding: 'bom|utf-8') do %>
+        <div class="form-group">
+          <%= label_tag(:file_path, "选择 CSV 文件：") %>
+          <%= file_field_tag(:file_path, accept: ".csv", class: 'form-control-file') %>
+        </div>
+
+        <%= submit_tag("导入", class: "btn btn-primary") %>
+      <% end %>
+
+    </div>
 
     <%= will_paginate @products %>
   </div>

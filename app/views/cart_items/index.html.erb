@@ -1,69 +1,144 @@
 <h1>购物车</h1>
 <div class="row">
-  <td class="container">
 
 
-    <table class="table">
-      <thead>
-      <tr>
-        <th>数量</th>
-        <th>商品名</th>
-        <th>价格</th>
-        <th>尺寸</th>
-        <th>颜色</th>
-        <th>图片</th>
-        <th>Edit</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @cart_items.each do |cart_item| %>
+  <!--    <table class="table">-->
+  <!--      <thead>-->
+  <!--      <tr>-->
+  <!--        <th>数量</th>-->
+  <!--        <th>商品名</th>-->
+  <!--        <th>价格</th>-->
+  <!--        <th>尺寸</th>-->
+  <!--        <th>颜色</th>-->
+  <!--        <th>图片</th>-->
+  <!--        <th>Edit</th>-->
+  <!--      </tr>-->
+  <!--      </thead>-->
+  <!--      <tbody>-->
+  <%# @cart_items.each do |cart_item| %>
 
-        <tr>
-          <td>
-            <a href="<%= product_path(id: cart_item.get_product.id) %>">
-              <% if cart_item.product_item.image.nil? %>
-                <%= image_tag "no_product.jpg", style: "width: 200px; height: 200px", alt: cart_item.get_product.title %>
-              <% else %>
-                <%= image_tag cart_item.product_item.image, style: "width: 50px; height: 50px; display: block", class: "product-item-image", alt: cart_item.get_product.title %>
-            <% end %>
-            </a>
-          </td>
+  <!--        <tr>-->
+  <!--          <td>-->
+  <!--            <a href="<%#= product_path(id: cart_item.get_product.id) %>">-->
+  <%# if cart_item.product_item.image.nil? %>
+  <%#= image_tag "no_product.jpg", style: "width: 200px; height: 200px", alt: cart_item.get_product.title %>
+  <%# else %>
+  <%#= image_tag cart_item.product_item.image, style: "width: 200px; height: 200px; display: block", class: "product-item-image", alt: cart_item.get_product.title %>
+  <%# end %>
+  <!--            </a>-->
+  <!--          </td>-->
 
-          <!--          <td class="media-body">-->
-          <td class="media-heading"><%= link_to cart_item.get_product.title, product_path(cart_item.get_product.id) %></td>
+  <!--          <td class="media-heading"><%#= link_to cart_item.get_product.title, product_path(cart_item.get_product.id) %></td>-->
 
-          <td>
-          <%= cart_item.amount %></td>
-          <td>
-          ¥<%= cart_item.amount * cart_item.product_item.msrp %></td>
-          <td>
-            <% unless cart_item.product_item.size_id.nil? %>
-              <%= size_name(cart_item.product_item.size_id) %>
-            <% end %>
-          </td>
-          <td>
-            <% unless cart_item.product_item.color_id.nil? %>
+  <!--          <td>-->
+  <!--            <%#= cart_item.amount %></td>-->
+  <!--          <td>-->
+  <!--            ¥<%#= cart_item.amount * cart_item.product_item.msrp %></td>-->
+  <!--          <td>-->
+  <%# unless cart_item.product_item.size_id.nil? %>
+  <%#= size_name(cart_item.product_item.size_id) %>
+  <%# end %>
+  <!--          </td>-->
+  <!--          <td>-->
+  <%# unless cart_item.product_item.color_id.nil? %>
 
-              <span class="color-box" style="background-color: <%= raw get_color(cart_item.product_item.color_id) %>;"></span>
-            <% end %>
-          </td>
-          <!--          </td>-->
+  <!--              <span class="color-box" style="background-color: <%#= raw get_color(cart_item.product_item.color_id) %>;"></span>-->
+  <%# end %>
+  <!--          </td>-->
 
-          <td class="media-right">
-            <%= form_tag cart_item_path(cart_item), method: :put do %>
-              <p><label>
-                <input type="text" name="amount" value="<%= cart_item.amount %>"/>
-              </label></p>
-              <p>
-                <%= submit_tag "更新", class: "btn btn-success btn-xs" %>
-                <%= link_to "删除", cart_item_path(cart_item), method: :delete, 'data-confirm': "不考虑一下了?", class: "btn btn-danger btn-xs" %>
-              </p>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
+  <!--          <td class="media-right">-->
+  <%#= form_tag cart_item_path(cart_item), method: :put do %>
+  <!--              <p><label>-->
+  <!--                <input type="text" name="amount" value="<%#= cart_item.amount %>"/>-->
+  <!--              </label></p>-->
+  <!--              <p>-->
+  <%#= submit_tag "更新", class: "btn btn-success" %>
+  <%#= link_to "删除", cart_item_path(cart_item), method: :delete, 'data-confirm': "不考虑一下了?", class: "btn btn-danger" %>
+  <!--              </p>-->
+  <%# end %>
+  <!--          </td>-->
+  <!--        </tr>-->
+  <%# end %>
+  <!--      </tbody>-->
+  <!--    </table>-->
+
+  <% @cart_items.each do |cart_item| %>
+    <article class="product">
+      <header>
+        <a href="<%= product_path(id: cart_item.get_product.id) %>">
+          <% if cart_item.product_item.image.nil? %>
+            <%= image_tag "no_product.jpg", alt: cart_item.get_product.title %>
+          <% else %>
+            <%= image_tag cart_item.product_item.image, alt: cart_item.get_product.title %>
+          <% end %>
+        </a>
+      </header>
+
+      <div class="content">
+
+        <h1><%= link_to cart_item.get_product.title, product_path(cart_item.get_product.id) %></h1>
+
+        <%= cart_item.get_product.description %>
+        <!--          <div title="You have selected this product to be shipped in the color yellow." style="top: 0" class="color yellow">-->
+        <% unless cart_item.product_item.color_id.nil? %>
+
+          <span class="color" style="background-color: <%= raw get_color(cart_item.product_item.color_id) %>;"></span>
+        <% end %>
+        <!--          </div>-->
+        <div style="top: 20px" class="type small">
+          <% unless cart_item.product_item.size_id.nil? %>
+            <%= size_name(cart_item.product_item.size_id) %>
+          <% end %>
+        </div>
+      </div>
+
+      <footer class="content">
+        <!--        <span class="qt-minus">-</span>-->
+        <span class="qt" style="display: inline-block;" >
+
+<!--          购入数量:-->
+
+          <%= form_tag cart_item_path(cart_item), method: :put do %>
+
+            <div style="display: flex; align-items: center;">
+<!--                        <label>-->
+                          <input type="text" name="amount" value="<%= cart_item.amount %>"/>
+<!--                        </label>-->
+
+
+              <%= submit_tag "更新", class: "btn btn-success" %>
+              <%= link_to "删除", cart_item_path(cart_item), method: :delete, 'data-confirm': "不考虑一下了?", class: "btn btn-danger" %>
+            </div>
+          <% end %>
+
+
+        </span>
+        <!--        <span class="qt-plus">+</span>-->
+
+
+        <h2 class="full-price" style="display: inline-block">
+          ¥<%= cart_item.amount * cart_item.product_item.msrp %>
+        </h2>
+
+        <h2 class="price" style="display: inline-block">
+          <%= cart_item.product_item.msrp %>
+        </h2>
+
+      </footer>
+    </article>
+
+    <%#= form_tag cart_item_path(cart_item), method: :put do %>
+    <!--        <p><label>-->
+    <!--          <input type="text" name="amount" value="<%#= cart_item.amount %>"/>-->
+    <!--        </label></p>-->
+    <!--        <p>-->
+    <%#= submit_tag "更新", class: "btn btn-success" %>
+    <%#= link_to "删除", cart_item_path(cart_item), method: :delete, 'data-confirm': "不考虑一下了?", class: "btn btn-danger" %>
+    <!--        </p>-->
+    <%# end %>
+  <% end %>
+
+
 </div>
 
 <div class="pull-right">
@@ -73,8 +148,11 @@
 </div>
 
 <div class="clearfix"></div>
-</div>
+
+
 <style>
+
+
     body {
         font-family: 'Source Han Serif CN', sans-serif; /* Change 'Arial' to your preferred font-family */
         font-size: 12px;
@@ -116,7 +194,7 @@
     /*}*/
 
     th {
-        background-color: rgba(246, 117, 72, 0.39);
+        background-color: rgba(67, 142, 255, 0.39);
         color: #fff;
     }
 
@@ -174,11 +252,13 @@
         background-color: #fff;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         white-space: nowrap; /* Prevent line breaks */
+
     }
 
     th, td {
-        width: auto;
-        padding: 10px; /* Adjust padding as needed */
+        font-size: 15px;
+        width: 500px;
+        padding: 100px; /* Adjust padding as needed */
         text-align: left;
         border-bottom: 1px solid #ddd;
     }
@@ -193,5 +273,258 @@
         width: 100%;
         height: auto;
         border-radius: 5px;
+    }
+</style>
+
+<style>
+    body {
+        background: #eee;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    .clearfix {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    #site-header h1 {
+        font-size: 31px;
+        font-weight: 300;
+        padding: 40px 0;
+        position: relative;
+        margin: 0;
+    }
+
+    a {
+        color: #000;
+        text-decoration: none;
+
+        -webkit-transition: color .2s linear;
+        -moz-transition: color .2s linear;
+        -ms-transition: color .2s linear;
+        -o-transition: color .2s linear;
+        transition: color .2s linear;
+    }
+
+    a:hover {
+        color: #53b5aa;
+    }
+
+    #site-header h1 span {
+        color: #53b5aa;
+    }
+
+    #site-header h1 em {
+        font-size: 16px;
+        font-style: normal;
+        vertical-align: middle;
+    }
+
+    #cart {
+        width: 100%;
+    }
+
+    #cart h1 {
+        font-weight: 300;
+    }
+
+    #cart a {
+        color: #53b5aa;
+        text-decoration: none;
+
+        -webkit-transition: color .2s linear;
+        -moz-transition: color .2s linear;
+        -ms-transition: color .2s linear;
+        -o-transition: color .2s linear;
+        transition: color .2s linear;
+    }
+
+    #cart a:hover {
+        color: #000;
+    }
+
+    .product {
+        border: 1px solid #eee;
+        margin: 20px 0;
+        width: 100%;
+        height: 255px;
+        position: relative;
+
+        -webkit-transition: margin .2s linear, opacity .2s linear;
+        -moz-transition: margin .2s linear, opacity .2s linear;
+        -ms-transition: margin .2s linear, opacity .2s linear;
+        -o-transition: margin .2s linear, opacity .2s linear;
+        transition: margin .2s linear, opacity .2s linear;
+    }
+
+    .product img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .product header, .product .content {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-style: none none solid none;
+        float: left;
+    }
+
+    .product header {
+        background: #000;
+        margin: 0 1% 20px 0;
+        overflow: hidden;
+        padding: 0;
+        position: relative;
+        width: 21%;
+        height: 255px;
+    }
+
+    .product header:hover img {
+        opacity: .7;
+    }
+
+    .product header:hover h3 {
+        bottom: 73px;
+    }
+
+    .product header h3 {
+        background: #53b5aa;
+        color: #fff;
+        font-size: 22px;
+        font-weight: 300;
+        line-height: 49px;
+        margin: 0;
+        padding: 0 30px;
+        position: absolute;
+        bottom: -50px;
+        right: 0;
+        left: 0;
+
+        -webkit-transition: bottom .2s linear;
+        -moz-transition: bottom .2s linear;
+        -ms-transition: bottom .2s linear;
+        -o-transition: bottom .2s linear;
+        transition: bottom .2s linear;
+    }
+
+    .product .content {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 200px;
+        padding: 0 20px;
+        width: 78%;
+    }
+
+    .product h1 {
+        color: #53b5aa;
+        font-size: 25px;
+        font-weight: 300;
+        margin: 17px 0 20px 0;
+    }
+
+    .product footer.content {
+        height: 50px;
+        margin: 6px 0 0 0;
+        padding: 0;
+    }
+
+    .product footer .price {
+        background: #fcfcfc;
+        color: #000;
+        float: right;
+        font-size: 15px;
+        font-weight: 300;
+        line-height: 49px;
+        margin: 0;
+        padding: 0 30px;
+    }
+
+    .product footer .full-price {
+        background: #53b5aa;
+        color: #fff;
+        float: right;
+        font-size: 22px;
+        font-weight: 300;
+        line-height: 49px;
+        margin: 0;
+        padding: 0 30px;
+
+        -webkit-transition: margin .15s linear;
+        -moz-transition: margin .15s linear;
+        -ms-transition: margin .15s linear;
+        -o-transition: margin .15s linear;
+        transition: margin .15s linear;
+    }
+
+    .qt {
+        font-size: 19px;
+        line-height: 40px;
+        width: 100px;
+        text-align: left;
+    }
+
+    #site-footer h1 {
+        background: #fcfcfc;
+        border: 1px solid #ccc;
+        border-style: none none solid none;
+        font-size: 24px;
+        font-weight: 300;
+        margin: 0 0 7px 0;
+        padding: 14px 40px;
+        text-align: center;
+    }
+
+    #site-footer h2 {
+        font-size: 24px;
+        font-weight: 300;
+        margin: 10px 0 0 0;
+    }
+
+    #site-footer h3 {
+        font-size: 19px;
+        font-weight: 300;
+        margin: 15px 0;
+    }
+
+    .type {
+        background: #fcfcfc;
+        font-size: 13px;
+        padding: 10px 16px;
+        left: 100%;
+    }
+
+    .type, .color {
+        border: 1px solid #ccc;
+        border-style: none none solid none;
+        position: absolute;
+    }
+
+    .color {
+        width: 40px;
+        height: 40px;
+        right: -40px;
+    }
+
+    .red {
+        background: #cb5a5e;
+    }
+
+    .yellow {
+        background: #f1c40f;
+    }
+
+    .blue {
+        background: #3598dc;
+    }
+
+    .minused {
+        margin: 0 50px 0 0 !important;
+    }
+
+    .added {
+        margin: 0 -50px 0 0 !important;
     }
 </style>
