@@ -49,7 +49,9 @@ Rails.application.routes.draw do
     root 'transaction_orders#index'
     resources :sessions
     resources :categories
+    resources :users
 
+    post 'set_admin/:user_id' => 'users#set_admin', as: :set_admin
     post 'import_products', to: 'products#import_products_from_csv', as: :import_products
     post 'sizes/:product_id/select' => 'sizes#select', as: :select_size
     post 'colors/:product_id/select' => 'colors#select', as: :select_color

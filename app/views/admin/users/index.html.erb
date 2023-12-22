@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>用户管理</title>
+  <!-- Add your CSS links here -->
+  <style>
+      /* Paste the CSS styles here */
+      h1 {
+          color: #333;
+      }
+
+      .pull-right {
+          margin-bottom: 20px;
+      }
+
+      .btn-lg {
+          padding: 15px 20px;
+          font-size: 18px;
+      }
+
+      .table {
+          width: 100%;
+          margin-bottom: 20px;
+          border-collapse: collapse;
+          border-spacing: 0;
+          background-color: #fff;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      th, td {
+          padding: 15px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+      }
+
+      th {
+          background-color: rgba(53, 0, 197, 0.39);
+          color: #fff;
+      }
+
+      tbody tr:hover {
+          background-color: #f5f5f5;
+      }
+
+      .item-image-container {
+          width: 100px; /* Adjust image container width */
+          height: 100px; /* Adjust image container height */
+          overflow: hidden;
+      }
+
+      .product-item-image {
+          width: 100%;
+          height: auto;
+          border-radius: 5px;
+      }
+
+      .btn-primary {
+          background-color: rgba(0, 141, 203, 0.56);
+          color: #fff;
+          border: 1px solid #007bff;
+          padding: 7px 15px;
+          text-decoration: none;
+          display: inline-block;
+          border-radius: 10px;
+          transition: background-color 0.3s;
+      }
+
+      .btn-primary:hover {
+          background-color: #0056b3;
+      }
+  </style>
+</head>
+
+<body>
+<div class="container">
+  <div>
+    <h1>
+      商品
+    </h1>
+  </div>
+
+  <div>
+    <table class="table table-striped">
+
+      <tr>
+        <th>username</th>
+        <th>email</th>
+        <th></th>
+      </tr>
+
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.username %></td>
+          <td><%= user.email %></td>
+          <td align="right">
+            <%= link_to "注销用户", admin_user_path(user), method: :delete, 'data-confirm': "确认注销吗?", class: "btn btn btn-danger" %>
+            <%= link_to "设为管理员", admin_set_admin_path(user), method: :post, 'data-confirm': "确认设置该用户为管理员吗?", class: "btn btn-info" %>
+          </td>
+        </tr>
+      <% end -%>
+
+    </table>
+
+    <%= will_paginate @users %>
+  </div>
+</div>
+</body>
+</html>
