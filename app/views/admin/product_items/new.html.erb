@@ -36,7 +36,7 @@
           <div class="color-selection">
 
             <% @product.product_colors.each do |color| %>
-              <% unless @product.product_colors.exists?(color_id: color) %>
+              <%# unless @product.product_colors.exists?(color_id: color) %>
                 <tr>
                   <div class="color-option" data-color-id="<%= color.color_id %>">
                     <td>
@@ -53,7 +53,7 @@
                   </div>
                 </tr>
               <% end %>
-            <% end %>
+            <%# end %>
 
           </div>
 
