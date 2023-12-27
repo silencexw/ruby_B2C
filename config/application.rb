@@ -11,7 +11,11 @@ module B2C
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
 
+    config.autoload_paths += %W(#{config.root}/app/loggers)
+
     config.action_controller.allow_forgery_protection = true
+
+    puts config.autoload_paths.inspect
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -24,6 +28,11 @@ module B2C
       g.assets false
       g.test_framework false
       g.skip_routes true
+    end
+
+    config.after_initialize do
+      puts 'attach MyLogSubscriber to active_record 20231227'
+      MyLogSubscriber.attach_to :active_record
     end
   end
 end

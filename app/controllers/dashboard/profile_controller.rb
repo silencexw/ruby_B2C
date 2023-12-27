@@ -15,6 +15,7 @@ class Dashboard::ProfileController < Dashboard::DashboardController
       puts current_user.password_confirmation
 
       if current_user.change_password(params[:user_password])
+        notify_current_user_change
         flash[:notice] = "个人信息修改成功"
         redirect_to dashboard_user_message_path
       else

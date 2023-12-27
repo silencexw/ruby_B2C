@@ -4,10 +4,12 @@ class SessionsController < ApplicationController
 
   def create
     if (user = login(params[:email], params[:password]))
+      notify_current_user_change
       redirect_to root_path, notice: "登录成功"
     elsif User.username_confirm(params[:email], params[:password])
       user = User.find_by(username: params[:email])
       auto_login(user)
+      notify_current_user_change
       redirect_to root_path, notice: "登录成功"
     else
       redirect_to new_session_path, notice: "邮箱或密码不正确"

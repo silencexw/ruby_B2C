@@ -207,6 +207,8 @@ GEM
       thor (~> 1.0)
     rake (13.1.0)
     regexp_parser (2.8.2)
+    request_store (1.5.1)
+      rack (>= 1.4)
     rexml (3.2.6)
     rspec-core (3.12.2)
       rspec-support (~> 3.12.0)
@@ -315,6 +317,7 @@ DEPENDENCIES
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.7)
   rails-controller-testing
+  request_store
   rspec-rails
   sass-rails (>= 6)
   selenium-webdriver (>= 4.0.0.rc1)
