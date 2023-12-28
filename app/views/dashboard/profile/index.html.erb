@@ -20,6 +20,7 @@ Map Type: <div id="map-type"></div>
         <button class="btn btn-success" id="fetch-data-btn">获取数据</button>
         <button class="btn btn-info" id='output-data-btn'>导出图表</button>
         <button class="btn btn-info" id='export-records-btn'>导出日志表(utf-8)</button>
+        <button class='btn btn-info' onclick="chooseCSVLocation()">导出后端日志</button>
     </div>
 
     <div>
@@ -831,6 +832,63 @@ Map Type: <div id="map-type"></div>
             }
             //5.将配置项设置给echarts实例对象，使用刚指定的配置项和数据显示图表。
             myChart.setOption(option);
+        }
+
+        //保存后端日志
+        function chooseCSVLocation() {
+            /*
+            console.log('enter chooseCSVLocation');
+            const csvFileInput = document.getElementById('csvFileInput');
+            console.log('get csvFileInput');
+            csvFileInput.click();
+
+            csvFileInput.addEventListener('change', function(event) {
+                console.log('开始请求');
+                var selectedFile = event.target.files[0]; // 获取选择的目录路径
+                if (selectedFile) {
+                    console.log('Selected file:', selectedFile); // 在控制台输出选择的文件路径 // 在控制台输出选择的文件路径
+                    selectedPath = URL.createObjectURL(selectedFile);
+                    console.log('Selected file URL:', selectedPath);
+                    // 在这里可以将选择的路径发送到后端进行处理
+                    // 例如，可以使用 AJAX 请求将路径发送给后端并触发 CSV 导出操作
+                    var xhr = new XMLHttpRequest();
+                    //var producttype = document.getElementById('input-producttype');
+                    var url = '/dashboard/profile/export_log';
+                    url += '?log_path=' + selectedPath;
+                    xhr.open('POST', url, true); // 发送 POST 请求到 /products 路径
+                    xhr.setRequestHeader("Content-type", "application/json");
+                    //xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                console.log('调用成功');
+                            } else {
+                                console.log('调用失败')
+                            }
+                        }
+                    };
+                    xhr.send();
+                }
+            });
+            */
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+                    var xhr = new XMLHttpRequest();
+                    //var producttype = document.getElementById('input-producttype');
+                    var url = '/dashboard/profile/export_log';
+                    //url += '?log_path=' + selectedPath;
+                    xhr.open('POST', url, true); // 发送 POST 请求到 /products 路径
+                    xhr.setRequestHeader("Content-type", "application/json");
+                    xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                console.log('调用成功');
+                            } else {
+                                console.log('调用失败')
+                            }
+                        }
+                    };
+                    xhr.send();
         }
 </script>
 </body>

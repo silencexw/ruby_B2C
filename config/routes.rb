@@ -31,6 +31,7 @@ Rails.application.routes.draw do
         put :update_message
         get :get_records
         get :get_stat
+        post :export_log
       end
     end
     resources :favorites

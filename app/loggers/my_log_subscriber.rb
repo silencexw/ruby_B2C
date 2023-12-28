@@ -1,3 +1,5 @@
+require 'csv'
+
 class MyLogSubscriber < ActiveSupport::LogSubscriber
     @@log_entries = []
     @@log_lock = Mutex.new
@@ -33,6 +35,28 @@ class MyLogSubscriber < ActiveSupport::LogSubscriber
       json_string = JSON.generate(@@log_entries, JSON::PRETTY_STATE_PROTOTYPE)
       # puts 'translate logs to json string: ' + json_string
       File.write('app/loggers/mylog.log', json_string)
+    end
+
+    def self.export_log
+      csv_data = generate_csv_data
+      File.open('log/csvlog.csv', "w") do |file|
+        file.write(csv_data)
+      end
+    end
+
+    def self.generate_csv_data
+      csv_data = CSV.generate do |csv|
+        # csv << ["user_id", "action", "object", "brief_message", "message", "time"] # CSV 表头
+        csv << log_entries.first.keys
+
+        @@log_entries.each do |log|
+          # csv << [log[:user_id], log[:action], 'object', log[:brief_message], 
+            # log[:message], log[:time]] # 每行数据
+          csv << log.values
+        end
+      end
+  
+      csv_data
     end
   
     def sql(event)

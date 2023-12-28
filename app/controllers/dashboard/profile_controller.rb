@@ -34,6 +34,11 @@ class Dashboard::ProfileController < Dashboard::DashboardController
     MyLogSubscriber.save_log
   end
 
+  def export_log
+    MyLogSubscriber.export_log
+    head :ok
+  end
+
   def get_records
     save_current_log
     # 时间限制
@@ -100,7 +105,7 @@ class Dashboard::ProfileController < Dashboard::DashboardController
 
   def get_records_params
     params.require(:profile).permit(:time_range, :time_range_val, :behaviour, :user_name, :product_id, 
-      :category_id)
+      :category_id, :log_path)
   end
 
 end
