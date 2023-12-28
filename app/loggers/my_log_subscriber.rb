@@ -1,21 +1,44 @@
 class MyLogSubscriber < ActiveSupport::LogSubscriber
-    # @log_entries = []
+    @@log_entries = []
+    @@log_lock = Mutex.new
 
     def initialize
       super
       subscribe_to_current_user_change
-      @log_entries = []
-      @active_user = nil
+
+      require 'json'
+      json_string = File.read('app/loggers/mylog.log')
+      begin
+        @@log_entries = JSON.parse(json_string)
+      rescue JSON::ParserError => e
+        @@log_entries = []
+      end
+
+      json_string = File.read('app/loggers/current_user.log')
+      begin
+        @active_user = JSON.parse(json_string)
+      rescue JSON::ParserError => e
+        @active_user = nil
+      end
     end
 
     def self.log_entries
       puts 'get log_entries'
-      @log_entries# ||= []
+      @@log_lock.synchronize { @@log_entries }
+    end
+
+    def self.save_log
+      require 'json'
+      # puts 'current logs number: ' + @@log_entries.size.to_s
+      json_string = JSON.generate(@@log_entries, JSON::PRETTY_STATE_PROTOTYPE)
+      # puts 'translate logs to json string: ' + json_string
+      File.write('app/loggers/mylog.log', json_string)
     end
   
     def sql(event)
       # 解析日志消息并将结果存储到数据结构中
       # active_user = RequestStore.store[:current_user]
+=begin
       if @active_user != nil
         puts 'user: ' + @active_user.username
       else 
@@ -28,6 +51,7 @@ class MyLogSubscriber < ActiveSupport::LogSubscriber
       else
         puts 'nil event'
       end
+=end
       # MyLogSubscriber.log_entries << {
         # timestamp: event.time,
         # severity: event.severity,
@@ -39,13 +63,28 @@ class MyLogSubscriber < ActiveSupport::LogSubscriber
     def parseEvent(event)
       action = (event.payload[:sql] != nil ? extract_first_word(event.payload[:sql]) : 'nil')
       object = (event.payload[:sql] != nil ? extract_table_name(event.payload[:sql]) : 'nil')
-      @log_entries << {
-        user: @current_user,
-        action: action,
-        object: object,
-        message: event.payload[:sql]
-      }
-      puts "log entries num: " + @log_entries.size.to_s
+      brief_message = (event.payload[:name] != nil ? event.payload[:name] : 'nil')
+      if @active_user == nil
+        id = 'nil'
+      elsif @active_user.is_a?(Hash)
+        id = @active_user["id"]
+      elsif @active_user.is_a?(User)
+        id = @active_user.id
+      else
+        id = 'nil'
+      end
+
+      @@log_lock.synchronize do
+        @@log_entries << {
+          user_id: id,
+          action: action,
+          object: object,
+          brief_message: brief_message,
+          message: event.payload[:sql],
+          time: Time.now
+        }
+        puts "log entries num: " + @@log_entries.size.to_s
+      end
     end
 
     def extract_first_word(str)
@@ -55,9 +94,11 @@ class MyLogSubscriber < ActiveSupport::LogSubscriber
     end
 
     def extract_table_name(query)
-      match_data = query.match(/FROM\s+"([^"]+)"/)
+      # match_data = query.match(/FROM\s+"([^"]+)"/)
+      match_data = query.scan(/FROM\s+"([^"]+)"/).flatten
+      match_data = match_data + query.scan(/FROM\s+(\w+)/).flatten
       if match_data
-        return match_data.captures[0]
+        return match_data
       else
         return 'nil'
       end
@@ -69,7 +110,16 @@ class MyLogSubscriber < ActiveSupport::LogSubscriber
       ActiveSupport::Notifications.subscribe('current_user.changed') do |name, start, finish, id, payload|
         RequestStore.store[:current_user] = payload[:user]
         @active_user = payload[:user]
-        puts 'get current_user change: ' + payload[:user].to_json
+        # puts 'get current_user change: ' + payload[:user].to_json
+        save_active_user
+      end
+    end
+
+    def save_active_user
+      if @active_user == nil
+        File.write('app/loggers/current_user.log', 'null')
+      else
+        File.write('app/loggers/current_user.log', @active_user.to_json)
       end
     end
   end

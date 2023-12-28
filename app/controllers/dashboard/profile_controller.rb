@@ -29,7 +29,13 @@ class Dashboard::ProfileController < Dashboard::DashboardController
     end
   end
 
+  def save_current_log
+    puts 'try to save current log'
+    MyLogSubscriber.save_log
+  end
+
   def get_records
+    save_current_log
     # 时间限制
     get_record_by_time
 
