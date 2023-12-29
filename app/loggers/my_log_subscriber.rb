@@ -128,6 +128,75 @@ class MyLogSubscriber < ActiveSupport::LogSubscriber
       end
     end
 
+    def self.select_log(user_id=nil, action=nil, start_time=nil, object=nil, path=nil, 
+    export=false)
+      ret_log = []
+      @@log_lock.synchronize do 
+        @@log_entries.reverse_each do |log|
+          log_user_id = log["user_id"] == nil ? log[:user_id] : log["user_id"]
+          log_action = log["action"] == nil ? log[:action] : log["action"]
+          log_object = log["object"] == nil ? log[:object] : log["object"]
+          log_time = log["time"] == nil ? log[:time] : Time.parse(log["time"])
+
+          if user_id == nil or (log_user_id.to_i == user_id.to_i) or 
+            (log_user_id == 'nil' and user_id.to_s == 'visitor')
+            if action == nil or log_action.to_s.match(action.to_s)
+              if object == nil or log_object.include?(object.to_s)
+                # puts log_time
+                # puts start_time
+                if start_time == nil or (start_time <= log_time)
+                  ret_log << log
+                elsif start_time != nil and (start_time > log_time)
+                  break
+                end
+              end
+            end
+          end
+        end
+      end
+
+      if (export)
+        # 生成csv数据
+        ret_log = ret_log.reverse
+        csv_data = CSV.generate do |csv|
+          csv << ret_log.first.keys
+
+          ret_log.each do |log|
+            csv << log.values
+          end
+        end
+
+        if path == nil
+          file_path = 'log/select/'
+        else
+          file_path = 'log/' + path + '/'
+        end
+=begin
+        file_path += 'select'
+
+        if (user_id != nil)
+          file_path += '_id-' + user_id.to_s
+        end
+        if (action != nil)
+          file_path += '_action-' + action.to_s
+        end
+        if (start_time != nil)
+          file_path += '_time-' + start_time.to_s
+        end
+        if object != nil
+          file_path += '_object-' + object.to_s
+        end
+=end
+        file_path += 'select.csv'
+        File.open(file_path , "w") {
+          |file|
+          file.write(csv_data)
+        }
+      end
+
+      ret_log.size
+    end
+
     private 
 
     def subscribe_to_current_user_change

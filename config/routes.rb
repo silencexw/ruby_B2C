@@ -32,6 +32,8 @@ Rails.application.routes.draw do
         get :get_records
         get :get_stat
         post :export_log
+        post :select_log
+        post :save_current_log
       end
     end
     resources :favorites
