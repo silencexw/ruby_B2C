@@ -52,7 +52,7 @@ class MyLogSubscriber < ActiveSupport::LogSubscriber
       csv_data = CSV.generate do |csv|
         # csv << ["user_id", "action", "object", "brief_message", "message", "time"] # CSV 表头
         @@log_lock.synchronize do
-          csv << log_entries.first.keys
+          csv << @@log_entries.first.keys
 
           @@log_entries.each do |log|
             # csv << [log[:user_id], log[:action], 'object', log[:brief_message], 

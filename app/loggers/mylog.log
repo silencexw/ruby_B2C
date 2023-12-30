@@ -17860,5 +17860,1921 @@
     "brief_message": "User Load",
     "message": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? LIMIT ?",
     "time": "2023-12-30 10:44:14 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "PRAGMA",
+    "object": [
+
+    ],
+    "brief_message": "SCHEMA",
+    "message": "PRAGMA foreign_keys = ON",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+
+    ],
+    "brief_message": "nil",
+    "message": "SELECT sqlite_version(*)",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "sqlite_master"
+    ],
+    "brief_message": "SCHEMA",
+    "message": "SELECT name FROM sqlite_master WHERE name <> 'sqlite_sequence' AND type IN ('table','view')",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "PRAGMA",
+    "object": [
+
+    ],
+    "brief_message": "SCHEMA",
+    "message": "PRAGMA table_info(\"schema_migrations\")",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "sqlite_master",
+      "sqlite_temp_master"
+    ],
+    "brief_message": "SCHEMA",
+    "message": "SELECT sql FROM\n  (SELECT * FROM sqlite_master UNION ALL\n   SELECT * FROM sqlite_temp_master)\nWHERE type = 'table' AND name = 'schema_migrations'\n",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "schema_migrations"
+    ],
+    "brief_message": "nil",
+    "message": "SELECT \"schema_migrations\".\"version\" FROM \"schema_migrations\" ORDER BY \"schema_migrations\".\"version\" ASC",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" IS NULL ORDER BY weight desc",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "PRAGMA",
+    "object": [
+
+    ],
+    "brief_message": "SCHEMA",
+    "message": "PRAGMA table_info(\"categories\")",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "sqlite_master",
+      "sqlite_temp_master"
+    ],
+    "brief_message": "SCHEMA",
+    "message": "SELECT sql FROM\n  (SELECT * FROM sqlite_master UNION ALL\n   SELECT * FROM sqlite_temp_master)\nWHERE type = 'table' AND name = 'categories'\n",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "PRAGMA",
+    "object": [
+
+    ],
+    "brief_message": "SCHEMA",
+    "message": "PRAGMA table_info(\"categories\")",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "sqlite_master",
+      "sqlite_temp_master"
+    ],
+    "brief_message": "SCHEMA",
+    "message": "SELECT sql FROM\n  (SELECT * FROM sqlite_master UNION ALL\n   SELECT * FROM sqlite_temp_master)\nWHERE type = 'table' AND name = 'categories'\n",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "PRAGMA",
+    "object": [
+
+    ],
+    "brief_message": "SCHEMA",
+    "message": "PRAGMA table_info(\"products\")",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "sqlite_master",
+      "sqlite_temp_master"
+    ],
+    "brief_message": "SCHEMA",
+    "message": "SELECT sql FROM\n  (SELECT * FROM sqlite_master UNION ALL\n   SELECT * FROM sqlite_temp_master)\nWHERE type = 'table' AND name = 'products'\n",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '3' ORDER BY weight desc",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '1' ORDER BY weight desc",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '6' ORDER BY weight desc",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "products"
+    ],
+    "brief_message": "Product Load",
+    "message": "SELECT \"products\".* FROM \"products\" WHERE \"products\".\"status\" = ? ORDER BY id desc LIMIT ? OFFSET ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "PRAGMA",
+    "object": [
+
+    ],
+    "brief_message": "SCHEMA",
+    "message": "PRAGMA table_info(\"products\")",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "sqlite_master",
+      "sqlite_temp_master"
+    ],
+    "brief_message": "SCHEMA",
+    "message": "SELECT sql FROM\n  (SELECT * FROM sqlite_master UNION ALL\n   SELECT * FROM sqlite_temp_master)\nWHERE type = 'table' AND name = 'products'\n",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "PRAGMA",
+    "object": [
+
+    ],
+    "brief_message": "SCHEMA",
+    "message": "PRAGMA table_info(\"product_items\")",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "sqlite_master",
+      "sqlite_temp_master"
+    ],
+    "brief_message": "SCHEMA",
+    "message": "SELECT sql FROM\n  (SELECT * FROM sqlite_master UNION ALL\n   SELECT * FROM sqlite_temp_master)\nWHERE type = 'table' AND name = 'product_items'\n",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "PRAGMA",
+    "object": [
+
+    ],
+    "brief_message": "SCHEMA",
+    "message": "PRAGMA table_info(\"product_items\")",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "sqlite_master",
+      "sqlite_temp_master"
+    ],
+    "brief_message": "SCHEMA",
+    "message": "SELECT sql FROM\n  (SELECT * FROM sqlite_master UNION ALL\n   SELECT * FROM sqlite_temp_master)\nWHERE type = 'table' AND name = 'product_items'\n",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "PRAGMA",
+    "object": [
+
+    ],
+    "brief_message": "SCHEMA",
+    "message": "PRAGMA table_info(\"active_storage_attachments\")",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "sqlite_master",
+      "sqlite_temp_master"
+    ],
+    "brief_message": "SCHEMA",
+    "message": "SELECT sql FROM\n  (SELECT * FROM sqlite_master UNION ALL\n   SELECT * FROM sqlite_temp_master)\nWHERE type = 'table' AND name = 'active_storage_attachments'\n",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "PRAGMA",
+    "object": [
+
+    ],
+    "brief_message": "SCHEMA",
+    "message": "PRAGMA table_info(\"active_storage_attachments\")",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "sqlite_master",
+      "sqlite_temp_master"
+    ],
+    "brief_message": "SCHEMA",
+    "message": "SELECT sql FROM\n  (SELECT * FROM sqlite_master UNION ALL\n   SELECT * FROM sqlite_temp_master)\nWHERE type = 'table' AND name = 'active_storage_attachments'\n",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "PRAGMA",
+    "object": [
+
+    ],
+    "brief_message": "SCHEMA",
+    "message": "PRAGMA table_info(\"active_storage_blobs\")",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "sqlite_master",
+      "sqlite_temp_master"
+    ],
+    "brief_message": "SCHEMA",
+    "message": "SELECT sql FROM\n  (SELECT * FROM sqlite_master UNION ALL\n   SELECT * FROM sqlite_temp_master)\nWHERE type = 'table' AND name = 'active_storage_blobs'\n",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "PRAGMA",
+    "object": [
+
+    ],
+    "brief_message": "SCHEMA",
+    "message": "PRAGMA table_info(\"active_storage_blobs\")",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "sqlite_master",
+      "sqlite_temp_master"
+    ],
+    "brief_message": "SCHEMA",
+    "message": "SELECT sql FROM\n  (SELECT * FROM sqlite_master UNION ALL\n   SELECT * FROM sqlite_temp_master)\nWHERE type = 'table' AND name = 'active_storage_blobs'\n",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "products"
+    ],
+    "brief_message": "nil",
+    "message": "SELECT COUNT(*) FROM \"products\" WHERE \"products\".\"status\" = ?",
+    "time": "2023-12-30 14:15:37 +0800"
+  },
+  {
+    "user_id": "nil",
+    "is_admin": false,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:38 +0800"
+  },
+  {
+    "user_id": "nil",
+    "is_admin": false,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:38 +0800"
+  },
+  {
+    "user_id": "nil",
+    "is_admin": false,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:38 +0800"
+  },
+  {
+    "user_id": "nil",
+    "is_admin": false,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:39 +0800"
+  },
+  {
+    "user_id": "nil",
+    "is_admin": false,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:40 +0800"
+  },
+  {
+    "user_id": "nil",
+    "is_admin": false,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:40 +0800"
+  },
+  {
+    "user_id": "nil",
+    "is_admin": false,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:41 +0800"
+  },
+  {
+    "user_id": "nil",
+    "is_admin": false,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:41 +0800"
+  },
+  {
+    "user_id": "nil",
+    "is_admin": false,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:42 +0800"
+  },
+  {
+    "user_id": "nil",
+    "is_admin": false,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:42 +0800"
+  },
+  {
+    "user_id": "nil",
+    "is_admin": false,
+    "action": "PRAGMA",
+    "object": [
+
+    ],
+    "brief_message": "SCHEMA",
+    "message": "PRAGMA table_info(\"users\")",
+    "time": "2023-12-30 14:15:47 +0800"
+  },
+  {
+    "user_id": "nil",
+    "is_admin": false,
+    "action": "SELECT",
+    "object": [
+      "sqlite_master",
+      "sqlite_temp_master"
+    ],
+    "brief_message": "SCHEMA",
+    "message": "SELECT sql FROM\n  (SELECT * FROM sqlite_master UNION ALL\n   SELECT * FROM sqlite_temp_master)\nWHERE type = 'table' AND name = 'users'\n",
+    "time": "2023-12-30 14:15:47 +0800"
+  },
+  {
+    "user_id": "nil",
+    "is_admin": false,
+    "action": "PRAGMA",
+    "object": [
+
+    ],
+    "brief_message": "SCHEMA",
+    "message": "PRAGMA table_info(\"users\")",
+    "time": "2023-12-30 14:15:47 +0800"
+  },
+  {
+    "user_id": "nil",
+    "is_admin": false,
+    "action": "SELECT",
+    "object": [
+      "sqlite_master",
+      "sqlite_temp_master"
+    ],
+    "brief_message": "SCHEMA",
+    "message": "SELECT sql FROM\n  (SELECT * FROM sqlite_master UNION ALL\n   SELECT * FROM sqlite_temp_master)\nWHERE type = 'table' AND name = 'users'\n",
+    "time": "2023-12-30 14:15:47 +0800"
+  },
+  {
+    "user_id": "nil",
+    "is_admin": false,
+    "action": "SELECT",
+    "object": [
+      "users"
+    ],
+    "brief_message": "User Load",
+    "message": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"email\" = 'shixiang' ORDER BY \"users\".\"id\" ASC LIMIT ?",
+    "time": "2023-12-30 14:15:47 +0800"
+  },
+  {
+    "user_id": "nil",
+    "is_admin": false,
+    "action": "SELECT",
+    "object": [
+      "users"
+    ],
+    "brief_message": "User Load",
+    "message": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:47 +0800"
+  },
+  {
+    "user_id": "nil",
+    "is_admin": false,
+    "action": "SELECT",
+    "object": [
+      "users"
+    ],
+    "brief_message": "User Load",
+    "message": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:47 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" IS NULL ORDER BY weight desc",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '3' ORDER BY weight desc",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '1' ORDER BY weight desc",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '6' ORDER BY weight desc",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "products"
+    ],
+    "brief_message": "Product Load",
+    "message": "SELECT \"products\".* FROM \"products\" WHERE \"products\".\"status\" = ? ORDER BY id desc LIMIT ? OFFSET ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "product_items"
+    ],
+    "brief_message": "ProductItem Load",
+    "message": "SELECT \"product_items\".* FROM \"product_items\" WHERE \"product_items\".\"product_id\" = ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_attachments"
+    ],
+    "brief_message": "ActiveStorage::Attachment Load",
+    "message": "SELECT \"active_storage_attachments\".* FROM \"active_storage_attachments\" WHERE \"active_storage_attachments\".\"record_id\" = ? AND \"active_storage_attachments\".\"record_type\" = ? AND \"active_storage_attachments\".\"name\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "products"
+    ],
+    "brief_message": "nil",
+    "message": "SELECT COUNT(*) FROM \"products\" WHERE \"products\".\"status\" = ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "users"
+    ],
+    "brief_message": "User Load",
+    "message": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:48 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:49 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:49 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "users"
+    ],
+    "brief_message": "User Load",
+    "message": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:51 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\"",
+    "time": "2023-12-30 14:15:51 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '1'",
+    "time": "2023-12-30 14:15:51 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '1/2'",
+    "time": "2023-12-30 14:15:51 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '3'",
+    "time": "2023-12-30 14:15:51 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '3/4'",
+    "time": "2023-12-30 14:15:51 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '3/5'",
+    "time": "2023-12-30 14:15:51 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '6'",
+    "time": "2023-12-30 14:15:51 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '1/7'",
+    "time": "2023-12-30 14:15:51 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '6/8'",
+    "time": "2023-12-30 14:15:51 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '6/9'",
+    "time": "2023-12-30 14:15:51 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "products"
+    ],
+    "brief_message": "Product Load",
+    "message": "SELECT \"products\".* FROM \"products\"",
+    "time": "2023-12-30 14:15:51 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\"",
+    "time": "2023-12-30 14:15:51 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "PRAGMA",
+    "object": [
+
+    ],
+    "brief_message": "SCHEMA",
+    "message": "PRAGMA foreign_keys = ON",
+    "time": "2023-12-30 14:15:51 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+
+    ],
+    "brief_message": "nil",
+    "message": "SELECT sqlite_version(*)",
+    "time": "2023-12-30 14:15:51 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:51 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:51 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "active_storage_blobs"
+    ],
+    "brief_message": "ActiveStorage::Blob Load",
+    "message": "SELECT \"active_storage_blobs\".* FROM \"active_storage_blobs\" WHERE \"active_storage_blobs\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:52 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "users"
+    ],
+    "brief_message": "User Load",
+    "message": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:15:54 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "users"
+    ],
+    "brief_message": "User Load",
+    "message": "SELECT \"users\".* FROM \"users\"",
+    "time": "2023-12-30 14:15:54 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "users"
+    ],
+    "brief_message": "User Load",
+    "message": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:16:05 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "users"
+    ],
+    "brief_message": "User Load",
+    "message": "SELECT \"users\".* FROM \"users\"",
+    "time": "2023-12-30 14:16:05 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "users"
+    ],
+    "brief_message": "User Load",
+    "message": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:16:17 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "users"
+    ],
+    "brief_message": "User Load",
+    "message": "SELECT \"users\".* FROM \"users\"",
+    "time": "2023-12-30 14:16:17 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "users"
+    ],
+    "brief_message": "User Load",
+    "message": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:16:22 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "users"
+    ],
+    "brief_message": "User Load",
+    "message": "SELECT \"users\".* FROM \"users\"",
+    "time": "2023-12-30 14:16:22 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "users"
+    ],
+    "brief_message": "User Load",
+    "message": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:17:14 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\"",
+    "time": "2023-12-30 14:17:14 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '1'",
+    "time": "2023-12-30 14:17:14 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '1/2'",
+    "time": "2023-12-30 14:17:14 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '3'",
+    "time": "2023-12-30 14:17:14 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '3/4'",
+    "time": "2023-12-30 14:17:14 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '3/5'",
+    "time": "2023-12-30 14:17:14 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '6'",
+    "time": "2023-12-30 14:17:14 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '1/7'",
+    "time": "2023-12-30 14:17:14 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '6/8'",
+    "time": "2023-12-30 14:17:14 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\" WHERE \"categories\".\"ancestry\" = '6/9'",
+    "time": "2023-12-30 14:17:14 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "products"
+    ],
+    "brief_message": "Product Load",
+    "message": "SELECT \"products\".* FROM \"products\"",
+    "time": "2023-12-30 14:17:14 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "categories"
+    ],
+    "brief_message": "Category Load",
+    "message": "SELECT \"categories\".* FROM \"categories\"",
+    "time": "2023-12-30 14:17:14 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "users"
+    ],
+    "brief_message": "User Load",
+    "message": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:17:15 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "users"
+    ],
+    "brief_message": "User Load",
+    "message": "SELECT \"users\".* FROM \"users\"",
+    "time": "2023-12-30 14:17:15 +0800"
+  },
+  {
+    "user_id": 4,
+    "is_admin": true,
+    "action": "SELECT",
+    "object": [
+      "users"
+    ],
+    "brief_message": "User Load",
+    "message": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? LIMIT ?",
+    "time": "2023-12-30 14:17:18 +0800"
   }
 ]
