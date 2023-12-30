@@ -70,9 +70,16 @@ class Dashboard::ProfileController < Dashboard::DashboardController
     puts export
     puts start_time
 =end
-    ret_val = MyLogSubscriber.select_log(user_id, action, start_time, object, path, export)
-    
-    render plain: ret_val.to_s
+    custom_users = []
+    User.all.each do |user|
+      if (!user.is_admin)
+        custom_users << user.id
+      end
+    end
+    ret_val = MyLogSubscriber.select_log(user_id, action, start_time, object, path, export, 
+    custom_users)
+    # render plain: ret_val.to_s
+    render json: ret_val
   end
 
   def get_records

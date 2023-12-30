@@ -122,9 +122,31 @@ Map Type: <div id="map-type"></div>
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
-                    var intValue = parseInt(xhr.responseText, 10);
-                    log_result.textContent = intValue;
-                    console.log('查询成功' + intValue);
+                    var ret_data = $.parseJSON(xhr.responseText);
+                    var intValue = parseInt(ret_data["ret_log_size"], 10);
+                    //log_result.textContent = intValue;
+                    //console.log('查询成功' + intValue);
+                    console.log(ret_data);
+
+                    var message = '查询到' + intValue + '条日志'
+                    if (ret_data["std_dev"] != null) {
+                        message += ' 标准差: ' + 
+                        ret_data["std_dev"].toString(); 
+                    }
+                    if (ret_data["avg"] != null) {
+                        message += ' 平均值: ' + 
+                        ret_data["avg"].toString(); 
+                    }
+                    if (ret_data["special_users"] != null) {
+                        message += ' 热门用户id: ' + 
+                        ret_data["special_users"].toString();
+                    }
+                    if (ret_data["user_offset"] != null) {
+                        message += ' 本用户行为偏差比: ' + 
+                        ret_data["user_offset"].toString();
+                    }
+
+                    log_result.textContent = message;
                 } else {
                     log_result.textContent = '查询失败';
                     console.log('查询失败');
@@ -172,9 +194,10 @@ Map Type: <div id="map-type"></div>
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
-                    var intValue = parseInt(xhr.responseText, 10);
-                    log_result.textContent = intValue;
+                    var ret_data = $.parseJSON(xhr.responseText);
+                    var intValue = ret_data["ret_log_size"];
                     console.log('导出成功' + intValue);
+                    log_result.textContent = '导出成功' + intValue;
                 } else {
                     log_result.textContent = '导出失败';
                     console.log('导出失败')
