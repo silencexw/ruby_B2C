@@ -58,6 +58,12 @@ class Admin::ProductsController < Admin::AdminController
         puts product_attributes[:category_name]
         puts category
 
+
+        if category.nil?
+          flash[:error] = "文件格式不正确，无法解析"
+          redirect_to admin_products_path
+        end
+
         product_attributes[:category_id] = category.id
         product_attributes.delete(:category_name)
 

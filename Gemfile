@@ -28,6 +28,8 @@ gem 'wicked_pdf'
 
 gem 'pdfkit'
 
+gem 'request_store'
+
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'

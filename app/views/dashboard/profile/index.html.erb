@@ -14,6 +14,245 @@ Map Type: <div id="map-type"></div>
       padding: 10px;
   }
 </style>
+
+<div class='container'>
+    <div class='pull-right'>
+        <button class="btn btn-success" onclick="output_log()">导出选择</button>
+        <button class="btn btn-info" onclick="search_log()">查询选择</button>
+        <button class="btn btn-info" onclick="save_all_log()">保存所有日志</button>
+        <button class='btn btn-info' onclick="output_all_log()">导出所有日志</button>
+    </div>
+
+    <div>
+        <table class="table table-striped">
+            <tr>
+                <th>用户id</th>
+                <th>时间值</th>
+                <th>时间单位</th>
+                <th>行为</th>
+                <th>目标表</th>
+                <th>导出结果存放目录(log下的子目录)</th>
+                <th>结果(满足条件的日志数)</th>
+            </tr>
+            <tr>
+                <td><input type='text' style='width: 100px;' id='log_user_id' placeholder="请输入用户id"></td>
+                <td><input type="number" min="1" id="log_time_range_val" placeholder="默认值为1"></td>
+                <td>
+                    <select id="log_time-range" oninput="displayUserInput()">
+                        <option value='day'>
+                        <div class ='option'>
+                            <div id="time_range" value='day'></div>
+                            天
+                        </div>
+                        </option>
+                        <option value='week'>
+                        <div class ='option'>
+                            <div id="time_range" value='week'></div>
+                            星期
+                        </div>
+                        </option>
+                        <option value='month'>
+                        <div class ='option'>
+                            <div id="time_range" value='month'></div>
+                            月
+                        </div>
+                        </option>
+                        <option value='year'>
+                        <div class ='option'>
+                            <div id="time_range" value='year'></div>
+                            年
+                        </div>
+                        </option>
+                    </select>
+                </td>
+                <td>
+                    <select id="log_action">
+                        <option value='ALL'>ALL</option>
+                        <option value='SELECT'>SELECT</option>
+                        <option value='INSERT'>INSERT</option>
+                        <option value='DELETE'>DELETE</option>
+                        <option value='UPDATE'>UPDATE</option>
+                        <option value='CREATE'>CREATE</option>
+                        <option value='ALTER'>ALTER</option>
+                        <option value='DROP'>DROP</option>
+                    </select>
+                </td>
+                <td><input type='text' style='width: 100px;' id='log_object'></td>
+                <td><input type='text' style='width: 200px;' id='log_path' placeholder="请输入末尾非/的路径，导出文件将显示在log目录下的此路径中"></td>
+                <td><div id="log_result"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script>
+    function search_log() {
+        var time_range = document.getElementById('log_time-range').value;
+        var time_range_val = document.getElementById('log_time_range_val').value;
+        var user_id = document.getElementById('log_user_id').value;
+        var action = document.getElementById('log_action').value;
+        var log_object = document.getElementById('log_object').value;
+        var log_result = document.getElementById('log_result');
+
+        var url = '/dashboard/profile/select_log';
+        url += '?time_range=' + time_range;
+        
+        if (time_range_val == '') {
+            url += '&time_range_val=1';
+        }
+        else {
+            url += '&time_range_val=' + parseInt(time_range_val);
+        }
+        if (user_id != '') {
+            url += '&user_id=' + user_id;
+        }
+        if (action != 'ALL') {
+            url += '&log_action=' + action;
+        }
+        if (log_object != '') {
+            url += '&log_object=' + log_object;
+        }
+        url += '&export=0';
+
+        console.log(url);
+        
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', url, true); // 发送 POST 请求到 /products 路径
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var ret_data = $.parseJSON(xhr.responseText);
+                    var intValue = parseInt(ret_data["ret_log_size"], 10);
+                    //log_result.textContent = intValue;
+                    //console.log('查询成功' + intValue);
+                    console.log(ret_data);
+
+                    var message = '查询到' + intValue + '条日志'
+                    if (ret_data["std_dev"] != null) {
+                        message += ' 标准差: ' + 
+                        ret_data["std_dev"].toString(); 
+                    }
+                    if (ret_data["avg"] != null) {
+                        message += ' 平均值: ' + 
+                        ret_data["avg"].toString(); 
+                    }
+                    if (ret_data["special_users"] != null) {
+                        message += ' 热门用户id: ' + 
+                        ret_data["special_users"].toString();
+                    }
+                    if (ret_data["user_offset"] != null) {
+                        message += ' 本用户行为偏差比: ' + 
+                        ret_data["user_offset"].toString();
+                    }
+
+                    log_result.textContent = message;
+                } else {
+                    log_result.textContent = '查询失败';
+                    console.log('查询失败');
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    function output_log() {
+        var time_range = document.getElementById('log_time-range').value;
+        var time_range_val = document.getElementById('log_time_range_val').value;
+        var user_id = document.getElementById('log_user_id').value;
+        var action = document.getElementById('log_action').value;
+        var log_object = document.getElementById('log_object').value;
+        var log_result = document.getElementById('log_result');
+
+        var url = '/dashboard/profile/select_log';
+        url += '?time_range=' + time_range;
+        
+        if (time_range_val == '') {
+            url += '&time_range_val=1';
+        }
+        else {
+            url += '&time_range_val=' + parseInt(time_range_val);
+        }
+        if (user_id != '') {
+            url += '&user_id=' + user_id;
+        }
+        if (action != 'ALL') {
+            url += '&log_action=' + action;
+        }
+        if (log_object != '') {
+            url += '&log_object=' + log_object;
+        }
+        url += '&export=1';
+
+        console.log(url);
+        
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', url, true); // 发送 POST 请求到 /products 路径
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var ret_data = $.parseJSON(xhr.responseText);
+                    var intValue = ret_data["ret_log_size"];
+                    console.log('导出成功' + intValue);
+                    log_result.textContent = '导出成功' + intValue;
+                } else {
+                    log_result.textContent = '导出失败';
+                    console.log('导出失败')
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    function save_all_log() {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/dashboard/profile/save_current_log', true); // 发送 POST 请求到 /products 路径
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    log_result.textContent = '保存成功';
+                    //console.log('导出成功' + intValue);
+                } else {
+                    log_result.textContent = '保存成功';
+                    //console.log('导出失败')
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    //保存后端日志
+    function output_all_log() {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+        var xhr = new XMLHttpRequest();
+        //var producttype = document.getElementById('input-producttype');
+        var url = '/dashboard/profile/export_log';
+        //url += '?log_path=' + selectedPath;
+        xhr.open('POST', url, true); // 发送 POST 请求到 /products 路径
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    log_result.textContent = '导出成功';
+                    console.log('调用成功');
+                } else {
+                    log_result.textContent = '导出失败';
+                    console.log('调用失败')
+                }
+            }
+        };
+        xhr.send();
+    }
+</script>
+
 <div class='container'>
 
     <div class="pull-right">

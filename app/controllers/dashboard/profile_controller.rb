@@ -15,6 +15,7 @@ class Dashboard::ProfileController < Dashboard::DashboardController
       puts current_user.password_confirmation
 
       if current_user.change_password(params[:user_password])
+        notify_current_user_change
         flash[:notice] = "个人信息修改成功"
         redirect_to dashboard_user_message_path
       else
@@ -28,7 +29,61 @@ class Dashboard::ProfileController < Dashboard::DashboardController
     end
   end
 
+  def save_current_log
+    puts 'try to save current log'
+    MyLogSubscriber.save_log
+    head :ok
+  end
+
+  def export_log
+    MyLogSubscriber.export_log
+    head :ok
+  end
+
+  def select_log
+    time_range = params[:time_range]
+    time_range_val = params[:time_range_val].to_i
+    case time_range
+    when "year"
+      start_time = time_range_val.years.ago
+    when "month"
+      start_time = time_range_val.months.ago
+    when "week"
+      start_time = time_range_val.weeks.ago
+    when "day"
+      start_time = time_range_val.days.ago
+    else
+      start_time = Time.now
+    end
+
+    action = params[:log_action].to_s == '' ? nil : params[:log_action]
+    user_id = params[:user_id].to_s == '' ? nil : params[:user_id].to_s
+    object = params[:log_object].to_s == '' ? nil : params[:log_object].to_s
+    path = params[:log_path].to_s == '' ? nil : params[:log_path].to_s
+    export = params[:export].to_i == 0 ? false : true
+=begin
+    puts 'parameters'
+    puts action
+    puts user_id == nil
+    puts object == nil
+    puts path == nil
+    puts export
+    puts start_time
+=end
+    custom_users = []
+    User.all.each do |user|
+      if (!user.is_admin)
+        custom_users << user.id
+      end
+    end
+    ret_val = MyLogSubscriber.select_log(user_id, action, start_time, object, path, export, 
+    custom_users)
+    # render plain: ret_val.to_s
+    render json: ret_val
+  end
+
   def get_records
+    # save_current_log
     # 时间限制
     get_record_by_time
 
@@ -93,7 +148,7 @@ class Dashboard::ProfileController < Dashboard::DashboardController
 
   def get_records_params
     params.require(:profile).permit(:time_range, :time_range_val, :behaviour, :user_name, :product_id, 
-      :category_id)
+      :category_id, :log_path, :user_id, :log_action, :log_object, :export)
   end
 
 end
