@@ -7,5 +7,53 @@
       <li class="active">Home</li>
     </ol>
     <%= render 'shared/products' %>
+
   </div>
+  <form>
+    <label for="order_option">排序方式：</label>
+    <div class="custom-select">
+      <select id="order_option" name="order_option" onchange="this.form.submit()">
+        <option value="time" <%= 'selected' if params[:order_option] == 'time' %>>按时间</option>
+        <option value="num" <%= 'selected' if params[:order_option] == 'num' %>>按销量</option>
+        <option value="msrp" <%= 'selected' if params[:order_option] == 'msrp' %>>按价格</option>
+      </select>
+    </div>
+  </form>
+
 </div>
+
+<style>
+    .custom-select {
+        position: relative;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 5px;
+    }
+
+    .custom-select select {
+        width: 100%;
+        height: 100%;
+        appearance: none;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        color: #333;
+        cursor: pointer;
+    }
+
+    .custom-select select::-ms-expand {
+        display: none;
+    }
+
+    .custom-select select option {
+        font-size: 14px;
+        color: #333;
+    }
+
+    .custom-select select:disabled {
+        cursor: not-allowed;
+    }
+
+</style>
